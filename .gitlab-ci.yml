@@ -1,0 +1,11 @@
+image: commonci-fil:latest
+
+stages:
+  - build
+
+
+get_req:
+  stage: build
+  script:
+    - apt-get install -y python3-pip
+    - pip3 install -r requirements.txt
