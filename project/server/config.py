@@ -30,8 +30,9 @@ class TestingConfig(BaseConfig):
     """Testing configuration."""
 
     PRESERVE_CONTEXT_ON_EXCEPTION = False
-    SQLALCHEMY_DATABASE_URI = "sqlite:///"
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_TEST_URL", "sqlite:///")
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        "DATABASE_TEST_URL", "sqlite:///{0}".format(os.path.join(basedir, "dev.db"))
+    )
     TESTING = True
 
 
