@@ -1,5 +1,7 @@
 # Project Roadwatch
 
+[![Build Status](https://travis-ci.com/daniel-sasu/project-roadwatch.svg?token=nNtzabkAyK14ViXe6y4n&branch=master)](https://travis-ci.com/daniel-sasu/project-roadwatch)
+
 ## Quick Start
 
 Install Cookiecutter globally:
