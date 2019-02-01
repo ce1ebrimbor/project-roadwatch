@@ -6,6 +6,13 @@ python:
 install:
   - pip install -r requirements.txt
 
-
+jobs:
+  include:
+    - stage: "PEP 8 Check"
+      name: "Run flake 8"
+      script: python3 manage.py flake
+    - stage: "Tests"
+      name: "Unit Tests"
+      script: python3 manage.py cov
 script:
   - python3 manage.py cov
