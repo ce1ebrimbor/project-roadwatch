@@ -1,10 +1,7 @@
 # project/server/user/views.py
 
 
-from flask import render_template, Blueprint, url_for, jsonify
-from project.server import bcrypt, db
-from project.server.models import Accident
-
+from flask import Blueprint, jsonify
 
 api_blueprint = Blueprint("api", __name__)
 

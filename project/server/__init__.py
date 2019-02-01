@@ -49,7 +49,6 @@ def create_app(script_info=None):
 
     app.register_blueprint(api_blueprint)
 
-
     # error handlers
     @app.errorhandler(401)
     def unauthorized_page(error):

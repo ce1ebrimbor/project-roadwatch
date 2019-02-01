@@ -1,11 +1,6 @@
 # project/server/models.py
+from project.server import db
 
-
-import datetime
-
-from flask import current_app
-
-from project.server import db, bcrypt
 
 class Accident(db.Model):
 
@@ -23,8 +18,8 @@ class Accident(db.Model):
     long = db.Column(db.Float)
     date = db.Column(db.DateTime)
 
-
-    def __init__(self, id, lum, agg, int, atm, adr, comm, dep, lat, long, date):
+    def __init__(self, id, lum, agg, int, atm,
+                 adr, comm, dep, lat, long, date):
         self.id = id
         self.lum = lum
         self.agg = agg
