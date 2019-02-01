@@ -3,7 +3,7 @@
 
 from flask import render_template, Blueprint, url_for, jsonify
 from project.server import bcrypt, db
-from project.server.models import User
+from project.server.models import Accident
 
 
 api_blueprint = Blueprint("api", __name__)

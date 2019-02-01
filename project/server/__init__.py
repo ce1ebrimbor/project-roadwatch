@@ -49,15 +49,6 @@ def create_app(script_info=None):
 
     app.register_blueprint(api_blueprint)
 
-    # flask login
-    from project.server.models import User
-
-    login_manager.login_view = "user.login"
-    login_manager.login_message_category = "danger"
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.filter(User.id == int(user_id)).first()
 
     # error handlers
     @app.errorhandler(401)
