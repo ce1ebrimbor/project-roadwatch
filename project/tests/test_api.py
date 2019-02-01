@@ -2,8 +2,6 @@
 
 
 import unittest
-
-
 from base import BaseTestCase
 
 

@@ -1,26 +1,25 @@
 # project/server/models.py
-from project.server import db
-
+from project.server import db, marshmallow
 
 class Accident(db.Model):
 
     __tablename__ = "caracteristiques"
 
-    id = db.Column(db.Integer, primary_key=True)
-    lum = db.Column(db.Integer)
-    agg = db.Column(db.Integer)
-    int = db.Column(db.Integer)
-    atm = db.Column(db.Integer)
-    adr = db.Column(db.Text)
-    comm = db.Column(db.String(5))
-    dep = db.Column(db.String(3))
-    lat = db.Column(db.Float)
-    long = db.Column(db.Float)
-    date = db.Column(db.DateTime)
+    num_acc = db.Column('num_acc', db.Integer(), primary_key=True)
+    lum = db.Column('lum', db.Integer())
+    agg = db.Column('agg', db.Integer())
+    int = db.Column('int', db.Integer())
+    atm = db.Column('atm', db.Integer())
+    adr = db.Column('adr', db.Text())
+    comm = db.Column('comm', db.String(5))
+    dep = db.Column('dep', db.String(3))
+    lat = db.Column('lat', db.Float())
+    long = db.Column('long', db.Float())
+    date = db.Column('date', db.DateTime())
 
-    def __init__(self, id, lum, agg, int, atm,
+    def __init__(self, num_acc, lum, agg, int, atm,
                  adr, comm, dep, lat, long, date):
-        self.id = id
+        self.num_acc = num_acc
         self.lum = lum
         self.agg = agg
         self.int = int
@@ -33,4 +32,13 @@ class Accident(db.Model):
         self.date = date
 
     def __repr__(self):
-        return '<Accident {0} >'.format(self.id)
+        return '<Accident {0} >'.format(self.num_acc)
+
+
+class AccidentSchema(marshmallow.ModelSchema):
+    class Meta:
+        model = Accident
+
+
+accident_schema = AccidentSchema()
+accidents_schema = AccidentSchema(many=True)
