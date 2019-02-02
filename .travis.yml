@@ -12,7 +12,7 @@ jobs:
   include:
     - stage: "PEP 8 Check"
       name: "Run flake 8"
-      script: python3 manage.py flake
+      script: if [[ $(python3 manage.py flake | wc -l) -ne 0]]; then return 1d
     - stage: "Tests"
       name: "Unit Tests"
       script: python3 manage.py cov
