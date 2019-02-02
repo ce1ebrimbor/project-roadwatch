@@ -1,7 +1,7 @@
 # project/server/models.py
 from project.server import db, marshmallow
 from sqlalchemy.orm import relationship
-from marshmallow_jsonapi.flask import Schema, Relationship 
+from marshmallow_jsonapi.flask import Schema, Relationship
 
 class Accident(db.Model):
 
@@ -21,7 +21,8 @@ class Accident(db.Model):
     long = db.Column('long', db.Float())
     date = db.Column('date', db.DateTime())
     lieu = relationship("Lieu", uselist=False, back_populates='accident')
-
+    usagers = relationship("Usager", back_populates='accident')
+    vehicules = relationship("Vehicule", back_populates='accident')
 
     def __init__(self, num_acc, lum, agg, int, atm, col,
                  adr, comm, gps, dep, lat, long, date):
@@ -47,7 +48,8 @@ class Lieu(db.Model):
     __tablename__ = 'lieux'
 
     id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
-    num_acc = db.Column('num_acc', db.Integer(), db.ForeignKey('caracteristiques.num_acc'))
+    num_acc = db.Column('num_acc', db.Integer(),
+                        db.ForeignKey('caracteristiques.num_acc'))
     catr = db.Column('catr', db.Integer())
     voie = db.Column('voie', db.Integer())
     circ = db.Column('circ', db.Integer())
@@ -80,3 +82,83 @@ class Lieu(db.Model):
 
     def __repr__(self):
         return '<Lieu {0}>'.format(self.id)
+
+
+class Usager(db.Model):
+
+    __tablename__ = 'usagers'
+
+    id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
+    num_acc = db.Column('num_acc', db.Integer(),
+                        db.ForeignKey('caracteristiques.num_acc'))
+    place = db.Column('place', db.Integer())
+    catu = db.Column('catu', db.Integer())
+    grav = db.Column('grav', db.Integer())
+    sexe = db.Column('sexe', db.Integer())
+    trajet = db.Column('trajet', db.Integer())
+    secu = db.Column('secu', db.Integer())
+    locp = db.Column('locp', db.Integer())
+    actp = db.Column('actp', db.Integer())
+    etatp = db.Column('etatp', db.Integer())
+    an_nais = db.Column('an_nais', db.Integer())
+    num_veh = db.Column('num_veh', db.Text())
+    accident = db.relationship("Accident", back_populates="usagers")
+
+
+    def __init__(self, num_acc, place, catu, grav, sexe, trajet, secu, locp,
+                 actp, etatp, an_nais, num_veh):
+        self.num_acc = num_acc
+        self.place = place
+        self.catu = catu
+        self.grav = grav
+        self.sexe = sexe
+        self.trajet = trajet
+        self.secu = secu
+        self.locp = locp
+        self.actp = actp
+        self.etatp = etatp
+        self.an_nais = an_nais
+        self.num_veh = num_veh
+
+
+    def __repr__(self):
+        return '<Usager {0}>'.format(self.id)
+
+
+class Vehicule(db.Model):
+
+    __tablename__ = 'vehicules'
+
+    id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
+    num_acc = db.Column('num_acc', db.Integer(),
+                        db.ForeignKey('caracteristiques.num_acc'))
+    senc = db.Column('senc', db.Integer())
+    catv = db.Column('catv', db.Integer())
+    occutc = db.Column('occutc', db.Integer())
+    obs = db.Column('obs', db.Integer())
+    obsm = db.Column('obsm', db.Integer())
+    choc = db.Column('choc', db.Integer())
+    manv = db.Column('manv', db.Integer())
+    num_veh = db.Column('num_veh', db.Text())
+    accident = db.relationship("Accident", back_populates="vehicules")
+
+
+    def __init__(self, num_acc, senc, catv, occutc, obs, obsm, choc,
+                 manv, num_veh):
+        self.num_acc = num_acc
+        self.senc = senc
+        self.catv = catv
+        self.occutc = occutc
+        self.obs = obs
+        self.obsm = obsm
+        self.choc = choc
+        self.manv = manv
+        self.num_veh = num_veh
+
+    def __repr__(self):
+        return '<Vehicule {0}>'.format(self.id)
+
+
+
+
+# Logical Data abstraction
