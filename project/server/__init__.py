@@ -11,6 +11,7 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
+from flask_rest_jsonapi import Api
 
 
 # instantiate the extensions
@@ -21,6 +22,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 migrate = Migrate()
 marshmallow = Marshmallow()
+api = Api()
 
 def create_app(script_info=None):
 
@@ -45,6 +47,7 @@ def create_app(script_info=None):
     db.init_app(app)
     migrate.init_app(app, db)
     marshmallow.init_app(app)
+    api = Api(app)
 
     # register blueprints
     from project.server.api.views import api_blueprint
