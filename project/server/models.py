@@ -231,7 +231,26 @@ class UsagerSchema(Schema):
     actp = fields.Integer(as_String=True)
     etatp = fields.Integer(as_String=True)
     an_nais = fields.Integer(as_String=True)
-    num_veh = fields.String(as_String=True)
+    num_veh = fields.String()
+
+
+class VehiculeSchema(Schema):
+    class Meta:
+        type_ = 'vehicule'
+        self_view = 'vehicule_list'
+        self_view_kwargs = {'id': '<id>'}
+        self_view_many = 'vehicule_list'
+
+    id = fields.Integer(as_String=True, dump_only=True)
+    accident_id = fields.Integer(as_String=True)
+    senc = fields.Integer()
+    catv = fields.Integer()
+    occutc = fields.Integer()
+    obs = fields.Integer()
+    obsm = fields.Integer()
+    choc = fields.Integer()
+    manv = fields.Integer()
+    num_veh = fields.String()
 
 
 # resource managers
@@ -248,3 +267,8 @@ class LieuList(ResourceList):
 class AccidentList(ResourceList):
     schema = AccidentSchema
     data_layer = {'session': db.session, 'model': Accident}
+
+
+class VehiculeList(ResourceList):
+    schema = VehiculeSchema
+    data_layer = { 'session': db.session, 'model': Vehicule}

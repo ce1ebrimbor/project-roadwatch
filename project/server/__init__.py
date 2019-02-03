@@ -13,6 +13,7 @@ from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask_rest_jsonapi import Api
 from project.server.models import AccidentList, LieuList, UsagerList
+from project.server.models import VehiculeList
 
 # instantiate the extensions
 login_manager = LoginManager()
@@ -53,10 +54,11 @@ def create_app(script_info=None):
 
     app.register_blueprint(api_blueprint)
 
-    
+
     api.route(AccidentList, 'accident_list', '/accident')
     api.route(LieuList, 'lieu_list', '/lieu')
     api.route(UsagerList, 'usager_list', '/usager')
+    api.route(VehiculeList, 'vehicule_list', '/vehicule')
     # api.route(UsagerDetail, 'usager_detail', '/usager/<int:id>')
     # error handlers
 
