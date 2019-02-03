@@ -31,9 +31,6 @@ class Accident(db.Model):
     lat = db.Column('lat', db.Float())
     long = db.Column('long', db.Float())
     date = db.Column('date', db.DateTime())
-    lieu = relationship("Lieu", uselist=False, back_populates='accident')
-    usagers = relationship("Usager", back_populates='accident')
-    vehicules = relationship("Vehicule", back_populates='accident')
 
     def __init__(self, id, lum, agg, int, atm, col,
                  adr, comm, gps, dep, lat, long, date):
@@ -74,7 +71,7 @@ class Lieu(db.Model):
     surf = db.Column('surf', db.Integer())
     infra = db.Column('infra', db.Integer())
     situ = db.Column('situ', db.Integer())
-    accident = db.relationship("Accident", back_populates="lieu")
+    accident = db.relationship("Accident", backref=db.backref('lieux'))
 
     def __init__(self, accident_id, catr, voie, circ, nbv, pr, pr1, vosp,
                  prof, plan, surf, infra, situ):
@@ -114,7 +111,7 @@ class Usager(db.Model):
     etatp = db.Column('etatp', db.Integer())
     an_nais = db.Column('an_nais', db.Integer())
     num_veh = db.Column('num_veh', db.Text())
-    accident = db.relationship("Accident", back_populates="usagers")
+    accident = db.relationship("Accident", backref=db.backref('usagers'))
 
     def __init__(self, accident_id, place, catu, grav, sexe, trajet, secu, locp,
                  actp, etatp, an_nais, num_veh):
@@ -150,7 +147,7 @@ class Vehicule(db.Model):
     choc = db.Column('choc', db.Integer())
     manv = db.Column('manv', db.Integer())
     num_veh = db.Column('num_veh', db.Text())
-    accident = db.relationship("Accident", back_populates="vehicules")
+    accident = db.relationship("Accident", backref=db.backref('vehicules'))
 
     def __init__(self, accident_id, senc, catv, occutc, obs, obsm, choc,
                  manv, num_veh):
