@@ -1,12 +1,18 @@
 # project/server/models.py
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from flask_rest_jsonapi import ResourceDetail, ResourceList, ResourceRelationship
+from sqlalchemy.orm.exc import NoResultFound
+
+from flask_rest_jsonapi import ResourceDetail, ResourceList
+from flask_rest_jsonapi import ResourceRelationship
 from flask_rest_jsonapi.exceptions import ObjectNotFound
+
 from marshmallow_jsonapi.flask import Schema, Relationship
 from marshmallow_jsonapi import fields
 
 db = SQLAlchemy()
+
+
 # Database Models
 class Accident(db.Model):
 
@@ -48,13 +54,14 @@ class Accident(db.Model):
     def __repr__(self):
         return '<Accident {0} >'.format(self.id)
 
+
 class Lieu(db.Model):
 
     __tablename__ = 'lieux'
 
     id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
     accident_id = db.Column('accident_id', db.Integer(),
-                        db.ForeignKey('caracteristiques.id'))
+                            db.ForeignKey('caracteristiques.id'))
     catr = db.Column('catr', db.Integer())
     voie = db.Column('voie', db.Integer())
     circ = db.Column('circ', db.Integer())
@@ -70,7 +77,7 @@ class Lieu(db.Model):
     accident = db.relationship("Accident", back_populates="lieu")
 
     def __init__(self, accident_id, catr, voie, circ, nbv, pr, pr1, vosp,
-              prof, plan, surf, infra, situ):
+                 prof, plan, surf, infra, situ):
         self.accident_id = accident_id
         self.catr = catr
         self.voie = voie
@@ -95,7 +102,7 @@ class Usager(db.Model):
 
     id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
     accident_id = db.Column('accident_id', db.Integer(),
-                        db.ForeignKey('caracteristiques.id'))
+                            db.ForeignKey('caracteristiques.id'))
     place = db.Column('place', db.Integer())
     catu = db.Column('catu', db.Integer())
     grav = db.Column('grav', db.Integer())
@@ -108,7 +115,6 @@ class Usager(db.Model):
     an_nais = db.Column('an_nais', db.Integer())
     num_veh = db.Column('num_veh', db.Text())
     accident = db.relationship("Accident", back_populates="usagers")
-
 
     def __init__(self, accident_id, place, catu, grav, sexe, trajet, secu, locp,
                  actp, etatp, an_nais, num_veh):
@@ -125,7 +131,6 @@ class Usager(db.Model):
         self.an_nais = an_nais
         self.num_veh = num_veh
 
-
     def __repr__(self):
         return '<Usager {0}>'.format(self.id)
 
@@ -136,7 +141,7 @@ class Vehicule(db.Model):
 
     id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
     accident_id = db.Column('accident_id', db.Integer(),
-                        db.ForeignKey('caracteristiques.id'))
+                            db.ForeignKey('caracteristiques.id'))
     senc = db.Column('senc', db.Integer())
     catv = db.Column('catv', db.Integer())
     occutc = db.Column('occutc', db.Integer())
@@ -146,7 +151,6 @@ class Vehicule(db.Model):
     manv = db.Column('manv', db.Integer())
     num_veh = db.Column('num_veh', db.Text())
     accident = db.relationship("Accident", back_populates="vehicules")
-
 
     def __init__(self, accident_id, senc, catv, occutc, obs, obsm, choc,
                  manv, num_veh):
@@ -164,13 +168,11 @@ class Vehicule(db.Model):
         return '<Vehicule {0}>'.format(self.id)
 
 
-
-
 # Logical Data abstraction
 class AccidentSchema(Schema):
     class Meta:
         type_ = 'accident'
-        self_view = 'accident_list'
+        self_view = 'accident_detail'
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'accident_list'
 
@@ -184,33 +186,114 @@ class AccidentSchema(Schema):
     comm = fields.Str()
     gps = fields.Str()
     dep = fields.Str()
-    lat =  fields.Float(as_String=True)
+    lat = fields.Float(as_String=True)
     long = fields.Float(as_String=True)
     date = fields.Date()
 
 
+class AccidentRelationship(ResourceRelationship):
+    schema = AccidentSchema
+    data_layer = {'session': db.session,
+                  'model': Accident}
+
+
+class LieuSchema(Schema):
+    class Meta:
+        type_ = 'lieu'
+        self_view = 'lieu_detail'
+        self_view_kwargs = {'id': '<id>'}
+        self_view_many = 'lieu_list'
+
+    id = fields.Integer(as_String=True, dump_only=True)
+    accident_id = fields.Integer(as_String=True)
+    catr = fields.Integer(as_String=True)
+    voie = fields.Integer(as_String=True)
+    circ = fields.Integer(as_String=True)
+    nbv = fields.Integer(as_String=True)
+    pr = fields.Integer(as_String=True)
+    pr1 = fields.Integer(as_String=True)
+    vosp = fields.Integer(as_String=True)
+    prof = fields.Integer(as_String=True)
+    plan = fields.Integer(as_String=True)
+    surf = fields.Integer(as_String=True)
+    infra = fields.Integer(as_String=True)
+    situ = fields.Integer(as_String=True)
+
+
+class UsagerSchema(Schema):
+    class Meta:
+        type_ = 'usager'
+        self_view = 'usager_detail'
+        self_view_kwargs = {'id': '<id>'}
+        self_view_many = 'usager_list'
+
+    id = fields.Integer(as_String=True, dump_only=True)
+    accident_id = fields.Integer(as_String=True)
+    place = fields.Integer(as_String=True)
+    catu = fields.Integer(as_String=True)
+    grav = fields.Integer(as_String=True)
+    sexe = fields.Integer(as_String=True)
+    trajet = fields.Integer(as_String=True)
+    secu = fields.Integer(as_String=True)
+    locp = fields.Integer(as_String=True)
+    actp = fields.Integer(as_String=True)
+    etatp = fields.Integer(as_String=True)
+    an_nais = fields.Integer(as_String=True)
+    num_veh = fields.Integer(as_String=True)
+
+
 # resource managers
+class UsagerList(ResourceList):
+    schema = UsagerSchema
+    data_layer = {'session': db.session, 'model': Usager}
+
+
+class LieuList(ResourceList):
+    schema = LieuSchema
+    data_layer = {'session': db.session, 'model': Lieu}
+
+
 class AccidentList(ResourceList):
     schema = AccidentSchema
     data_layer = {'session': db.session, 'model': Accident}
-
 
 
 class AccidentDetail(ResourceDetail):
     def before_get_object(self, view_kwargs):
         if view_kwargs.get('id') is not None:
             try:
-                computer = self.session.query(Accident).filter_by(num_acc=view_kwargs['id']).one()
+                accident = self.session.query(Accident).filter_by(
+                                                            id=view_kwargs['id']
+                                                            ).one()
             except NoResultFound:
                 raise ObjectNotFound({'parameter': 'id'},
-                                     "Accident: {} not found".format(view_kwargs['id']))
+                                     "Accident: {} not found"
+                                     .format(view_kwargs['id']))
+        else:
+            if accident.lieu is not None:
+                view_kwargs['id'] = accident.lieu.id
             else:
-                if computer.person is not None:
-                    view_kwargs['id'] = computer.person.id
-                else:
-                    view_kwargs['id'] = None
+                view_kwargs['id'] = None
 
     schema = AccidentSchema
     data_layer = {'session': db.session,
                   'model': Accident,
+                  'methods': {'before_get_object': before_get_object}}
+
+
+class LieuDetail(ResourceDetail):
+    def before_get_object(self, view_kwargs):
+        if view_kwargs.get('id') is not None:
+            try:
+                lieu = self.session.query(Lieu).filter_by(
+                                                        id=view_kwargs['id']
+                                                        ).one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'id'},
+                                     "Accident: {} not found".
+                                     format(view_kwargs['id']))
+
+    schema = LieuSchema
+    data_layer = {'session': db.session,
+                  'model': Lieu,
                   'methods': {'before_get_object': before_get_object}}
