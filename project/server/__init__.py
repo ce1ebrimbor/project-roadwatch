@@ -51,6 +51,9 @@ def create_app(script_info=None):
     # register blueprints
     from project.server.api.views import api_blueprint
 
+    app.register_blueprint(api_blueprint)
+
+    
     api.route(AccidentList, 'accident_list', '/accident')
     api.route(LieuList, 'lieu_list', '/lieu')
     api.route(UsagerList, 'usager_list', '/usager')
