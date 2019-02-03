@@ -172,7 +172,7 @@ class Vehicule(db.Model):
 class AccidentSchema(Schema):
     class Meta:
         type_ = 'accident'
-        self_view = 'accident_detail'
+        self_view = 'accident_list'
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'accident_list'
 
@@ -191,16 +191,11 @@ class AccidentSchema(Schema):
     date = fields.Date()
 
 
-class AccidentRelationship(ResourceRelationship):
-    schema = AccidentSchema
-    data_layer = {'session': db.session,
-                  'model': Accident}
-
 
 class LieuSchema(Schema):
     class Meta:
         type_ = 'lieu'
-        self_view = 'lieu_detail'
+        self_view = 'lieu_list'
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'lieu_list'
 
@@ -223,7 +218,7 @@ class LieuSchema(Schema):
 class UsagerSchema(Schema):
     class Meta:
         type_ = 'usager'
-        self_view = 'usager_detail'
+        self_view = 'usager_list'
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'usager_list'
 
@@ -239,7 +234,7 @@ class UsagerSchema(Schema):
     actp = fields.Integer(as_String=True)
     etatp = fields.Integer(as_String=True)
     an_nais = fields.Integer(as_String=True)
-    num_veh = fields.Integer(as_String=True)
+    num_veh = fields.String(as_String=True)
 
 
 # resource managers
@@ -256,44 +251,3 @@ class LieuList(ResourceList):
 class AccidentList(ResourceList):
     schema = AccidentSchema
     data_layer = {'session': db.session, 'model': Accident}
-
-
-class AccidentDetail(ResourceDetail):
-    def before_get_object(self, view_kwargs):
-        if view_kwargs.get('id') is not None:
-            try:
-                accident = self.session.query(Accident).filter_by(
-                                                            id=view_kwargs['id']
-                                                            ).one()
-            except NoResultFound:
-                raise ObjectNotFound({'parameter': 'id'},
-                                     "Accident: {} not found"
-                                     .format(view_kwargs['id']))
-        else:
-            if accident.lieu is not None:
-                view_kwargs['id'] = accident.lieu.id
-            else:
-                view_kwargs['id'] = None
-
-    schema = AccidentSchema
-    data_layer = {'session': db.session,
-                  'model': Accident,
-                  'methods': {'before_get_object': before_get_object}}
-
-
-class LieuDetail(ResourceDetail):
-    def before_get_object(self, view_kwargs):
-        if view_kwargs.get('id') is not None:
-            try:
-                lieu = self.session.query(Lieu).filter_by(
-                                                        id=view_kwargs['id']
-                                                        ).one()
-            except NoResultFound:
-                raise ObjectNotFound({'parameter': 'id'},
-                                     "Accident: {} not found".
-                                     format(view_kwargs['id']))
-
-    schema = LieuSchema
-    data_layer = {'session': db.session,
-                  'model': Lieu,
-                  'methods': {'before_get_object': before_get_object}}

@@ -12,7 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask_rest_jsonapi import Api
-from project.server.models import AccidentList, LieuList, AccidentDetail, LieuDetail, AccidentRelationship, UsagerList
+from project.server.models import AccidentList, LieuList, UsagerList
 
 # instantiate the extensions
 login_manager = LoginManager()
@@ -52,11 +52,8 @@ def create_app(script_info=None):
     from project.server.api.views import api_blueprint
 
     api.route(AccidentList, 'accident_list', '/accident')
-    api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>', '/accident/<int:id>/lieu')
     api.route(LieuList, 'lieu_list', '/lieu')
-    api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>')
-
-#   api.route(UsagerList, 'usager_list', '/usager')
+    api.route(UsagerList, 'usager_list', '/usager')
     # api.route(UsagerDetail, 'usager_detail', '/usager/<int:id>')
     # error handlers
 
