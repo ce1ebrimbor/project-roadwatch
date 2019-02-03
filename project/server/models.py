@@ -169,7 +169,7 @@ class Vehicule(db.Model):
 class AccidentSchema(Schema):
     class Meta:
         type_ = 'accident'
-        self_view = 'accident_list'
+        self_view = 'accident_detail'
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'accident_list'
 
@@ -192,7 +192,7 @@ class AccidentSchema(Schema):
 class LieuSchema(Schema):
     class Meta:
         type_ = 'lieu'
-        self_view = 'lieu_list'
+        self_view = 'lieu_detail'
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'lieu_list'
 
@@ -215,7 +215,7 @@ class LieuSchema(Schema):
 class UsagerSchema(Schema):
     class Meta:
         type_ = 'usager'
-        self_view = 'usager_list'
+        self_view = 'usager_detail'
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'usager_list'
 
@@ -237,7 +237,7 @@ class UsagerSchema(Schema):
 class VehiculeSchema(Schema):
     class Meta:
         type_ = 'vehicule'
-        self_view = 'vehicule_list'
+        self_view = 'vehicule_detail'
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'vehicule_list'
 
@@ -259,9 +259,9 @@ class UsagerList(ResourceList):
     data_layer = {'session': db.session, 'model': Usager}
 
 
-class LieuList(ResourceList):
-    schema = LieuSchema
-    data_layer = {'session': db.session, 'model': Lieu}
+class UsagerDetail(ResourceDetail):
+    schema = UsagerSchema
+    data_layer = {'session': db.session, 'model': Usager}
 
 
 class AccidentList(ResourceList):
@@ -269,6 +269,25 @@ class AccidentList(ResourceList):
     data_layer = {'session': db.session, 'model': Accident}
 
 
+class AccidentDetail(ResourceDetail):
+    schema = AccidentSchema
+    data_layer = {'session': db.session, 'model': Accident}
+
+
+class LieuList(ResourceList):
+    schema = LieuSchema
+    data_layer = {'session': db.session, 'model': Lieu}
+
+
+class LieuDetail(ResourceDetail):
+    schema = LieuSchema
+    data_layer = {'session': db.session, 'model': Lieu}
+
+
 class VehiculeList(ResourceList):
+    schema = VehiculeSchema
+    data_layer = { 'session': db.session, 'model': Vehicule}
+
+class VehiculeDetail(ResourceDetail):
     schema = VehiculeSchema
     data_layer = { 'session': db.session, 'model': Vehicule}
