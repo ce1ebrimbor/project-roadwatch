@@ -2,8 +2,6 @@
 
 
 from flask import Blueprint, jsonify
-from project.server.models import AccidentList
-from project.server import db
 
 api_blueprint = Blueprint("api", __name__)
 

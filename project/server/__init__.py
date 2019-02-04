@@ -3,7 +3,7 @@
 
 import os
 
-from flask import Flask, render_template
+from flask import Flask
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_debugtoolbar import DebugToolbarExtension
@@ -26,6 +26,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 marshmallow = Marshmallow()
 api = Api()
+
 
 def create_app(script_info=None):
     # instantiate the app
@@ -56,10 +57,10 @@ def create_app(script_info=None):
 
     app.register_blueprint(api_blueprint)
 
-
     api.route(AccidentList, 'accident_list', '/accident')
     api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>')
-    api.route(AccidentRelationship, 'accident_usagers', '/accident/<int:id>/relationships/usager')
+    api.route(AccidentRelationship, 'accident_usagers',
+                                    '/accident/<int:id>/relationships/usager')
     api.route(LieuList, 'lieu_list', '/lieu')
     api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>')
     api.route(UsagerList, 'usager_list', '/usager', '/accident/<int:id>/usager')
