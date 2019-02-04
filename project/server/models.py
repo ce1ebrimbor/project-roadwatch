@@ -31,6 +31,7 @@ class Accident(db.Model):
     lat = db.Column('lat', db.Float())
     long = db.Column('long', db.Float())
     date = db.Column('date', db.DateTime())
+    usager = db.relationship('Usager', backref='caracteristiques', lazy=True)
 
     def __init__(self, id, lum, agg, int, atm, col,
                  adr, comm, gps, dep, lat, long, date):
@@ -71,7 +72,6 @@ class Lieu(db.Model):
     surf = db.Column('surf', db.Integer())
     infra = db.Column('infra', db.Integer())
     situ = db.Column('situ', db.Integer())
-    accident = db.relationship("Accident", backref=db.backref('lieux'))
 
     def __init__(self, accident_id, catr, voie, circ, nbv, pr, pr1, vosp,
                  prof, plan, surf, infra, situ):
@@ -111,7 +111,6 @@ class Usager(db.Model):
     etatp = db.Column('etatp', db.Integer())
     an_nais = db.Column('an_nais', db.Integer())
     num_veh = db.Column('num_veh', db.Text())
-    accident = db.relationship("Accident", backref=db.backref('usagers'))
 
     def __init__(self, accident_id, place, catu, grav, sexe, trajet, secu, locp,
                  actp, etatp, an_nais, num_veh):
@@ -186,7 +185,13 @@ class AccidentSchema(Schema):
     lat = fields.Float(as_String=True)
     long = fields.Float(as_String=True)
     date = fields.Date()
-
+    usager = Relationship(self_view='accident_usagers',
+                             self_view_kwargs={'id': '<id>'},
+                             related_view='usager_list',
+                             related_view_kwargs={'id': '<id>'},
+                             many=True,
+                             schema='UsagerSchema',
+                             type_='usager')
 
 
 class LieuSchema(Schema):
@@ -232,6 +237,18 @@ class UsagerSchema(Schema):
     etatp = fields.Integer(as_String=True)
     an_nais = fields.Integer(as_String=True)
     num_veh = fields.String()
+    accident = Relationship(attribute='usagers',
+                         self_view='accident_usager',
+                         self_view_kwargs={'id': '<id>'},
+                         related_view='accident_detail',
+                         related_view_kwargs={'accident_id': '<id>'},
+                         schema='AccidentSchema',
+                         type_='accident')
+
+class AccidentRelationship(ResourceRelationship):
+    schema = AccidentSchema
+    data_layer = {'session': db.session,
+                  'model': Accident}
 
 
 class VehiculeSchema(Schema):
@@ -255,8 +272,28 @@ class VehiculeSchema(Schema):
 
 # resource managers
 class UsagerList(ResourceList):
+    def query(self, view_kwargs):
+        query_ = self.session.query(Usager)
+        if view_kwargs.get('id') is not None:
+            try:
+                self.session.query(Accident).filter_by(id=view_kwargs['id']).one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'id'}, "Person: {} not found".format(view_kwargs['id']))
+            else:
+                query_ = query_.join(Accident).filter(Usager.accident_id == view_kwargs['id'])
+        return query_
+
+    def before_create_object(self, data, view_kwargs):
+        if view_kwargs.get('id') is not None:
+            accident = self.session.query(Accident).filter_by(id=view_kwargs['id']).one()
+            data['accident_id'] = accident.id
+
     schema = UsagerSchema
-    data_layer = {'session': db.session, 'model': Usager}
+    data_layer = {'session': db.session,
+                  'model': Usager,
+                  'methods': {'query': query,
+                              'before_create_object': before_create_object}}
+
 
 
 class UsagerDetail(ResourceDetail):
@@ -270,8 +307,25 @@ class AccidentList(ResourceList):
 
 
 class AccidentDetail(ResourceDetail):
+
+    def before_get_object(self, view_kwargs):
+        if view_kwargs.get('accident_id') is not None:
+            try:
+                accident = self.session.query(Accident).filter_by(id=view_kwargs['accident_id']).one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'accident_id'},
+                                    "Computer: {} not found".format(view_kwargs['accident_id']))
+            else:
+                if accident.usager is not None:
+                    view_kwargs['id'] = accident.usager.id
+                else:
+                    view_kwargs['id'] = None
+
+
     schema = AccidentSchema
-    data_layer = {'session': db.session, 'model': Accident}
+    data_layer = {'session': db.session,
+                  'model': Accident,
+                  'methods': {'before_get_object': before_get_object}}
 
 
 class LieuList(ResourceList):

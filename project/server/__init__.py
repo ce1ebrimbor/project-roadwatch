@@ -15,7 +15,7 @@ from flask_rest_jsonapi import Api
 from project.server.models import AccidentList, LieuList, UsagerList
 from project.server.models import VehiculeList
 from project.server.models import LieuDetail, AccidentDetail, UsagerDetail
-from project.server.models import VehiculeDetail
+from project.server.models import VehiculeDetail, AccidentRelationship
 
 # instantiate the extensions
 login_manager = LoginManager()
@@ -59,13 +59,13 @@ def create_app(script_info=None):
 
     api.route(AccidentList, 'accident_list', '/accident')
     api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>')
+    api.route(AccidentRelationship, 'accident_usagers', '/accident/<int:id>/relationships/usager')
     api.route(LieuList, 'lieu_list', '/lieu')
     api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>')
-    api.route(UsagerList, 'usager_list', '/usager')
+    api.route(UsagerList, 'usager_list', '/usager', '/accident/<int:id>/usager')
     api.route(UsagerDetail, 'usager_detail', '/usager/<int:id>')
     api.route(VehiculeList, 'vehicule_list', '/vehicule')
     api.route(VehiculeDetail, 'vehicule_detail', '/vehicule/<int:id>')
-    # api.route(UsagerDetail, 'usager_detail', '/usager/<int:id>')
     # error handlers
 
     # shell context for flask cli
