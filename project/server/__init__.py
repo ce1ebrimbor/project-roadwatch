@@ -16,7 +16,7 @@ from project.server.models import AccidentList, LieuList, UsagerList
 from project.server.models import VehiculeList, UsagerRelationship
 from project.server.models import LieuDetail, AccidentDetail, UsagerDetail
 from project.server.models import VehiculeDetail, AccidentRelationship
-from project.server.models import LieuRelationship
+from project.server.models import LieuRelationship, VehiculeRelationship
 
 # instantiate the extensions
 login_manager = LoginManager()
@@ -62,11 +62,15 @@ def create_app(script_info=None):
     api.route(AccidentList, 'accident_list', '/accident')
     api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>',
                                                  '/usager/<int:uid>/accident',
-                                                 '/lieu/<int:lid>/accident')
+                                                 '/lieu/<int:lid>/accident',
+                                                 '/vehiclue/<int:vid>/accident')
     api.route(AccidentRelationship, 'accident_usagers',
                                     '/accident/<int:id>/relationships/usager')
     api.route(AccidentRelationship, 'accident_lieu',
                                     '/accident/<int:id>/relationships/lieu')
+    api.route(AccidentRelationship, 'accident_vehicule',
+                                    '/vehicule/<int:id>/relationships/lieu')
+    
     api.route(LieuList, 'lieu_list', '/lieu')
     api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>', '/accident/<int:aid>/lieu')
     api.route(LieuRelationship, 'lieu_accident', '/lieu/<int:id>/relationships/accident')
@@ -77,6 +81,7 @@ def create_app(script_info=None):
 
     api.route(VehiculeList, 'vehicule_list', '/vehicule')
     api.route(VehiculeDetail, 'vehicule_detail', '/vehicule/<int:id>')
+    api.route(VehiculeRelationship, 'vehicule_accident', '/vehicule/<int:vid>/relationships/accident')
     # error handlers
 
     # shell context for flask cli

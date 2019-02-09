@@ -32,6 +32,7 @@ class Accident(db.Model):
     date = db.Column('date', db.DateTime())
     usager = db.relationship('Usager', backref='caracteristiques', lazy=True)
     lieu = db.relationship('Lieu', uselist=False,backref='caracteristiques', lazy=True)
+    vehicule = db.relationship('Vehicule', backref='caracteristiques', lazy=True)
 
     def __init__(self, id, lum, agg, int, atm, col,
                  adr, comm, gps, dep, lat, long, date):
@@ -194,7 +195,6 @@ class AccidentSchema(Schema):
                           many=True,
                           schema='UsagerSchema',
                           type_='usager')
-
     lieu  = Relationship( attribute='lieu',
                           self_view='accident_lieu',
                           self_view_kwargs={'id': '<id>'},
@@ -202,6 +202,14 @@ class AccidentSchema(Schema):
                           related_view_kwargs={'aid': '<id>'},
                           schema='LieuSchema',
                           type_='lieu')
+    vehicule  = Relationship(attribute='vehicule',
+                          self_view='accident_vehicule',
+                          self_view_kwargs={'id': '<id>'},
+                          related_view='vehicule_list',
+                          related_view_kwargs={'vid': '<id>'},
+                          many=True,
+                          schema='VehiculeSchema',
+                          type_='vehicule')
 
 
 class LieuSchema(Schema):
@@ -291,6 +299,13 @@ class VehiculeSchema(Schema):
     choc = fields.Integer()
     manv = fields.Integer()
     num_veh = fields.String()
+    accident = Relationship(attribute='accident',
+                            self_view='vehicule_accident',
+                            self_view_kwargs={'id': '<id>'},
+                            related_view='accident_detail',
+                            related_view_kwargs={'vid': '<id>'},
+                            schema='AccidentSchema',
+                            type_='accident')
 
 
 # resource managers
@@ -379,12 +394,28 @@ class AccidentDetail(ResourceDetail):
                                .filter_by(id=view_kwargs['lid'])\
                                .one()
             except NoResultFound:
-                raise ObjectNotFound({'parameter': 'uid'},
+                raise ObjectNotFound({'parameter': 'lid'},
                                      "Computer: {} not found"
                                      .format(view_kwargs['lid']))
             else:
                 if lieu.accident is not None:
                     view_kwargs['id'] = lieu.accident.id
+                else:
+                    view_kwargs['id'] = None
+
+        if view_kwargs.get('vid') is not None:
+            try:
+                lieu = self.session\
+                               .query(Vehicule)\
+                               .filter_by(id=view_kwargs['vid'])\
+                               .one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'vid'},
+                                     "Computer: {} not found"
+                                     .format(view_kwargs['vid']))
+            else:
+                if lieu.accident is not None:
+                    view_kwargs['id'] = vehicule.accident.id
                 else:
                     view_kwargs['id'] = None
 
@@ -437,3 +468,8 @@ class VehiculeList(ResourceList):
 class VehiculeDetail(ResourceDetail):
     schema = VehiculeSchema
     data_layer = {'session': db.session, 'model': Vehicule}
+
+class VehiculeRelationship(ResourceRelationship):
+    schema = VehiculeSchema
+    data_layer = {'session': db.session,
+                  'model': Vehicule}
