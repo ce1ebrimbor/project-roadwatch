@@ -13,7 +13,7 @@ from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask_rest_jsonapi import Api
 from project.server.models import AccidentList, LieuList, UsagerList
-from project.server.models import VehiculeList
+from project.server.models import VehiculeList, UsagerRelationship
 from project.server.models import LieuDetail, AccidentDetail, UsagerDetail
 from project.server.models import VehiculeDetail, AccidentRelationship
 
@@ -58,13 +58,16 @@ def create_app(script_info=None):
     app.register_blueprint(api_blueprint)
 
     api.route(AccidentList, 'accident_list', '/accident')
-    api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>')
+    api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>', '/usager/<int:uid>/accident')
     api.route(AccidentRelationship, 'accident_usagers',
                                     '/accident/<int:id>/relationships/usager')
     api.route(LieuList, 'lieu_list', '/lieu')
     api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>')
+
     api.route(UsagerList, 'usager_list', '/usager', '/accident/<int:id>/usager')
     api.route(UsagerDetail, 'usager_detail', '/usager/<int:id>')
+    api.route(UsagerRelationship, 'usager_accident', '/usager/<int:id>/relationships/accident')
+
     api.route(VehiculeList, 'vehicule_list', '/vehicule')
     api.route(VehiculeDetail, 'vehicule_detail', '/vehicule/<int:id>')
     # error handlers
