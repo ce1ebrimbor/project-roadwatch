@@ -225,6 +225,13 @@ class LieuSchema(Schema):
     surf = fields.Integer(as_String=True)
     infra = fields.Integer(as_String=True)
     situ = fields.Integer(as_String=True)
+    accident = Relationship(attribute='accident',
+                            self_view='lieu_accident',
+                            self_view_kwargs={'id': '<id>'},
+                            related_view='accident_detail',
+                            related_view_kwargs={'lid': '<id>'},
+                            schema='AccidentSchema',
+                            type_='accident')
 
 
 class UsagerSchema(Schema):
@@ -365,6 +372,22 @@ class AccidentDetail(ResourceDetail):
                 else:
                     view_kwargs['id'] = None
 
+        if view_kwargs.get('lid') is not None:
+            try:
+                lieu = self.session\
+                               .query(Lieu)\
+                               .filter_by(id=view_kwargs['lid'])\
+                               .one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'uid'},
+                                     "Computer: {} not found"
+                                     .format(view_kwargs['lid']))
+            else:
+                if lieu.accident is not None:
+                    view_kwargs['id'] = lieu.accident.id
+                else:
+                    view_kwargs['id'] = None
+
 
     schema = AccidentSchema
     data_layer = {'session': db.session,
@@ -376,6 +399,10 @@ class LieuList(ResourceList):
     schema = LieuSchema
     data_layer = {'session': db.session, 'model': Lieu}
 
+class LieuRelationship(ResourceRelationship):
+    schema = LieuSchema
+    data_layer = {'session': db.session,
+                  'model': Lieu}
 
 class LieuDetail(ResourceDetail):
 

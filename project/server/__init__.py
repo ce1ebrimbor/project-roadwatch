@@ -16,6 +16,7 @@ from project.server.models import AccidentList, LieuList, UsagerList
 from project.server.models import VehiculeList, UsagerRelationship
 from project.server.models import LieuDetail, AccidentDetail, UsagerDetail
 from project.server.models import VehiculeDetail, AccidentRelationship
+from project.server.models import LieuRelationship
 
 # instantiate the extensions
 login_manager = LoginManager()
@@ -50,6 +51,7 @@ def create_app(script_info=None):
     db.init_app(app)
     migrate.init_app(app, db)
     marshmallow.init_app(app)
+
     api = Api(app)
 
     # register blueprints
@@ -58,13 +60,16 @@ def create_app(script_info=None):
     app.register_blueprint(api_blueprint)
 
     api.route(AccidentList, 'accident_list', '/accident')
-    api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>', '/usager/<int:uid>/accident')
+    api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>',
+                                                 '/usager/<int:uid>/accident',
+                                                 '/lieu/<int:lid>/accident')
     api.route(AccidentRelationship, 'accident_usagers',
                                     '/accident/<int:id>/relationships/usager')
     api.route(AccidentRelationship, 'accident_lieu',
                                     '/accident/<int:id>/relationships/lieu')
     api.route(LieuList, 'lieu_list', '/lieu')
     api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>', '/accident/<int:aid>/lieu')
+    api.route(LieuRelationship, 'lieu_accident', '/lieu/<int:id>/relationships/accident')
 
     api.route(UsagerList, 'usager_list', '/usager', '/accident/<int:id>/usager')
     api.route(UsagerDetail, 'usager_detail', '/usager/<int:id>')
