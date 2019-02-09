@@ -61,8 +61,10 @@ def create_app(script_info=None):
     api.route(AccidentDetail, 'accident_detail', '/accident/<int:id>', '/usager/<int:uid>/accident')
     api.route(AccidentRelationship, 'accident_usagers',
                                     '/accident/<int:id>/relationships/usager')
+    api.route(AccidentRelationship, 'accident_lieu',
+                                    '/accident/<int:id>/relationships/lieu')
     api.route(LieuList, 'lieu_list', '/lieu')
-    api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>')
+    api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>', '/accident/<int:aid>/lieu')
 
     api.route(UsagerList, 'usager_list', '/usager', '/accident/<int:id>/usager')
     api.route(UsagerDetail, 'usager_detail', '/usager/<int:id>')

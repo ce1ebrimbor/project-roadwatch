@@ -31,6 +31,7 @@ class Accident(db.Model):
     long = db.Column('long', db.Float())
     date = db.Column('date', db.DateTime())
     usager = db.relationship('Usager', backref='caracteristiques', lazy=True)
+    lieu = db.relationship('Lieu', uselist=False,backref='caracteristiques', lazy=True)
 
     def __init__(self, id, lum, agg, int, atm, col,
                  adr, comm, gps, dep, lat, long, date):
@@ -71,6 +72,7 @@ class Lieu(db.Model):
     surf = db.Column('surf', db.Integer())
     infra = db.Column('infra', db.Integer())
     situ = db.Column('situ', db.Integer())
+    accident = db.relationship('Accident', foreign_keys=accident_id)
 
     def __init__(self, accident_id, catr, voie, circ, nbv, pr, pr1, vosp,
                  prof, plan, surf, infra, situ):
@@ -193,6 +195,14 @@ class AccidentSchema(Schema):
                           schema='UsagerSchema',
                           type_='usager')
 
+    lieu  = Relationship( attribute='lieu',
+                          self_view='accident_lieu',
+                          self_view_kwargs={'id': '<id>'},
+                          related_view='lieu_detail',
+                          related_view_kwargs={'aid': '<id>'},
+                          schema='LieuSchema',
+                          type_='lieu')
+
 
 class LieuSchema(Schema):
     class Meta:
@@ -309,23 +319,9 @@ class UsagerList(ResourceList):
 
 
 class UsagerDetail(ResourceDetail):
-    def before_get_object(self, view_kwargs):
-        if view_kwargs.get('uid') is not None:
-            try:
-                usager = self.session.query(Usager).filter_by(id=view_kwargs['uid']).one()
-            except NoResultFound:
-                raise ObjectNotFound({'parameter': 'computer_id'},
-                                     "Computer: {} not found".format(view_kwargs['uid']))
-            else:
-                if usager.accident is not None:
-                    view_kwargs['id'] = usager.accident.id
-                else:
-                    view_kwargs['id'] = None
-
     schema = UsagerSchema
     data_layer = {'session': db.session,
-                  'model': Usager,
-                  'methods': {'before_get_object': before_get_object}}
+                  'model': Usager}
 
 
 
@@ -337,16 +333,16 @@ class AccidentList(ResourceList):
 class AccidentDetail(ResourceDetail):
 
     def before_get_object(self, view_kwargs):
-        if view_kwargs.get('accident_id') is not None:
+        if view_kwargs.get('aid') is not None:
             try:
                 accident = self.session\
                                .query(Accident)\
-                               .filter_by(id=view_kwargs['accident_id'])\
+                               .filter_by(id=view_kwargs['aid'])\
                                .one()
             except NoResultFound:
-                raise ObjectNotFound({'parameter': 'accident_id'},
+                raise ObjectNotFound({'parameter': 'aid'},
                                      "Computer: {} not found"
-                                     .format(view_kwargs['accident_id']))
+                                     .format(view_kwargs['aid']))
             else:
                 if accident.usager is not None:
                     view_kwargs['id'] = accident.usager.id
@@ -382,8 +378,28 @@ class LieuList(ResourceList):
 
 
 class LieuDetail(ResourceDetail):
+
+    def before_get_object(self, view_kwargs):
+        if view_kwargs.get('aid') is not None:
+            try:
+                accident = self.session\
+                               .query(Accident)\
+                               .filter_by(id=view_kwargs['aid'])\
+                               .one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'aid'},
+                                     "Accident: {} not found"
+                                     .format(view_kwargs['aid']))
+            else:
+                if accident.lieu is not None:
+                    view_kwargs['id'] = accident.lieu.id
+                else:
+                    view_kwargs['id'] = None
+
     schema = LieuSchema
-    data_layer = {'session': db.session, 'model': Lieu}
+    data_layer = {'session': db.session,
+                  'model': Lieu,
+                  'methods': {'before_get_object': before_get_object}}
 
 
 class VehiculeList(ResourceList):
