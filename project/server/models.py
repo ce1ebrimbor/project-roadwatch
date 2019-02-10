@@ -270,17 +270,6 @@ class UsagerSchema(Schema):
                             schema='AccidentSchema',
                             type_='accident')
 
-class UsagerRelationship(ResourceRelationship):
-    schema = UsagerSchema
-    data_layer = {'session': db.session,
-                  'model': Usager }
-
-
-class AccidentRelationship(ResourceRelationship):
-    schema = AccidentSchema
-    data_layer = {'session': db.session,
-                  'model': Accident}
-
 
 class VehiculeSchema(Schema):
     class Meta:
@@ -308,7 +297,7 @@ class VehiculeSchema(Schema):
                             type_='accident')
 
 
-# resource managers
+# Resource managers
 class UsagerList(ResourceList):
     def query(self, view_kwargs):
         query_ = self.session.query(Usager)
@@ -353,7 +342,6 @@ class AccidentList(ResourceList):
 
 
 class AccidentDetail(ResourceDetail):
-
     def before_get_object(self, view_kwargs):
         if view_kwargs.get('aid') is not None:
             try:
@@ -430,10 +418,6 @@ class LieuList(ResourceList):
     schema = LieuSchema
     data_layer = {'session': db.session, 'model': Lieu}
 
-class LieuRelationship(ResourceRelationship):
-    schema = LieuSchema
-    data_layer = {'session': db.session,
-                  'model': Lieu}
 
 class LieuDetail(ResourceDetail):
 
@@ -494,6 +478,26 @@ class VehiculeList(ResourceList):
 class VehiculeDetail(ResourceDetail):
     schema = VehiculeSchema
     data_layer = {'session': db.session, 'model': Vehicule}
+
+
+# Resource relationships
+class AccidentRelationship(ResourceRelationship):
+    schema = AccidentSchema
+    data_layer = {'session': db.session,
+                  'model': Accident}
+
+
+class LieuRelationship(ResourceRelationship):
+    schema = LieuSchema
+    data_layer = {'session': db.session,
+                  'model': Lieu}
+
+
+class UsagerRelationship(ResourceRelationship):
+    schema = UsagerSchema
+    data_layer = {'session': db.session,
+                  'model': Usager }
+
 
 class VehiculeRelationship(ResourceRelationship):
     schema = VehiculeSchema
