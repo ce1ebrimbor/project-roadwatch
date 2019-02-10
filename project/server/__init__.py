@@ -73,16 +73,28 @@ def create_app(script_info=None):
                                     '/accident/<int:id>/relationships/vehicule')
 
     api.route(LieuList, 'lieu_list', '/lieu')
-    api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>', '/accident/<int:aid>/lieu')
-    api.route(LieuRelationship, 'lieu_accident', '/lieu/<int:id>/relationships/accident')
 
-    api.route(UsagerList, 'usager_list', '/usager', '/accident/<int:id>/usager')
+    api.route(LieuDetail, 'lieu_detail', '/lieu/<int:id>',
+                                         '/accident/<int:aid>/lieu')
+
+    api.route(LieuRelationship, 'lieu_accident',
+                                '/lieu/<int:id>/relationships/accident')
+
+    api.route(UsagerList, 'usager_list', '/usager',
+                                         '/accident/<int:id>/usager')
+
     api.route(UsagerDetail, 'usager_detail', '/usager/<int:id>')
-    api.route(UsagerRelationship, 'usager_accident', '/usager/<int:id>/relationships/accident')
 
-    api.route(VehiculeList, 'vehicule_list', '/vehicule', '/accident/<int:id>/vehicule')
+    api.route(UsagerRelationship, 'usager_accident',
+                                  '/usager/<int:id>/relationships/accident')
+
+    api.route(VehiculeList, 'vehicule_list', '/vehicule',
+                                             '/accident/<int:id>/vehicule')
+
     api.route(VehiculeDetail, 'vehicule_detail', '/vehicule/<int:id>')
-    api.route(VehiculeRelationship, 'vehicule_accident', '/vehicule/<int:id>/relationships/accident')
+
+    api.route(VehiculeRelationship, 'vehicule_accident',
+                                    '/vehicule/<int:id>/relationships/accident')
     # error handlers
 
     # shell context for flask cli

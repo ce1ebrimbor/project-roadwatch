@@ -30,9 +30,16 @@ class Accident(db.Model):
     lat = db.Column('lat', db.Float())
     long = db.Column('long', db.Float())
     date = db.Column('date', db.DateTime())
-    usager = db.relationship('Usager', backref='caracteristiques', lazy=True)
-    lieu = db.relationship('Lieu', uselist=False,backref='caracteristiques', lazy=True)
-    vehicule = db.relationship('Vehicule', backref='caracteristiques', lazy=True)
+    usager = db.relationship('Usager',
+                             backref='caracteristiques',
+                             lazy=True)
+    lieu = db.relationship('Lieu',
+                           uselist=False,
+                           backref='caracteristiques',
+                           lazy=True)
+    vehicule = db.relationship('Vehicule',
+                               backref='caracteristiques',
+                               lazy=True)
 
     def __init__(self, id, lum, agg, int, atm, col,
                  adr, comm, gps, dep, lat, long, date):
@@ -195,21 +202,21 @@ class AccidentSchema(Schema):
                           many=True,
                           schema='UsagerSchema',
                           type_='usager')
-    lieu  = Relationship( attribute='lieu',
-                          self_view='accident_lieu',
-                          self_view_kwargs={'id': '<id>'},
-                          related_view='lieu_detail',
-                          related_view_kwargs={'aid': '<id>'},
-                          schema='LieuSchema',
-                          type_='lieu')
-    vehicule  = Relationship(attribute='vehicule',
-                          self_view='accident_vehicule',
-                          self_view_kwargs={'id': '<id>'},
-                          related_view='vehicule_list',
-                          related_view_kwargs={'id': '<id>'},
-                          many=True,
-                          schema='VehiculeSchema',
-                          type_='vehicule')
+    lieu = Relationship(attribute='lieu',
+                        self_view='accident_lieu',
+                        self_view_kwargs={'id': '<id>'},
+                        related_view='lieu_detail',
+                        related_view_kwargs={'aid': '<id>'},
+                        schema='LieuSchema',
+                        type_='lieu')
+    vehicule = Relationship(attribute='vehicule',
+                            self_view='accident_vehicule',
+                            self_view_kwargs={'id': '<id>'},
+                            related_view='vehicule_list',
+                            related_view_kwargs={'id': '<id>'},
+                            many=True,
+                            schema='VehiculeSchema',
+                            type_='vehicule')
 
 
 class LieuSchema(Schema):
@@ -335,7 +342,6 @@ class UsagerDetail(ResourceDetail):
                   'model': Usager}
 
 
-
 class AccidentList(ResourceList):
     schema = AccidentSchema
     data_layer = {'session': db.session, 'model': Accident}
@@ -407,7 +413,6 @@ class AccidentDetail(ResourceDetail):
                 else:
                     view_kwargs['id'] = None
 
-
     schema = AccidentSchema
     data_layer = {'session': db.session,
                   'model': Accident,
@@ -445,6 +450,7 @@ class LieuDetail(ResourceDetail):
 
 
 class VehiculeList(ResourceList):
+
     def query(self, view_kwargs):
         query_ = self.session.query(Vehicule)
         if view_kwargs.get('id') is not None:
@@ -458,7 +464,9 @@ class VehiculeList(ResourceList):
                                                             view_kwargs['id']))
             else:
                 query_ = query_.join(Accident) \
-                               .filter(Vehicule.accident_id == view_kwargs['id'])
+                               .filter(
+                                    Vehicule.accident_id == view_kwargs['id']
+                                    )
         return query_
 
     def before_create_object(self, data, view_kwargs):
@@ -496,7 +504,7 @@ class LieuRelationship(ResourceRelationship):
 class UsagerRelationship(ResourceRelationship):
     schema = UsagerSchema
     data_layer = {'session': db.session,
-                  'model': Usager }
+                  'model': Usager}
 
 
 class VehiculeRelationship(ResourceRelationship):
