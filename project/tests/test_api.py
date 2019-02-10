@@ -1,11 +1,11 @@
-# project/server/tests/test_user.py
+# project/server/tests/test_api.py
 
 
 import unittest
 from base import BaseTestCase
 
 
-class TestApiBlueprint(BaseTestCase):
+class TestApi(BaseTestCase):
     def test_about_page(self):
         with self.client:
             response = self.client.get("/about")
