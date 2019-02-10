@@ -206,7 +206,7 @@ class AccidentSchema(Schema):
                           self_view='accident_vehicule',
                           self_view_kwargs={'id': '<id>'},
                           related_view='vehicule_list',
-                          related_view_kwargs={'vid': '<id>'},
+                          related_view_kwargs={'id': '<id>'},
                           many=True,
                           schema='VehiculeSchema',
                           type_='vehicule')
@@ -405,7 +405,7 @@ class AccidentDetail(ResourceDetail):
 
         if view_kwargs.get('vid') is not None:
             try:
-                lieu = self.session\
+                vehicule = self.session\
                                .query(Vehicule)\
                                .filter_by(id=view_kwargs['vid'])\
                                .one()
@@ -414,7 +414,7 @@ class AccidentDetail(ResourceDetail):
                                      "Computer: {} not found"
                                      .format(view_kwargs['vid']))
             else:
-                if lieu.accident is not None:
+                if vehicule.accident is not None:
                     view_kwargs['id'] = vehicule.accident.id
                 else:
                     view_kwargs['id'] = None
@@ -461,8 +461,34 @@ class LieuDetail(ResourceDetail):
 
 
 class VehiculeList(ResourceList):
+    def query(self, view_kwargs):
+        query_ = self.session.query(Vehicule)
+        if view_kwargs.get('id') is not None:
+            try:
+                self.session.query(Accident)\
+                            .filter_by(id=view_kwargs['id'])\
+                            .one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'id'},
+                                     "Person: {} not found".format(
+                                                            view_kwargs['id']))
+            else:
+                query_ = query_.join(Accident) \
+                               .filter(Vehicule.accident_id == view_kwargs['id'])
+        return query_
+
+    def before_create_object(self, data, view_kwargs):
+        if view_kwargs.get('id') is not None:
+            accident = self.session.query(Accident)\
+                                   .filter_by(id=view_kwargs['id'])\
+                                   .one()
+            data['accident_id'] = accident.id
+
     schema = VehiculeSchema
-    data_layer = {'session': db.session, 'model': Vehicule}
+    data_layer = {'session': db.session,
+                  'model': Vehicule,
+                  'methods': {'query': query,
+                              'before_create_object': before_create_object}}
 
 
 class VehiculeDetail(ResourceDetail):
