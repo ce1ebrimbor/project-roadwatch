@@ -13,7 +13,7 @@ jobs:
   inlcude:
     - stage: "PEP8 Check"
       name: "Run Flake"
-      script: if [ $(python flake8 project | wc -l) -gt 1]; then exit 1 ; else exit 0 ; fi
+      script: if [ $( docker-compose run web flake8 project | wc -l) -gt 1]; then exit 1 ; else exit 0 ; fi
     - stage: "Testing"
       name: "Unit Tests"
       script: docker-compose run web python manage.py cov
