@@ -151,7 +151,7 @@ class UsagerList(ResourceList):
                             .one()
             except NoResultFound:
                 raise ObjectNotFound({'parameter': 'id'},
-                                     "Person: {} not found".format(
+                                     "Accident: {} not found".format(
                                                             view_kwargs['id']))
             else:
                 query_ = query_.join(Accident) \
@@ -197,7 +197,7 @@ class AccidentDetail(ResourceDetail):
                                .one()
             except NoResultFound:
                 raise ObjectNotFound({'parameter': 'aid'},
-                                     "Computer: {} not found"
+                                     "Accident: {} not found"
                                      .format(view_kwargs['aid']))
             else:
                 if accident.usager is not None:
@@ -213,7 +213,7 @@ class AccidentDetail(ResourceDetail):
                                .one()
             except NoResultFound:
                 raise ObjectNotFound({'parameter': 'uid'},
-                                     "Computer: {} not found"
+                                     "Usager: {} not found"
                                      .format(view_kwargs['uid']))
             else:
                 if usager.accident is not None:
@@ -229,7 +229,7 @@ class AccidentDetail(ResourceDetail):
                                .one()
             except NoResultFound:
                 raise ObjectNotFound({'parameter': 'lid'},
-                                     "Computer: {} not found"
+                                     "Lieu : {} not found"
                                      .format(view_kwargs['lid']))
             else:
                 if lieu.accident is not None:
@@ -245,7 +245,7 @@ class AccidentDetail(ResourceDetail):
                                .one()
             except NoResultFound:
                 raise ObjectNotFound({'parameter': 'vid'},
-                                     "Computer: {} not found"
+                                     "Vehicule: {} not found"
                                      .format(view_kwargs['vid']))
             else:
                 if vehicule.accident is not None:
@@ -286,11 +286,11 @@ class LieuDetail(ResourceDetail):
                 else:
                     view_kwargs['id'] = None
 
-        schema = LieuSchema
-        methods = ['GET']
-        data_layer = {'session': db.session,
-                      'model': Lieu,
-                      'methods': {'before_get_object': before_get_object}}
+    schema = LieuSchema
+    methods = ['GET']
+    data_layer = {'session': db.session,
+                  'model': Lieu,
+                  'methods': {'before_get_object': before_get_object}}
 
 
 class VehiculeList(ResourceList):
@@ -304,7 +304,7 @@ class VehiculeList(ResourceList):
                             .one()
             except NoResultFound:
                 raise ObjectNotFound({'parameter': 'id'},
-                                     "Person: {} not found".format(
+                                     "Accident: {} not found".format(
                                                             view_kwargs['id']))
             else:
                 query_ = query_.join(Accident) \
