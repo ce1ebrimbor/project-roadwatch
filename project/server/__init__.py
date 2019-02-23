@@ -12,11 +12,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask_rest_jsonapi import Api
-from project.server.models import AccidentList, LieuList, UsagerList
-from project.server.models import VehiculeList, UsagerRelationship
-from project.server.models import LieuDetail, AccidentDetail, UsagerDetail
-from project.server.models import VehiculeDetail, AccidentRelationship
-from project.server.models import LieuRelationship, VehiculeRelationship
+from project.server.resources import AccidentList, LieuList, UsagerList
+from project.server.resources import VehiculeList, UsagerRelationship
+from project.server.resources import LieuDetail, AccidentDetail, UsagerDetail
+from project.server.resources import VehiculeDetail, AccidentRelationship
+from project.server.resources import LieuRelationship, VehiculeRelationship
 
 # instantiate the extensions
 login_manager = LoginManager()
