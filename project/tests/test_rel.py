@@ -9,8 +9,8 @@ class TestRelationships(BaseTestCase):
     def __test_relationship(self, type, id, related_type):
         with self.client:
             response = self.client.get("/{0}/{1}/relationships/{2}".format(type, id, related_type))
-            self.assertIn(bytes("\"type\": \"{0}\"".format(related_type), 'ascii'), response.data)
-            self.assertIn(bytes("\"self\": \"/{0}/{1}/relationships/{2}\"".format(type, id, related_type), 'ascii'), response.data)
+            self.assertIn(bytes("\"type\": \"{0}\"".format(related_type), 'utf-8'), response.data)
+            self.assertIn(bytes("\"self\": \"/{0}/{1}/relationships/{2}\"".format(type, id, related_type), 'utf-8'), response.data)
             self.assertEqual(response.status_code, 200)
 
 

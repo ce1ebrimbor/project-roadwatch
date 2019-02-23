@@ -9,8 +9,8 @@ class TestGetById(BaseTestCase):
     def __test_id(self, type, id):
         with self.client:
             response = self.client.get("/{0}/{1}".format(type, id))
-            self.assertIn(bytes("\"type\": \"{0}\"".format(type), 'ascii'), response.data)
-            self.assertIn(bytes("\"id\": {0}".format(id), 'ascii'), response.data)
+            self.assertIn(bytes("\"type\": \"{0}\"".format(type), 'utf-8'), response.data)
+            self.assertIn(bytes("\"id\": {0}".format(id), 'utf-8'), response.data)
             self.assertEqual(response.status_code, 200)
 
 
