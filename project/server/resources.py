@@ -166,6 +166,7 @@ class UsagerList(ResourceList):
             data['accident_id'] = accident.id
 
     schema = UsagerSchema
+    methods = ['GET']
     data_layer = {'session': db.session,
                   'model': Usager,
                   'methods': {'query': query,
@@ -174,16 +175,19 @@ class UsagerList(ResourceList):
 
 class UsagerDetail(ResourceDetail):
     schema = UsagerSchema
+    methods = ['GET']
     data_layer = {'session': db.session,
                   'model': Usager}
 
 
 class AccidentList(ResourceList):
     schema = AccidentSchema
+    methods = ['GET']
     data_layer = {'session': db.session, 'model': Accident}
 
 
 class AccidentDetail(ResourceDetail):
+
     def before_get_object(self, view_kwargs):
         if view_kwargs.get('aid') is not None:
             try:
@@ -250,13 +254,16 @@ class AccidentDetail(ResourceDetail):
                     view_kwargs['id'] = None
 
     schema = AccidentSchema
+    methods = ['GET']
     data_layer = {'session': db.session,
                   'model': Accident,
                   'methods': {'before_get_object': before_get_object}}
 
 
+
 class LieuList(ResourceList):
     schema = LieuSchema
+    methods = ['GET']
     data_layer = {'session': db.session, 'model': Lieu}
 
 
@@ -279,10 +286,11 @@ class LieuDetail(ResourceDetail):
                 else:
                     view_kwargs['id'] = None
 
-    schema = LieuSchema
-    data_layer = {'session': db.session,
-                  'model': Lieu,
-                  'methods': {'before_get_object': before_get_object}}
+        schema = LieuSchema
+        methods = ['GET']
+        data_layer = {'session': db.session,
+                      'model': Lieu,
+                      'methods': {'before_get_object': before_get_object}}
 
 
 class VehiculeList(ResourceList):
@@ -313,37 +321,43 @@ class VehiculeList(ResourceList):
             data['accident_id'] = accident.id
 
     schema = VehiculeSchema
+    methods = ['GET']
     data_layer = {'session': db.session,
-                  'model': Vehicule,
-                  'methods': {'query': query,
-                              'before_create_object': before_create_object}}
+                'model': Vehicule,
+                'methods': {'query': query,
+                            'before_create_object': before_create_object}}
 
 
 class VehiculeDetail(ResourceDetail):
     schema = VehiculeSchema
+    methods = ['GET']
     data_layer = {'session': db.session, 'model': Vehicule}
 
 
 # Resource relationships
 class AccidentRelationship(ResourceRelationship):
     schema = AccidentSchema
+    methods = ['GET']
     data_layer = {'session': db.session,
                   'model': Accident}
 
 
 class LieuRelationship(ResourceRelationship):
     schema = LieuSchema
+    methods = ['GET']
     data_layer = {'session': db.session,
                   'model': Lieu}
 
 
 class UsagerRelationship(ResourceRelationship):
     schema = UsagerSchema
+    methods = ['GET']
     data_layer = {'session': db.session,
                   'model': Usager}
 
 
 class VehiculeRelationship(ResourceRelationship):
     schema = VehiculeSchema
+    methods = ['GET']
     data_layer = {'session': db.session,
                   'model': Vehicule}

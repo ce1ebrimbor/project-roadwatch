@@ -20,6 +20,7 @@ COV = coverage.coverage(
     include="project/*",
     omit=[
         "project/tests/*",
+        "project/server/resources.py",
         "project/server/config.py",
         "project/server/*/__init__.py",
     ],
