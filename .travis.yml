@@ -9,11 +9,15 @@ services:
 
 before_script: pip install docker-compose
 
+stages:
+  - pep8
+  - test
+
 jobs:
   inlcude:
-    - stage: "PEP8 Check"
+    - stage: pep8
       name: "Run Flake"
       script: if [ $( docker-compose run web flake8 project | wc -l) -gt 1]; then exit 1 ; else exit 0 ; fi
-    - stage: "Testing"
+    - stage: test
       name: "Unit Tests"
       script: docker-compose run web python manage.py cov
