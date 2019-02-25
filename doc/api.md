@@ -27,9 +27,23 @@ Accident resource contains some key data related to the event.
 
 ### Vehicule
 
+Vehicule resource contains details on involved vehicles.
+
+| Attribute | Type |Description |
+|-----------|------|-------------|
+|id         | integer | A unique id.     |
+|accident_id | integer | A reference to the accident. |
+|senc        | integer | Moving direction. |
+|catv       | integer | Vehicle category.  |
+|obs        | integer | Hit a fixed obstacle.     |
+|obsm       | integer | Hit a moving obstacle. |
+|choc       | integer | Impact point. |
+|manv       | integer | Maneuver before the accident. |
+|occutc     | integer | Number of people in public transport. |
 
 
 ### Usager
+
 
 Usager describes the individuals involved in the accident.
 
@@ -45,4 +59,24 @@ Usager describes the individuals involved in the accident.
 |an_nais     | integer | birth year |
 |trajet      | integer | itinerary |
 
+
 ### Lieu
+
+Lieu describes the road type and location of the accident.
+
+| Attribute | Type |Description |
+|-----------|------|-------------|
+|id         | integer | A unique id.     |
+|accident_id | integer | A reference to the accident. |
+|catr        | integer | Road type. |
+|voie        | integer | Road number. |
+|circ        | integer | Traffic type. |
+|nbv         | integer | Number of lanes |
+|vosp        | integer | Signals the existance of a reserved lane. |
+|prof        | integer | Road gradient. |
+|pr          | integer | Attached milestone. |
+|pr1         | integer | Distance to the milestone (in meters). |
+|plan        | integer | Trajectory. |
+|surf        | integer | The ground state. |
+|infra       | integer | The presence of an infrastructure |
+|situ        | integer | Accident location. |
