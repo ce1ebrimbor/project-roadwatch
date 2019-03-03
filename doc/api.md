@@ -22,7 +22,7 @@ The current version of the api lives at `http://api/v1/path`.
 
 > **Note:** In order to interact with our api we recommend you to use one of [these](https://jsonapi.org/implementations/#client-libraries) client libraries.
 
-## API calls
+## Basic API calls
 
 * #### `GET /accident`
 
@@ -94,7 +94,7 @@ This endpoint returns the list of accidents.
 
 
 
-* #### `GET /accident/<id:int>`
+* #### `GET /accident/{id:int}`
 
 This endpoind returns one accident by id.
 
@@ -221,7 +221,7 @@ This endpoint returns the list of accident victims.
 
 ```
 
-* ####  `GET /usager/<uid:int>`
+* ####  `GET /usager/{id:int}`
 
 This endpoint returns the victim by id.
 
@@ -319,7 +319,7 @@ This endpoint returns the list of vehicles involved in accidents.
 
 ```
 
-* #### `GET /vehicule/<vid:int>`
+* #### `GET /vehicule/{id:int}`
 
 This endpoint returns a vehicle by id.
 
@@ -421,7 +421,8 @@ This endpoint returns a list of accident location description.
 
 
 
-* ####  `GET /lieu/<lid:int>`
+
+* ####  `GET /lieu/{id:int}`
 
 This endpoint returns a location by id.
 
@@ -467,6 +468,35 @@ This endpoint returns a location by id.
     }
 }
 ```
+
+## The full list of endpoints
+
+
+> Note: The api supports only `GET` requests.
+
+|Endpoint| Description |Parameter | Parameter type | Returned Resource  Type |
+|--------|-------------|----------|----------------|-------------------------|
+| /accident | Returns a list of accidents. | None | None | Accident         |
+| /usager   | Returns a list of victims.   | None | None | Usager           |
+| /lieu     | Returns a list of accident locations. | None | None | Lieu    |
+| /vehicule | Returns a list of vehicles involved in accidents | None | None | Vehicule |
+| /accident/{id:int} |   ||||
+| /usager/{uid:int}/accident |   ||||
+| /lieu/{lid:int}/accident          |   ||||
+| /vehicule/{}/accident          |   ||||
+| /lieu/{id:int}          |   ||||
+| /accident/{id:int}/lieu          |   ||||
+| /accident/{id:int}/usager        |   ||||
+| /usager/{id:int}          |   ||||
+| /accident/{id:int}/vehicule | | | | | |
+| /vehicule/{id:int} | | | | | |
+| /accident/{int:id}/relationships/usager | | | | | |
+| /accident/{int:id}/relationships/lieu | | | | | |
+| /accident/{int:id}/relationships/vehicule | | | | | |
+| /lieu/{int:id}/relationships/accident | | | | | |
+| /usager/{int:id}/relationships/accident | | | | | |
+| /vehicule/{int:id}/relationships/accident | | | | | |
+
 
 
 ## Resources
