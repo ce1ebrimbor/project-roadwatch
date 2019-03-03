@@ -7,8 +7,8 @@ sorting and filtering of the data.
 The api was implemented according to the [JSON:API v1.0](https://jsonapi.org/format/) specification.
 
 
-## Getting Started
 
+## Getting Started
 
 The current version of the api lives at `http://api/v1/path`.
 
@@ -508,9 +508,7 @@ Vehicule resource contains details on involved vehicles.
 
 
 
-
 ### Usager
-
 
 Usager describes the individuals involved in the accident.
 
