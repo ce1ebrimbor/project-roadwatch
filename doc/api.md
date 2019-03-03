@@ -7,8 +7,8 @@ sorting and filtering of the data.
 The api was implemented according to the [JSON:API v1.0](https://jsonapi.org/format/) specification.
 
 
-
 ## Getting Started
+
 
 The current version of the api lives at `http://api/v1/path`.
 
@@ -222,7 +222,7 @@ This endpoint returns the list of accident victims.
 
 ```
 
-#### * `GET /usager/<uid:int>`
+* ####  `GET /usager/<uid:int>`
 
 This endpoint returns the victim by id.
 
@@ -268,7 +268,7 @@ This endpoint returns the victim by id.
 }
 ```
 
-#### * `GET /vehicule`
+* #### `GET /vehicule`
 
 This endpoint returns the list of vehicles involved in accidents.
 
@@ -320,7 +320,7 @@ This endpoint returns the list of vehicles involved in accidents.
 
 ```
 
-#### * `GET /vehicule/<vid:int>`
+* #### `GET /vehicule/<vid:int>`
 
 This endpoint returns a vehicle by id.
 
@@ -364,7 +364,7 @@ This endpoint returns a vehicle by id.
 
 ```
 
-#### * `GET /lieu`
+* ####  `GET /lieu`
 
 This endpoint returns a list of accident location description.
 
@@ -422,7 +422,7 @@ This endpoint returns a list of accident location description.
 
 
 
-#### * `GET /lieu/<lid:int>`
+* ####  `GET /lieu/<lid:int>`
 
 This endpoint returns a location by id.
 
@@ -508,7 +508,9 @@ Vehicule resource contains details on involved vehicles.
 
 
 
+
 ### Usager
+
 
 Usager describes the individuals involved in the accident.
 
