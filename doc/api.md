@@ -476,17 +476,17 @@ This endpoint returns a location by id.
 
 |Endpoint| Description |Parameter | Parameter type | Returned Resource  Type |
 |--------|-------------|----------|----------------|-------------------------|
-| /accident | Returns a list of accidents. | None | None | Accident         |
-| /usager   | Returns a list of victims.   | None | None | Usager           |
-| /lieu     | Returns a list of accident locations. | None | None | Lieu    |
-| /vehicule | Returns a list of vehicles involved in accidents | None | None | Vehicule |
-| /accident/{id:int} |   ||||
-| /usager/{uid:int}/accident |   ||||
-| /lieu/{lid:int}/accident          |   ||||
-| /vehicule/{}/accident          |   ||||
-| /lieu/{id:int}          |   ||||
-| /accident/{id:int}/lieu          |   ||||
-| /accident/{id:int}/usager        |   ||||
+| /accident | Get list of accidents. | - | - | Accident         |
+| /usager   | Get list of victims.   | - | - | Usager           |
+| /lieu     | Get list of accident locations. | - | - | Lieu    |
+| /vehicule | Get list of vehicles involved in accidents | - | - | Vehicule |
+| /accident/{id:int} | GET the  accident by id. ||||
+| /usager/{id:int}/accident | Get the accident in wich the person was involved.  ||||
+| /lieu/{id:int}/accident          |  Get the accident that occured in the location. ||||
+| /vehicule/{id:int}/accident          | Get the accident the vehicle was involved in.  ||||
+| /lieu/{id:int}          | Get the location by id.  ||||
+| /accident/{id:int}/lieu          |   Get the location of the accident. ||||
+| /accident/{id:int}/usager        |   Get the victims of the accident. ||||
 | /usager/{id:int}          |   ||||
 | /accident/{id:int}/vehicule | | | | | |
 | /vehicule/{id:int} | | | | | |
