@@ -480,22 +480,22 @@ This endpoint returns a location by id.
 | /usager   | Get list of victims.   | - | - | Usager           |
 | /lieu     | Get list of accident locations. | - | - | Lieu    |
 | /vehicule | Get list of vehicles involved in accidents | - | - | Vehicule |
-| /accident/{id:int} | GET the  accident by id. ||||
-| /usager/{id:int}/accident | Get the accident in wich the person was involved.  ||||
-| /lieu/{id:int}/accident          |  Get the accident that occured in the location. ||||
-| /vehicule/{id:int}/accident          | Get the accident the vehicle was involved in.  ||||
-| /lieu/{id:int}          | Get the location by id.  ||||
-| /accident/{id:int}/lieu          |   Get the location of the accident. ||||
-| /accident/{id:int}/usager        |   Get the victims of the accident. ||||
-| /usager/{id:int}          |   ||||
-| /accident/{id:int}/vehicule | | | | | |
-| /vehicule/{id:int} | | | | | |
-| /accident/{int:id}/relationships/usager | | | | | |
-| /accident/{int:id}/relationships/lieu | | | | | |
-| /accident/{int:id}/relationships/vehicule | | | | | |
-| /lieu/{int:id}/relationships/accident | | | | | |
-| /usager/{int:id}/relationships/accident | | | | | |
-| /vehicule/{int:id}/relationships/accident | | | | | |
+| /accident/{id:int} | GET the  accident by id. |id | int | Accident|
+| /usager/{id:int}/accident | Get the accident in wich the person was involved.  |id| int| Accident|
+| /lieu/{id:int}/accident          |  Get the accident that occured in the location. |id| int| Accident|
+| /vehicule/{id:int}/accident          | Get the accident the vehicle was involved in.  |id | int | Accident |
+| /lieu/{id:int}          | Get the location by id.  |id | int | Lieu|
+| /accident/{id:int}/lieu          |   Get the location of the accident. |id | int | Lieu|
+| /accident/{id:int}/usager        |   Get the victims of the accident. |id | int | Usager|
+| /usager/{id:int}          |  Get the victim by id. |id | int | Usager|
+| /accident/{id:int}/vehicule | Get the vehicles involved in the accident.| id | int | Vehicule|
+| /vehicule/{id:int} | Get the vehicle by id.| id | int | Vehicule|
+| /accident/{int:id}/relationships/usager | Get the relationship between accident and usager.|id | int | AccidentRelationship |
+| /accident/{int:id}/relationships/lieu | Get the relationship between accident and lieu.| id | int | AccidentRelationship |
+| /accident/{int:id}/relationships/vehicule | Get the relationship between accident and vehicule.| id | int | AccidentRelationship |
+| /lieu/{int:id}/relationships/accident | Get the relationship between lieu and accident.| id | int | LieuRelationship |
+| /usager/{int:id}/relationships/accident | Get the relationship between usager and accident.| id | int | UsagerRelationship |
+| /vehicule/{int:id}/relationships/accident | Get the relationship between vehicule and accident.| id | int | VehiculeRelationship |
 
 
 
