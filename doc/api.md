@@ -498,6 +498,32 @@ This endpoint returns a location by id.
 | /vehicule/{int:id}/relationships/accident | Get the relationship between vehicule and accident.| id | int | VehiculeRelationship |
 
 
+## Querying and Filtering the data
+
+In this section we will show you a couple of examples of querying and filtering the data. The examples are meant to provide an insight on the capabilities of the api. If you want to find out more about query structure take a look [here](https://flask-rest-jsonapi.readthedocs.io/en/latest/filtering.html) and on the JSON API [spec page](https://jsonapi.org/).
+
+### Examples of queries
+
+### All acidents where there is at least one person born in 1973
+```
+$ http GET localhost:5002/accident filter=='[
+	{"name": "usager",
+	 "op": "any",
+	 "val": {
+	 	"name":"an_nais",
+		"op":"eq",
+		"val":"1973"
+		}
+	}
+	]' include=='usager'
+
+```
+
+
+### The persons born in 1973 involved in an accident with a heavy-duty-vehicle
+```
+$ http GET localhost:5002/usager filter=='[{"name": "an_nais", "op": "eq", "val": "1973"}, {"name": "accident", "op": "has", "val": {"name": "vehicule", "op": "any", "val": {"name": "catv", "op":"eq", "val": "14"}}}]' include=='accident.vehicule,accident'
+```
 
 ## Resources
 
@@ -576,3 +602,7 @@ Lieu describes the road type and location of the accident.
 |surf        | integer | The ground state. |
 |infra       | integer | The presence of an infrastructure |
 |situ        | integer | Accident location. |
+
+
+
+> **Note:** Some resource attributes are encoded as integers. To find the **meaning** of the values read the the [decode.json](decode.json) file.
