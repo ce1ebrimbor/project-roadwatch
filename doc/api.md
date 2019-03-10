@@ -16,7 +16,7 @@ The current version of the api lives at `http://api/v1/path`.
 
 | Version | Date | Changes |
 |---------|------|---------|
-|1.0      |      | Initial release.|
+|1.0-alpha   | 10-03-2019     | Initial release.|
 
 
 
