@@ -2,8 +2,7 @@
 
 [![Build Status](https://travis-ci.com/daniel-sasu/project-roadwatch.svg?token=nNtzabkAyK14ViXe6y4n&branch=master)](https://travis-ci.com/daniel-sasu/project-roadwatch)
 
-Every year the French Interior Ministry publishes an enourmous amound of data   
-on the road accidents occured in the country.
+Every year the French Interior Ministry publishes an enourmous amound of data on the road accidents occured in the country.
 
 The data contains the description of location, weather conditions, circumnstances
 of the accidents and the resulted casualties. Details [here](https://www.data.gouv.fr/fr/datasets/base-de-donnees-accidents-corporels-de-la-circulation/)
