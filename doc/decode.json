@@ -1,0 +1,146 @@
+{
+  "caracteristiques": {
+    "agg": {
+      "nom": "Localisation",
+      "values": {
+        "1": "Hors Agglomération",
+        "2": "En Agglomeration"
+      }
+    },
+    "int": {
+      "nom": "Intersection",
+      "values": {
+        "1": "Hors Intersection",
+        "2": "Intersection en X",
+        "3": "Intersection en T",
+        "4": "Intersection en X",
+        "5": "Intersection à plus de 4 branches",
+        "6": "Giratoire",
+        "7": "Place",
+        "8": "Passage à niveau",
+        "9": "Autre Intersection"
+      }
+    },
+    "atm": {
+      "nom": "Conditions atmospériques",
+      "values": {
+        "1": "Normale",
+        "2": "Pluie légère",
+        "3": "Pluie forte",
+        "4": "Neige - grêle",
+        "5": "Brouillard - fumée",
+        "6": "Vent fort - tempête",
+        "7": "Temps éblouissant",
+        "8": "Temps couvert",
+        "9": "Autre"
+      }
+    },
+    "col": {
+      "nom": "Type de collision",
+      "values": {
+        "1": "Deux véhicules - frontale",
+        "2": "Deux véhicules - par l'arrière",
+        "3": "Deux véhicules - par le coté",
+        "4": "Trois véhicules et plus - eb chaîne",
+        "5": "Trois véhicules et plus - collision multiples",
+        "6": "Autre collision",
+        "7": "Sans collision"
+      }
+    },
+    "gps": {
+      "nom": "Codage GPS: 1 caractère indicateur de provenance",
+      "values": {
+        "M": "Métropole",
+        "A": "Antilles",
+        "G": "Guyane",
+        "R": "Réunion",
+        "Y": "Mayotte"
+      }
+    }
+  },
+  "lieux": {
+    "catr": {
+      "nom": "Catégorie de route",
+      "values": {
+        "1": "Autoroute",
+        "2": "Route Nationale",
+        "3": "Route Départementale",
+        "4": "Voie Communale",
+        "5": "Hors réseau public",
+        "6": "Parc de stationnement ouvert à la circulation publique",
+        "9": "autre"
+      }
+    },
+    "circ": {
+      "nom": "Régime de circulation",
+      "values": {
+        "1": "A sens unique",
+        "2": "Bidirectionnelle",
+        "3": "A chaussées séparées",
+        "4": "Avec voies d'affectation variable"
+      }
+    },
+    "vosp": {
+      "nom": "Signale l'existance d'une voie réservée, indépendamment du fait que l'accident ait lieu ou non sur cette voie",
+      "values": {
+        "1": "Piste cyclable",
+        "2": "Banque cyclable",
+        "3": "Voie reservée"
+      }
+    },
+    "prof": {
+      "nom": "Profil en long décrit la déclivité de la route a l'entroit de l'accident",
+      "values": {
+        "1": "Plat",
+        "2": "Pente",
+        "3": "Somment de côte",
+        "4": "Bas de côte"
+      }
+    },
+    "plan": {
+      "nom": "Tracé en plan",
+      "values": {
+        "1": "Partie rectiligne",
+        "2": "En courbe à gauche",
+        "3": "En courbe à droite",
+        "4": "En 'S'"
+      }
+    },
+    "surf": {
+      "nom": "Etat de la surface",
+      "values": {
+        "1": "Normale",
+        "2": "Mouillé",
+        "3": "Flaques",
+        "4": "Inondée",
+        "5": "Enneigée",
+        "6": "boue",
+        "7": "verglacée",
+        "8": "corps gras - huile",
+        "9": "autre"
+      }
+    },
+    "infra": {
+      "nom": "Aménagement - Infrastructure",
+      "values": {
+        "1": "Souterrain - tunnel",
+        "2": "Pont - autopont",
+        "3": "Bretelle d'échangeur ou de raccordement",
+        "4": "Voie ferée",
+        "5": "Carrefour aménagé",
+        "6": "Zone piéttonale",
+        "7": "Zone de péage"
+      }
+    },
+    "situ":{
+      "nom": "Situation de l'accident",
+      "values": {
+        "1": "Sur chaussée",
+        "2": "Sur bande d'arrêt d'urgence",
+        "3": "Sur accotement",
+        "4": "Sur trottoir",
+        "5": "Sur piste cyclable"
+      }
+    }
+  }
+}
