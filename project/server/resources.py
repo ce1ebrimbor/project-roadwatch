@@ -7,7 +7,7 @@ from marshmallow_jsonapi import fields
 from sqlalchemy.orm.exc import NoResultFound
 
 from project.server.models import db
-from project.server.models import Accident, Lieu, Usager, Vehicule
+from project.server.models import Accident, Lieu, Usager, Vehicule, Departement
 
 
 # Logical Data abstraction
@@ -138,6 +138,19 @@ class VehiculeSchema(Schema):
                             related_view_kwargs={'vid': '<id>'},
                             schema='AccidentSchema',
                             type_='accident')
+
+
+
+class DepartementSchema(Schema):
+    class Meta:
+        type_ = 'departement'
+        self_view = 'departement_detail'
+        self_view_kwargs = {'id': '<id>'}
+        self_view_many = 'departement_list'
+
+    id = fields.String(dump_only=True)
+    geometry = fields.String()
+    nom = fields.String()
 
 
 # Resource managers
@@ -332,6 +345,17 @@ class VehiculeDetail(ResourceDetail):
     schema = VehiculeSchema
     methods = ['GET']
     data_layer = {'session': db.session, 'model': Vehicule}
+
+
+class DepartementDetail(ResourceDetail):
+    schema = DepartementSchema
+    methods = ['GET']
+    data_layer = {'session': db.session, 'model': Departement}
+
+class DepartementList(ResourceList):
+    schema = DepartementSchema
+    methods = ['GET']
+    data_layer = {'session': db.session, 'model': Departement}
 
 
 # Resource relationships

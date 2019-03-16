@@ -164,3 +164,22 @@ class Vehicule(db.Model):
 
     def __repr__(self):
         return '<Vehicule {0}>'.format(self.id)
+
+
+
+class Departement(db.Model):
+
+    __tablename__ = 'departements'
+
+    id = db.Column('id', db.Text(), primary_key=True)
+    geometry = db.Column('geometry', db.Text())
+    nom = db.Column('nom', db.Text())
+
+    def __init__(self, id, geometry, nom):
+        self.id = id
+        self.geometry = geometry
+        self.nom = nom
+        #accident = db.relationship('Accident', backref=db.backref('departements'))
+
+    def __repr__(self):
+        return '<Departement {0}>'.format(self.id)

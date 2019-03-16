@@ -250,5 +250,43 @@
       "23": "Arrêté (hors stationnement)",
       "24": "En stationnement (avec occupants)"
     }
+  },
+  "usagers": {
+    "catu": {
+      "nom": "Catégorie d'usager",
+      "values": {
+        "1": "Conducteur",
+        "2": "Passager",
+        "3": "Piéton",
+        "4": "Piéton en roller ou en trottinette"
+      }
+    },
+    "grav": {
+      "nom": "Gravité de l'accident : Les usagers accidentés sont classés en trois catégories de victimes plus les indemnes ",
+      "values": {
+        "1": "Indemne",
+        "2": "Tué",
+        "3": "Blessé hospitalisé",
+        "4": "Blessé léger"
+      }
+    },
+    "sexe": {
+      "nom": "Sexe de l'usager",
+      "values": {
+        "1": "Masculin",
+        "2": "Féminin"
+      }
+    }
+  },
+  "trajet": {
+    "nom": "Motif du déplacement au moment de l’accident",
+    "values": {
+      "1": "Domicile – travail",
+      "2": "Domicile – école",
+      "3": "Courses – achats",
+      "4": "Utilisation professionnelle",
+      "5": "Promenade – loisirs",
+      "9": "Autre"
+    }
   }
 }

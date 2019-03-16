@@ -3,6 +3,7 @@ from project.server.resources import VehiculeList, UsagerRelationship
 from project.server.resources import LieuDetail, AccidentDetail, UsagerDetail
 from project.server.resources import VehiculeDetail, AccidentRelationship
 from project.server.resources import LieuRelationship, VehiculeRelationship
+from project.server.resources import DepartementList, DepartementDetail
 
 API_ROUTES = [
     (
@@ -120,6 +121,20 @@ API_ROUTES = [
         'vehicule_accident',
         [
             '/vehicule/<int:id>/relationships/accident'
+        ]
+    ),
+    (
+        DepartementList,
+        'departement_list',
+        [
+            '/departement'
+        ]
+    ),
+    (
+        DepartementDetail,
+        'departement_detail',
+        [
+            '/departement/<string:id>'
         ]
     )
 ]
