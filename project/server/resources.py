@@ -136,6 +136,7 @@ class VehiculeSchema(Schema):
                             self_view_kwargs={'id': '<id>'},
                             related_view='accident_detail',
                             related_view_kwargs={'vid': '<id>'},
+                            many=True,
                             schema='AccidentSchema',
                             type_='accident')
 
@@ -151,6 +152,14 @@ class DepartementSchema(Schema):
     id = fields.String(dump_only=True)
     geometry = fields.String()
     nom = fields.String()
+    accident = Relationship(attribute='accident',
+                            self_view='departement_accidents',
+                            self_view_kwargs={'id': '<id>'},
+                            related_view='accident_list',
+                            related_view_kwargs={'id': '<id>'},
+                            many=True,
+                            schema='AccidentSchema',
+                            type_='accident')
 
 
 # Resource managers
@@ -186,6 +195,7 @@ class UsagerList(ResourceList):
                               'before_create_object': before_create_object}}
 
 
+
 class UsagerDetail(ResourceDetail):
     schema = UsagerSchema
     methods = ['GET']
@@ -194,10 +204,38 @@ class UsagerDetail(ResourceDetail):
 
 
 class AccidentList(ResourceList):
+
+    def query(self, view_kwargs):
+        query_ = self.session.query(Accident)
+        if view_kwargs.get('id') is not None:
+            try:
+                self.session.query(Departement)\
+                            .filter_by(id=view_kwargs['id'])\
+                            .one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'id'},
+                                     "Departement: {} not found".format(
+                                                            view_kwargs['id']))
+            else:
+                query_ = query_.join(Departement, Departement.id == Accident.dep) \
+                               .filter(
+                                    Accident.dep == view_kwargs['id']
+                                    )
+        return query_
+
+    def before_create_object(self, data, view_kwargs):
+        if view_kwargs.get('id') is not None:
+            dep = self.session.query(Departement)\
+                                   .filter_by(id=view_kwargs['id'])\
+                                   .one()
+            data['departement_id'] = dep.id
+
     schema = AccidentSchema
     methods = ['GET']
-    data_layer = {'session': db.session, 'model': Accident}
-
+    data_layer = {'session': db.session,
+                'model': Accident,
+                'methods': {'query': query,
+                            'before_create_object': before_create_object}}
 
 class AccidentDetail(ResourceDetail):
 
@@ -265,6 +303,22 @@ class AccidentDetail(ResourceDetail):
                     view_kwargs['id'] = vehicule.accident.id
                 else:
                     view_kwargs['id'] = None
+
+        if view_kwargs.get('depid') is not None:
+            try:
+                departement = self.session\
+                              .query(Departement)\
+                              .filter_by(id=view_kwargs['depid'])\
+                              .one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'depid'},
+                                     "Departement: {} not found"
+                                     .format(view_kwargs['depid']))
+            else:
+                if departement.accident is not None:
+                    view_kwargs['depid'] = departement.accident.id
+                else:
+                    view_kwargs['depid'] = None
 
     schema = AccidentSchema
     methods = ['GET']
@@ -385,3 +439,9 @@ class VehiculeRelationship(ResourceRelationship):
     methods = ['GET']
     data_layer = {'session': db.session,
                   'model': Vehicule}
+
+class DepartementRelationship(ResourceRelationship):
+    schema = DepartementSchema
+    methods = ['GET']
+    data_layer = {'session': db.session,
+                  'model': Departement }

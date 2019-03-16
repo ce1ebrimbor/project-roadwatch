@@ -4,13 +4,15 @@ from project.server.resources import LieuDetail, AccidentDetail, UsagerDetail
 from project.server.resources import VehiculeDetail, AccidentRelationship
 from project.server.resources import LieuRelationship, VehiculeRelationship
 from project.server.resources import DepartementList, DepartementDetail
+from project.server.resources import DepartementRelationship
 
 API_ROUTES = [
     (
         AccidentList,  # Resource manager
         'accident_list',  # View name 
         [
-            '/accident'  # Path list
+            '/accident',  # Path list
+            '/departement/<string:id>/accident'
         ]
     ),
 
@@ -21,7 +23,7 @@ API_ROUTES = [
             '/accident/<int:id>',
             '/usager/<int:uid>/accident',
             '/lieu/<int:lid>/accident',
-            '/vehicule/<int:vid>/accident'
+            '/vehicule/<int:vid>/accident',
         ]
     ),
 
@@ -135,6 +137,13 @@ API_ROUTES = [
         'departement_detail',
         [
             '/departement/<string:id>'
+        ]
+    ),
+    (
+        DepartementRelationship,
+        'departement_accidents',
+        [
+            '/departement/<string:id>/relationships/accident'
         ]
     )
 ]

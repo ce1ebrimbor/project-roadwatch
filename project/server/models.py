@@ -16,7 +16,7 @@ class Accident(db.Model):
     atm = db.Column('atm', db.Integer())
     col = db.Column('col', db.Integer())
     adr = db.Column('adr', db.Text())
-    comm = db.Column('comm', db.String(5))
+    comm = db.Column('comm', db.String(5), db.ForeignKey('departements.id'))
     gps = db.Column('gps', db.String(1))
     dep = db.Column('dep', db.String(3))
     lat = db.Column('lat', db.Float())
@@ -30,6 +30,10 @@ class Accident(db.Model):
                            backref='caracteristiques',
                            lazy=True)
     vehicule = db.relationship('Vehicule',
+                               backref='caracteristiques',
+                               lazy=True)
+    vehicule = db.relationship('Departement',
+                               uselist=False,
                                backref='caracteristiques',
                                lazy=True)
 
@@ -174,6 +178,7 @@ class Departement(db.Model):
     id = db.Column('id', db.Text(), primary_key=True)
     geometry = db.Column('geometry', db.Text())
     nom = db.Column('nom', db.Text())
+    accident = db.relationship('Accident', backref=db.backref('departements'))
 
     def __init__(self, id, geometry, nom):
         self.id = id
