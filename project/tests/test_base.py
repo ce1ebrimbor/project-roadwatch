@@ -46,5 +46,13 @@ class TestBaseCases(BaseTestCase):
             self.assertIn(b"accident", response.data)
             self.assertEqual(response.status_code, 200)
 
+    def test_department_list(self):
+            with self.client:
+                response = self.client.get("/departement")
+                self.assertIn(b"\"type\": \"departement\"", response.data)
+                self.assertIn(b"relationships", response.data)
+                self.assertIn(b"accident", response.data)
+                self.assertEqual(response.status_code, 200)
+
 if __name__ == "__main__":
     unittest.main()

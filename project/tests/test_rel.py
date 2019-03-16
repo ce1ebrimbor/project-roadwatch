@@ -32,6 +32,8 @@ class TestRelationships(BaseTestCase):
     def test_vehicule_accident(self):
         self.__test_relationship("vehicule", "1", "accident" )
 
+    def test_departement_accident(self):
+        self.__test_relationship("departement", "590", "accident")
 
 
 if __name__ == "__main__":
