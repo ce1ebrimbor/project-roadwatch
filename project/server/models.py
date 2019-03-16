@@ -16,9 +16,9 @@ class Accident(db.Model):
     atm = db.Column('atm', db.Integer())
     col = db.Column('col', db.Integer())
     adr = db.Column('adr', db.Text())
-    comm = db.Column('comm', db.String(5), db.ForeignKey('departements.id'))
+    comm = db.Column('comm', db.String(5))
     gps = db.Column('gps', db.String(1))
-    dep = db.Column('dep', db.String(3))
+    dep = db.Column('dep', db.String(3), db.ForeignKey('departements.id'))
     lat = db.Column('lat', db.Float())
     long = db.Column('long', db.Float())
     date = db.Column('date', db.DateTime())
@@ -36,6 +36,7 @@ class Accident(db.Model):
                                uselist=False,
                                backref='caracteristiques',
                                lazy=True)
+
 
     def __init__(self, id, lum, agg, int, atm, col,
                  adr, comm, gps, dep, lat, long, date):

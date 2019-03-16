@@ -149,7 +149,7 @@ class DepartementSchema(Schema):
         self_view_kwargs = {'id': '<id>'}
         self_view_many = 'departement_list'
 
-    id = fields.String(dump_only=True)
+    id = fields.String(as_String=True,dump_only=True)
     geometry = fields.String()
     nom = fields.String()
     accident = Relationship(attribute='accident',
