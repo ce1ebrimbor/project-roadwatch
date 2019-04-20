@@ -1,6 +1,6 @@
 # project/server/user/views.py
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 from project.server.models import User
 from project.server import db
 
@@ -24,7 +24,7 @@ def auth():
         user.set_password(password=password)
         db.session.add(user)
         db.session.commit()
-
-        return 'OK'
+        flash('Your registration was successfull, you can sign in now.')
+        return render_template("login.html", sigup=False)
     else:
         return 'User already exists'

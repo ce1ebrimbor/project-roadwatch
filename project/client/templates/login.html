@@ -1,126 +1,95 @@
-  <!doctype html>
-<html lang="fr">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends 'base.html' %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <!-- My CSS -->
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='main.css')}}">
-
-
-    <title>Project Roadwatch - Sign In </title>
-  </head>
-  <body class="bg-light">
-    <div class="container">
-      <div class="row">
-        <nav class="navbar py-3 navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand font-weight-bold" href="#">PROJECT ROADWATCH API</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav">
-
-              <li class="nav-item">
-                <a class="nav-link" href="#">Documentation<span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <span class="badge badge-dark float">v1.0-alpha</span>
-              </li>
-            </ul>
-          </div>
-        </nav>
+{% block content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert" >
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
       </div>
-      <div class="row full-screen align-items-center" >
-        <div class="col-lg-7">
-          <h1 class="logo text-dark">PROJECT ROADWATCH <span class="text-danger">API</span></h1>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<div class="row full-screen align-items-center" >
+  <div class="col-lg-7">
+    <h1 class="logo text-dark">PROJECT ROADWATCH <span class="text-danger">API</span></h1>
+  </div>
+  <div class="col-lg-5">
+
+    <div class="row" id="loginForm">
+      <div class="container container-mini">
+        <h2 class="text-center">Get Access</h2>
+
+        {% if signup %}
+          {% set active_in = None %}
+          {% set checked_in = None %}
+          {% set active_up = 'active' %}
+          {% set checked_in = 'checked' %}
+          {% set action = '/signup' %}
+        {% else %}
+          {% set active_in = 'active' %}
+          {% set checked_in = 'checked' %}
+          {% set active_up = None %}
+          {% set checked_in = None %}
+          {% set action = '/signin' %}
+        {% endif %}
+        <div class="btn-group btn-group-toggle mt-3" data-toggle="buttons">
+          <label class="btn btn-sm btn-outline-secondary {{ active_in}}" id="signin">
+            SIGN IN
+            <input type="radio" name="signin" autocomplete="off" {{checked_in}}>
+          </label>
+          <label class="btn btn-sm btn-outline-secondary {{ active_up}}" id="signup">
+            SIGN UP
+            <input type="radio" name="signup" autocomplete="off" {{ checked_up }} >
+
+          </label>
+          <!--
+          <label class="btn btn-sm btn-outline-secondary">
+            <input type="radio" name="options" id="forgot" autocomplete="off"> FORGOT
+          </label>
+          -->
         </div>
-        <div class="col-lg-5">
+        <small id="actionHelp" class="form-text text-muted mb-3">FORGOT your password? </small>
 
-          <div class="row" id="loginForm">
-            <div class="container container-mini">
-              <h2 class="text-center">Get Access</h2>
-
-              {% if signup %}
-                {% set active_in = None %}
-                {% set checked_in = None %}
-                {% set active_up = 'active' %}
-                {% set checked_in = 'checked' %}
-                {% set action = '/signup' %}
-              {% else %}
-                {% set active_in = 'active' %}
-                {% set checked_in = 'checked' %}
-                {% set active_up = None %}
-                {% set checked_in = None %}
-                {% set action = '/signin' %}
-              {% endif %}
-              <div class="btn-group btn-group-toggle mt-3" data-toggle="buttons">
-                <label class="btn btn-sm btn-outline-secondary {{ active_in}}" id="signin">
-                  SIGN IN
-                  <input type="radio" name="signin" autocomplete="off" {{checked_in}}>
-                </label>
-                <label class="btn btn-sm btn-outline-secondary {{ active_up}}" id="signup">
-                  SIGN UP
-                  <input type="radio" name="signup" autocomplete="off" {{ checked_up }} >
-
-                </label>
-                <!--
-                <label class="btn btn-sm btn-outline-secondary">
-                  <input type="radio" name="options" id="forgot" autocomplete="off"> FORGOT
-                </label>
-                -->
-              </div>
-              <small id="actionHelp" class="form-text text-muted mb-3">FORGOT your password? </small>
-
-              <form class="mx-auto" id="authForm" action="{{ action }}" method="POST">
-                <div class="form-group">
-                  <label for="email">Email address</label>
-                  <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
-                <div class="form-group">
-                 <label for="password">Password</label>
-                 <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                </div>
-
-
-                <!-- Confirm password -->
-                {% if signup %}
-                  <div class="form-group" id="confirm-password-group" >
-                   <label for="confirm-password">Confirm Password</label>
-                   <input type="password" class="form-control" name="confirmPassword" id="confirm-password" placeholder="Password">
-                  </div>
-                  {% set button_title = 'SIGN UP' %}
-                {% else %}
-                  {% set button_title = 'SIGN IN'%}
-                {% endif %}
-               <button type="submit" id="sub-data" class="btn btn-outline-dark btn-block mt-4">{{ button_title }}</button>
-              </form>
-            </div>
+        <form class="mx-auto" id="authForm" action="{{ action }}" method="POST">
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
           </div>
-        </div>
+          <div class="form-group">
+           <label for="password">Password</label>
+           <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+          </div>
+
+
+          <!-- Confirm password -->
+          {% if signup %}
+            <div class="form-group" id="confirm-password-group" >
+             <label for="confirm-password">Confirm Password</label>
+             <input type="password" class="form-control" name="confirmPassword" id="confirm-password" placeholder="Password">
+            </div>
+            {% set button_title = 'SIGN UP' %}
+          {% else %}
+            {% set button_title = 'SIGN IN'%}
+          {% endif %}
+         <button type="submit" id="sub-data" class="btn btn-outline-dark btn-block mt-4">{{ button_title }}</button>
+        </form>
       </div>
     </div>
+  </div>
+</div>
+{% endblock %}
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="{{url_for('static', filename='auth.js')}}" ></script>
-    <script type="text/html" id="confirm-pw-template">
-      <div class="form-group" id="confirm-password-group" >
-       <label for="confirm-password">Confirm Password</label>
-       <input type="password" class="form-control" name="confirmPassword" id="confirm-password" placeholder="Password">
-      </div>
-    </script>
-  </body>
-</html>
+{% block js %}
+<script src="{{url_for('static', filename='auth.js')}}" ></script>
+<script type="text/html" id="confirm-pw-template">
+<div class="form-group" id="confirm-password-group" >
+ <label for="confirm-password">Confirm Password</label>
+ <input type="password" class="form-control" name="confirmPassword" id="confirm-password" placeholder="Password">
+</div>
+</script>
+{% endblock %}
