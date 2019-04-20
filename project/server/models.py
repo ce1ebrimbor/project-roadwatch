@@ -3,8 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+# App models
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
 
-# Database Models
+    def __repr__(self):
+        return '<User {}>'.format(self.email)
+
+
+# Api Models
 class Accident(db.Model):
 
     __tablename__ = 'caracteristiques'
