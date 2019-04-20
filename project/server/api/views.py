@@ -1,7 +1,6 @@
-# project/server/user/views.py
+# project/server/api/views.py
 
-
-from flask import Blueprint, jsonify
+from flask import Blueprint
 
 api_blueprint = Blueprint("api", __name__)
 

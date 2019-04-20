@@ -13,6 +13,7 @@ from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask_rest_jsonapi import Api
 from project.server.routes import API_ROUTES
+from flask_cors import CORS
 
 # instantiate the extensions
 login_manager = LoginManager()
@@ -49,11 +50,13 @@ def create_app(script_info=None):
     marshmallow.init_app(app)
 
     api = Api(app)
-
+    CORS(app)
     # register blueprints
     from project.server.api.views import api_blueprint
+    from project.server.user.views import user_blueprint
 
     app.register_blueprint(api_blueprint)
+    app.register_blueprint(user_blueprint)
 
     for route_tuple in API_ROUTES:
         api.route(route_tuple[0], route_tuple[1], *route_tuple[2])
