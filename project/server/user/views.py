@@ -1,10 +1,20 @@
 # project/server/user/views.py
 
+import flask_login
+
 from flask import Blueprint, render_template, request, flash
 from project.server.models import User
 from project.server import db
+from project.server import login_manager
+from validate_email import validate_email
 
 user_blueprint = Blueprint("user", __name__)
+
+# Configure login_manager
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
 
 @user_blueprint.route("/")
 def home():
@@ -20,19 +30,55 @@ def auth():
     user = User.query.filter_by(email=email).first()
 
     if user is None:
-        user = User(email=email)
-        user.set_password(password=password)
-        db.session.add(user)
-        db.session.commit()
-        flash('Your registration was successfull, you can sign in now.')
-        return render_template("login.html", sigup=False)
-    else:
-        return 'User already exists'
+        is_valid = validate_email(email)
 
+        if not is_valid:
+            flash('Invalid email')
+            return render_template("login.html", signup=True)
+
+        user = User(email=email)
+
+
+        if password == confirmPassword:
+            user.set_password(password=password)
+            db.session.add(user)
+            db.session.commit()
+            flash('Your registration was successfull, you can sign in now.')
+            return render_template("login.html", signup=False)
+        else:
+            flash('Passwords do not match.')
+            return render_template("login.html", signup=True)
+    else:
+        flash('User already exists')
+        return render_template('login.html', signup=True)
+
+
+@user_blueprint.route("/signin", methods=["POST"])
+def signin():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    user = User.query.filter_by(email=email).first()
+
+    if user is None:
+        return "Wrong username or password"
+    else:
+        if user.check_password(password):
+            flask_login.login_user(user)
+            return "Logged in"
+        else:
+            return "Wrong username or password"
+    return "Hello"
+
+
+@user_blueprint.route("/signout")
+def signout():
+    flask_login.logout_user()
+    return "Logged out"
 
 @user_blueprint.route("/docs")
 def docs():
     return render_template("docpage.html")
+
 
 
 @user_blueprint.route("/aboutpage")

@@ -12,10 +12,12 @@ function toggleForm(){
     $(button).text('SIGN UP')
     let confirmPassword = $('#confirm-pw-template').html()
     $(confirmPassword).insertBefore($('#sub-data'))
+    $('#authForm').attr('action', '/signup')
   }
 
   if(id == 'signin' && $('#confirm-password-group').exists()){
     $(button).text('SIGN IN')
+    $('#authForm').attr('action', '/signin')
     $('#confirm-password-group').remove()
   }
 }

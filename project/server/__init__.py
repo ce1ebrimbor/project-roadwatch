@@ -5,9 +5,6 @@ import os
 
 from flask import Flask
 from flask_login import LoginManager
-from flask_bcrypt import Bcrypt
-from flask_debugtoolbar import DebugToolbarExtension
-from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
@@ -17,9 +14,6 @@ from flask_cors import CORS
 
 # instantiate the extensions
 login_manager = LoginManager()
-bcrypt = Bcrypt()
-toolbar = DebugToolbarExtension()
-bootstrap = Bootstrap()
 db = SQLAlchemy()
 migrate = Migrate()
 marshmallow = Marshmallow()
@@ -42,9 +36,6 @@ def create_app(script_info=None):
 
     # set up extensions
     login_manager.init_app(app)
-    bcrypt.init_app(app)
-    toolbar.init_app(app)
-    bootstrap.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
     marshmallow.init_app(app)
