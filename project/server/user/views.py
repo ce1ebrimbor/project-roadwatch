@@ -33,3 +33,8 @@ def auth():
 @user_blueprint.route("/docs")
 def docs():
     return render_template("docpage.html")
+
+
+@user_blueprint.route("/aboutpage")
+def about():
+    return render_template("about.html")

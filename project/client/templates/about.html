@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mt-5"><a id="Project_Roadwatch_0"></a>Project Roadwatch</h1>
+<p><a href="https://travis-ci.com/daniel-sasu/project-roadwatch"><img src="https://travis-ci.com/daniel-sasu/project-roadwatch.svg?token=nNtzabkAyK14ViXe6y4n&amp;branch=master" alt="Build Status"></a>
+<p>Every year the French Interior Ministry publishes an enormous amount of data on the road accidents occurred in the country.
+The data contains the description of location, weather conditions, circumstances
+of the accidents and the resulted casualties. Details <a href="https://www.data.gouv.fr/fr/datasets/base-de-donnees-accidents-corporels-de-la-circulation/">here</a></p>
+<p>The goal of this project is to create a resource in the form of an api/app which will allow to effectively query, manipulate and visualize the data.</p>
+<h2><a id="API_Implementation_11"></a>API Implementation</h2>
+<p>The api was implemented according to the <a href="https://jsonapi.org/format/">JSON:API 1.0</a> specification. Using Flask and <a href="https://github.com/miLibris/flask-rest-jsonapi">flask-rest-jsonapi</a>.</p>
+<p>For the api and resource documentation look <a href="doc/api.md">here</a>.</p>
+<blockquote>
+<p><strong>Note</strong>:<br>
+The app and data structure is not definitive, and it is susceptible to be heavily modified before
+the 1.0 version.</p>
+</blockquote>
+<h2><a id="Current_State_22"></a>Current State</h2>
+<p>The actual version of the api is <strong>1.0-alpha</strong>. Currently the api is not fully documented nor secured.</p>
+<h2><a id="Authors_26"></a>Authors</h2>
+<p>This project was an individual assignment in the first year of master degree at Lille University, Faculty of Science and Technology.</p>
+<p>Supervising Professor: Mickael Salson</p>
+<p>Student: Daniel SASU</p>
+<p>The project can be found on <a href="https://github.com/daniel-sasu/project-roadwatch">GitHub</a>
+{% endblock %}
