@@ -28,3 +28,8 @@ def auth():
         return render_template("login.html", sigup=False)
     else:
         return 'User already exists'
+
+
+@user_blueprint.route("/docs")
+def docs():
+    return render_template("docpage.html")

@@ -1,94 +1,968 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends 'base.html' %}
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css" />
-  <!-- My CSS -->
-  <link rel="stylesheet" type="text/css" href="style.css">
+{% block css %}
+<link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
+{% endblock %}
+{% block content %}
+<div class="row mt-4">
+  <div class="col-lg-3">
+    <nav id="toc" data-toggle="toc" class="sticky-top mt-3"></nav>
+  </div>
+  <div class="col-lg-9">
+    <h1 id="api-documentation">API Documentation</h1>
+
+    <p>
+      This api serves as a repository for the road accidents data published by the French Interior Ministry.
+      The main goal was to build a flexible and easy to access api wich will do the <span class="font-weight-bold">heavy</span> work such as
+      sorting and filtering the data.
+    </p>
+
+    <p>
+      The api was implemented according to the <a href="https://jsonapi.org/format/">JSON:API v1.0</a> specification.
+    </p>
+
+    <h2 id="getting-started">Getting Started</h2>
+
+    <p>The current version of the api lives at <code>http://api/v1/path</code>.</p>
+    <p class="font-weight-bold">Versions:</p>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Version</th>
+          <th>Date</th>
+          <th>Changes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.0-alpha</td>
+          <td>10-03-2019</td>
+          <td>Initial release.</td>
+        </tr>
+      </tbody>
+    </table>
+    <blockquote>
+      <p><strong>Note:</strong> In order to interact with our api we recommend you to use one of <a href="https://jsonapi.org/implementations/#client-libraries">these</a> client libraries.</p>
+    </blockquote>
+
+    <h2 id="api-calls">Basic API Calls</h2>
+
+    <ul>
+      <li>
+        <h3 id="get-accident"><a id="GET_accident_26"></a><code>GET /accident</code></h3>
+      </li>
+    </ul>
+    <p>This endpoint returns the list of accidents.</p>
+    <h4>Response example</h4>
+    <pre><code class="card p-3">{
+            &quot;data&quot; : [
+              {
+                  &quot;attributes&quot;: {
+                      &quot;adr&quot;: &quot;68 place de l'hotel de v&quot;,
+                      &quot;agg&quot;: 2,
+                      &quot;atm&quot;: 1,
+                      &quot;col&quot;: 6,
+                      &quot;comm&quot;: &quot;59416&quot;,
+                      &quot;date&quot;: &quot;2017-10-03T07:10:00&quot;,
+                      &quot;dep&quot;: &quot;590&quot;,
+                      &quot;gps&quot;: &quot;M&quot;,
+                      &quot;int&quot;: 1,
+                      &quot;long&quot;: 2.51553,
+                      &quot;lat&quot;: 50.69162,
+                      &quot;lum&quot;: 5
+                  },
+                  &quot;id&quot;: 201700000030,
+                  &quot;links&quot;: {
+                      &quot;self&quot;: &quot;/accident/201700000030&quot;
+                  },
+                  &quot;relationships&quot;: {
+                      &quot;lieu&quot;: {
+                          &quot;links&quot;: {
+                              &quot;related&quot;: &quot;/accident/201700000030/lieu&quot;,
+                              &quot;self&quot;: &quot;/accident/201700000030/relationships/lieu&quot;
+                          }
+                      },
+                      &quot;usager&quot;: {
+                          &quot;links&quot;: {
+                              &quot;related&quot;: &quot;/accident/201700000030/usager&quot;,
+                              &quot;self&quot;: &quot;/accident/201700000030/relationships/usager&quot;
+                          }
+                      },
+                      &quot;vehicule&quot;: {
+                          &quot;links&quot;: {
+                              &quot;related&quot;: &quot;/accident/201700000030/vehicule&quot;,
+                              &quot;self&quot;: &quot;/accident/201700000030/relationships/vehicule&quot;
+                          }
+                      }
+                  },
+                  &quot;type&quot;: &quot;accident&quot;
+                }
+              ],
+              &quot;jsonapi&quot;: {
+                &quot;version&quot;: &quot;1.0&quot;
+              },
+              &quot;links&quot;: {
+                &quot;first&quot;: &quot;http://api/v1/accident&quot;,
+                &quot;last&quot;: &quot;http://api/v1/accident?page%5Bnumber%5D=2024&quot;,
+                &quot;next&quot;: &quot;http://api/v1/accident?page%5Bnumber%5D=2&quot;,
+                &quot;self&quot;: &quot;http://api/v1/accident&quot;
+              },
+              &quot;meta&quot;: {
+                &quot;count&quot;: 60701
+              }
+          }
+          </pre></code>
 
 
-  <title>Project Roadwatch - Sign In </title>
-</head>
-<body class="bg-light" data-spy="scroll" data-target="#toc">
-  <div class="container">
+    <ul>
+      <li>
+        <h3><a id="GET_accidentidint_96"></a><code>GET /accident/{id:int}</code></h3>
+      </li>
+    </ul>
+    <p>This endpoind returns one accident by id.</p>
+    <h5><a id="Example_with_GET_accident20_100"></a>Example with <code>GET /accident/201700000001</code></h5>
+    <pre><code class="card p-3">{
+              &quot;data&quot;: {
+                  &quot;attributes&quot;: {
+                      &quot;adr&quot;: &quot;rue nationale&quot;,
+                      &quot;agg&quot;: 2,
+                      &quot;atm&quot;: 1,
+                      &quot;col&quot;: 1,
+                      &quot;comm&quot;: &quot;59477&quot;,
+                      &quot;date&quot;: &quot;2017-01-11T18:20:00&quot;,
+                      &quot;dep&quot;: &quot;590&quot;,
+                      &quot;gps&quot;: &quot;M&quot;,
+                      &quot;int&quot;: 1,
+                      &quot;lat&quot;: 50.51326,
+                      &quot;long&quot;: 2.92191,
+                      &quot;lum&quot;: 5
+                  },
+                  &quot;id&quot;: 201700000001,
+                  &quot;links&quot;: {
+                      &quot;self&quot;: &quot;/accident/201700000001&quot;
+                  },
+                  &quot;relationships&quot;: {
+                      &quot;lieu&quot;: {
+                          &quot;links&quot;: {
+                              &quot;related&quot;: &quot;/accident/201700000001/lieu&quot;,
+                              &quot;self&quot;: &quot;/accident/201700000001/relationships/lieu&quot;
+                          }
+                      },
+                      &quot;usager&quot;: {
+                          &quot;links&quot;: {
+                              &quot;related&quot;: &quot;/accident/201700000001/usager&quot;,
+                              &quot;self&quot;: &quot;/accident/201700000001/relationships/usager&quot;
+                          }
+                      },
+                      &quot;vehicule&quot;: {
+                          &quot;links&quot;: {
+                              &quot;related&quot;: &quot;/accident/201700000001/vehicule&quot;,
+                              &quot;self&quot;: &quot;/accident/201700000001/relationships/vehicule&quot;
+                          }
+                      }
+                  },
+                  &quot;type&quot;: &quot;accident&quot;
+              },
+              &quot;jsonapi&quot;: {
+                  &quot;version&quot;: &quot;1.0&quot;
+              },
+              &quot;links&quot;: {
+                  &quot;self&quot;: &quot;/accident/201700000001&quot;
+              }
+          }
+          </code></pre>
 
+    <ul>
+      <li>
+        <h3><code>GET /usager</code></h3>
+      </li>
+    </ul>
+    <p>This endpoint returns the list of accident victims.</p>
+    <pre><code class="card p-3">{
+              &quot;data&quot;: [
+                  {
+                      &quot;attributes&quot;: {
+                          &quot;adr&quot;: &quot;rue nationale&quot;,
+                          &quot;agg&quot;: 2,
+                          &quot;atm&quot;: 1,
+                          &quot;col&quot;: 1,
+                          &quot;comm&quot;: &quot;59477&quot;,
+                          &quot;date&quot;: &quot;2017-01-11T18:20:00&quot;,
+                          &quot;dep&quot;: &quot;590&quot;,
+                          &quot;gps&quot;: &quot;M&quot;,
+                          &quot;int&quot;: 1,
+                          &quot;lat&quot;: 50.51326,
+                          &quot;long&quot;: 2.92191,
+                          &quot;lum&quot;: 5
+                      },
+                      &quot;id&quot;: 201700000001,
+                      &quot;links&quot;: {
+                          &quot;self&quot;: &quot;/accident/201700000001&quot;
+                      },
+                      &quot;relationships&quot;: {
+                          &quot;lieu&quot;: {
+                              &quot;links&quot;: {
+                                  &quot;related&quot;: &quot;/accident/201700000001/lieu&quot;,
+                                  &quot;self&quot;: &quot;/accident/201700000001/relationships/lieu&quot;
+                              }
+                          },
+                          &quot;usager&quot;: {
+                              &quot;links&quot;: {
+                                  &quot;related&quot;: &quot;/accident/201700000001/usager&quot;,
+                                  &quot;self&quot;: &quot;/accident/201700000001/relationships/usager&quot;
+                              }
+                          },
+                          &quot;vehicule&quot;: {
+                              &quot;links&quot;: {
+                                  &quot;related&quot;: &quot;/accident/201700000001/vehicule&quot;,
+                                  &quot;self&quot;: &quot;/accident/201700000001/relationships/vehicule&quot;
+                              }
+                          }
+                      },
+                      &quot;type&quot;: &quot;accident&quot;
+                  },
 
-    <nav class="navbar p-3 navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand font-weight-bold" href="#">PROJECT ROADWATCH <span class="text-danger">API</span></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Documentation<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sign In/Up<span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-
-    <div class="row mt-5">
-      <div class="col-lg-3">
-        <nav id="toc" data-toggle="toc"></nav>
-        </div>
-        <div class="col-lg-9">
-          <h1>The title</h1>
-          <h2>Some sub-title</h2>
           ...
-          <h3>Section 1</h3>
-          <h4>Subsection A</h4>
-          ...
-          <h4>Subsection B</h4>
-          ...
-          <h3>Section 2</h3>
-          ....
-          ....
-          ....
-          ....
-          ....
-          <h3>Section 3</h3>
-          ....
-          ....
-          ....
-          ...
-          ....
-          ...
-          ....
-          ....
-          ...
-          ..
 
-          ...
-          <h3>Section 4</h3>
-        </div>
-      </div>
+          ],
+            &quot;jsonapi&quot;: {
+                &quot;version&quot;: &quot;1.0&quot;
+            },
+            &quot;links&quot;: {
+                &quot;first&quot;: &quot;http://api/v1/usager&quot;,
+                &quot;last&quot;: &quot;http://api/v1/usager?page%5Bnumber%5D=4535&quot;,
+                &quot;next&quot;: &quot;http://api/v1/usager?page%5Bnumber%5D=2&quot;,
+                &quot;self&quot;: &quot;http://api/v1/usager&quot;
+            },
+            &quot;meta&quot;: {
+                &quot;count&quot;: 136021
+            }
+          }
 
-      </div>
+          </code></pre>
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-</body>
-</html>
+    <ul>
+      <li>
+        <h3><code>GET /usager/{id:int}</code></h3>
+      </li>
+    </ul>
+    <p>This endpoint returns the victim by id.</p>
+    <h5>Example with <code>GET /usager/1</code></h5>
+    <pre><code class="card p-3">{
+              &quot;data&quot;: {
+                  &quot;attributes&quot;: {
+                      &quot;accident_id&quot;: 201700000001,
+                      &quot;actp&quot;: 0,
+                      &quot;an_nais&quot;: 1968,
+                      &quot;catu&quot;: 1,
+                      &quot;etatp&quot;: 0,
+                      &quot;grav&quot;: 3,
+                      &quot;locp&quot;: 0,
+                      &quot;num_veh&quot;: &quot;B01&quot;,
+                      &quot;place&quot;: 1,
+                      &quot;secu&quot;: 13,
+                      &quot;sexe&quot;: 1,
+                      &quot;trajet&quot;: 9
+                  },
+                  &quot;id&quot;: 1,
+                  &quot;links&quot;: {
+                      &quot;self&quot;: &quot;/usager/1&quot;
+                  },
+                  &quot;relationships&quot;: {
+                      &quot;accident&quot;: {
+                          &quot;links&quot;: {
+                              &quot;related&quot;: &quot;/usager/1/accident&quot;,
+                              &quot;self&quot;: &quot;/usager/1/relationships/accident&quot;
+                          }
+                      }
+                  },
+                  &quot;type&quot;: &quot;usager&quot;
+              },
+              &quot;jsonapi&quot;: {
+                  &quot;version&quot;: &quot;1.0&quot;
+              },
+              &quot;links&quot;: {
+                  &quot;self&quot;: &quot;/usager/1&quot;
+              }
+          }
+</code></pre>
+
+
+    <ul>
+      <li>
+        <h3><code>GET /vehicule</code></h3>
+      </li>
+    </ul>
+    <p>This endpoint returns the list of vehicles involved in accidents.</p>
+    <pre><code class="card p-3">
+{
+    &quot;data&quot;: [
+        {
+            &quot;attributes&quot;: {
+                &quot;accident_id&quot;: 201700000001,
+                &quot;catv&quot;: 7,
+                &quot;choc&quot;: 3,
+                &quot;manv&quot;: 9,
+                &quot;num_veh&quot;: &quot;B01&quot;,
+                &quot;obs&quot;: null,
+                &quot;obsm&quot;: 2,
+                &quot;occutc&quot;: null,
+                &quot;senc&quot;: null
+            },
+            &quot;id&quot;: 1,
+            &quot;links&quot;: {
+                &quot;self&quot;: &quot;/vehicule/1&quot;
+            },
+            &quot;relationships&quot;: {
+                &quot;accident&quot;: {
+                    &quot;links&quot;: {
+                        &quot;related&quot;: &quot;/vehicule/1/accident&quot;,
+                        &quot;self&quot;: &quot;/vehicule/1/relationships/accident&quot;
+                    }
+                }
+            },
+            &quot;type&quot;: &quot;vehicule&quot;
+        },
+        ...
+         ],
+    &quot;jsonapi&quot;: {
+        &quot;version&quot;: &quot;1.0&quot;
+    },
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://api/v1/vehicule&quot;,
+        &quot;last&quot;: &quot;http://api/v1/vehicule?page%5Bnumber%5D=3452&quot;,
+        &quot;next&quot;: &quot;http://api/v1/vehicule?page%5Bnumber%5D=2&quot;,
+        &quot;self&quot;: &quot;http://api/v1/vehicule&quot;
+    },
+    &quot;meta&quot;: {
+        &quot;count&quot;: 103546
+    }
+}
+
+</code></pre>
+    <ul>
+      <li>
+        <h3><code>GET /vehicule/{id:int}</code></h3>
+      </li>
+    </ul>
+    <p>This endpoint returns a vehicle by id.</p>
+    <h5><a id="Example_with_GET_vehicule1_325"></a>Example with <code>GET /vehicule/1</code></h5>
+    <pre><code class="card p-3">{
+    &quot;data&quot;: {
+        &quot;attributes&quot;: {
+            &quot;accident_id&quot;: 201700000001,
+            &quot;catv&quot;: 7,
+            &quot;choc&quot;: 3,
+            &quot;manv&quot;: 9,
+            &quot;num_veh&quot;: &quot;B01&quot;,
+            &quot;obs&quot;: null,
+            &quot;obsm&quot;: 2,
+            &quot;occutc&quot;: null,
+            &quot;senc&quot;: null
+        },
+        &quot;id&quot;: 1,
+        &quot;links&quot;: {
+            &quot;self&quot;: &quot;/vehicule/1&quot;
+        },
+        &quot;relationships&quot;: {
+            &quot;accident&quot;: {
+                &quot;links&quot;: {
+                    &quot;related&quot;: &quot;/vehicule/1/accident&quot;,
+                    &quot;self&quot;: &quot;/vehicule/1/relationships/accident&quot;
+                }
+            }
+        },
+        &quot;type&quot;: &quot;vehicule&quot;
+    },
+    &quot;jsonapi&quot;: {
+        &quot;version&quot;: &quot;1.0&quot;
+    },
+    &quot;links&quot;: {
+        &quot;self&quot;: &quot;/vehicule/1&quot;
+    }
+}
+
+</code></pre>
+    <ul>
+      <li>
+        <h3>GET /lieu</code></h3>
+      </li>
+    </ul>
+    <p>This endpoint returns a list of accident location description.</p>
+    <pre><code class="card p-3">{
+    &quot;data&quot;: [
+        {
+            &quot;attributes&quot;: {
+                &quot;accident_id&quot;: 201700000001,
+                &quot;catr&quot;: 3,
+                &quot;circ&quot;: 2,
+                &quot;infra&quot;: null,
+                &quot;nbv&quot;: 2,
+                &quot;plan&quot;: 1,
+                &quot;pr&quot;: null,
+                &quot;pr1&quot;: null,
+                &quot;prof&quot;: 1,
+                &quot;situ&quot;: 1,
+                &quot;surf&quot;: 1,
+                &quot;voie&quot;: 39,
+                &quot;vosp&quot;: 2
+            },
+            &quot;id&quot;: 1,
+            &quot;links&quot;: {
+                &quot;self&quot;: &quot;/lieu/1&quot;
+            },
+            &quot;relationships&quot;: {
+                &quot;accident&quot;: {
+                    &quot;links&quot;: {
+                        &quot;related&quot;: &quot;/lieu/1/accident&quot;,
+                        &quot;self&quot;: &quot;/lieu/1/relationships/accident&quot;
+                    }
+                }
+            },
+            &quot;type&quot;: &quot;lieu&quot;
+        },
+        ...
+        ],
+    &quot;jsonapi&quot;: {
+        &quot;version&quot;: &quot;1.0&quot;
+    },
+    &quot;links&quot;: {
+        &quot;first&quot;: &quot;http://api/v1/lieu&quot;,
+        &quot;last&quot;: &quot;http://api/v1/lieu?page%5Bnumber%5D=2024&quot;,
+        &quot;next&quot;: &quot;http://api/v1/lieu?page%5Bnumber%5D=2&quot;,
+        &quot;self&quot;: &quot;http://api/v1/lieu&quot;
+    },
+    &quot;meta&quot;: {
+        &quot;count&quot;: 60701
+    }
+}
+
+
+</code></pre>
+    <ul>
+      <li>
+        <h3><code>GET /lieu/{id:int}</code></h3>
+      </li>
+    </ul>
+    <p>This endpoint returns a location by id.</p>
+    <h5><a id="Example_with_GET_lieu1_428"></a>Example with <code>GET /lieu/1</code></h5>
+    <pre><code class="card p-3">{
+    &quot;data&quot;: {
+        &quot;attributes&quot;: {
+            &quot;accident_id&quot;: 201700000001,
+            &quot;catr&quot;: 3,
+            &quot;circ&quot;: 2,
+            &quot;infra&quot;: null,
+            &quot;nbv&quot;: 2,
+            &quot;plan&quot;: 1,
+            &quot;pr&quot;: null,
+            &quot;pr1&quot;: null,
+            &quot;prof&quot;: 1,
+            &quot;situ&quot;: 1,
+            &quot;surf&quot;: 1,
+            &quot;voie&quot;: 39,
+            &quot;vosp&quot;: 2
+        },
+        &quot;id&quot;: 1,
+        &quot;links&quot;: {
+            &quot;self&quot;: &quot;/lieu/1&quot;
+        },
+        &quot;relationships&quot;: {
+            &quot;accident&quot;: {
+                &quot;links&quot;: {
+                    &quot;related&quot;: &quot;/lieu/1/accident&quot;,
+                    &quot;self&quot;: &quot;/lieu/1/relationships/accident&quot;
+                }
+            }
+        },
+        &quot;type&quot;: &quot;lieu&quot;
+    },
+    &quot;jsonapi&quot;: {
+        &quot;version&quot;: &quot;1.0&quot;
+    },
+    &quot;links&quot;: {
+        &quot;self&quot;: &quot;/lieu/1&quot;
+    }
+}
+</code></pre>
+
+    <h2><a id="The_full_list_of_endpoints_471"></a>The Full List Of Endpoints</h2>
+    <blockquote>
+      <p>Note: The api supports only <code>GET</code> requests.</p>
+    </blockquote>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Endpoint</th>
+          <th>Description</th>
+          <th>Parameter</th>
+          <th>Parameter type</th>
+          <th>Returned Resource Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>/accident</td>
+          <td>Get list of accidents.</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Accident</td>
+        </tr>
+        <tr>
+          <td>/usager</td>
+          <td>Get list of victims.</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Usager</td>
+        </tr>
+        <tr>
+          <td>/lieu</td>
+          <td>Get list of accident locations.</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Lieu</td>
+        </tr>
+        <tr>
+          <td>/departement</td>
+          <td>Get the list of France’s departement</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Departement</td>
+        </tr>
+        <tr>
+          <td>/vehicule</td>
+          <td>Get list of vehicles involved in accidents</td>
+          <td>-</td>
+          <td>-</td>
+          <td>Vehicule</td>
+        </tr>
+        <tr>
+          <td>/accident/{id:int}</td>
+          <td>GET the accident by id.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Accident</td>
+        </tr>
+        <tr>
+          <td>/usager/{id:int}/accident</td>
+          <td>Get the accident in wich the person was involved.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Accident</td>
+        </tr>
+        <tr>
+          <td>/lieu/{id:int}/accident</td>
+          <td>Get the accident that occured in the location.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Accident</td>
+        </tr>
+        <tr>
+          <td>/vehicule/{id:int}/accident</td>
+          <td>Get the accident the vehicle was involved in.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Accident</td>
+        </tr>
+        <tr>
+          <td>/lieu/{id:int}</td>
+          <td>Get the location by id.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Lieu</td>
+        </tr>
+        <tr>
+          <td>/accident/{id:int}/lieu</td>
+          <td>Get the location of the accident.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Lieu</td>
+        </tr>
+        <tr>
+          <td>/accident/{id:int}/usager</td>
+          <td>Get the victims of the accident.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Usager</td>
+        </tr>
+        <tr>
+          <td>/usager/{id:int}</td>
+          <td>Get the victim by id.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Usager</td>
+        </tr>
+        <tr>
+          <td>/accident/{id:int}/vehicule</td>
+          <td>Get the vehicles involved in the accident.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Vehicule</td>
+        </tr>
+        <tr>
+          <td>/vehicule/{id:int}</td>
+          <td>Get the vehicle by id.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>Vehicule</td>
+        </tr>
+        <tr>
+          <td>/departement/{string:id}</td>
+          <td>Get the departement by id (see codes insee).</td>
+          <td>id</td>
+          <td>str</td>
+          <td>Departement</td>
+        </tr>
+        <tr>
+          <td>/accident/{int:id}/relationships/usager</td>
+          <td>Get the relationship between accident and usager.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>AccidentRelationship</td>
+        </tr>
+        <tr>
+          <td>/accident/{int:id}/relationships/lieu</td>
+          <td>Get the relationship between accident and lieu.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>AccidentRelationship</td>
+        </tr>
+        <tr>
+          <td>/accident/{int:id}/relationships/vehicule</td>
+          <td>Get the relationship between accident and vehicule.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>AccidentRelationship</td>
+        </tr>
+        <tr>
+          <td>/lieu/{int:id}/relationships/accident</td>
+          <td>Get the relationship between lieu and accident.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>LieuRelationship</td>
+        </tr>
+        <tr>
+          <td>/usager/{int:id}/relationships/accident</td>
+          <td>Get the relationship between usager and accident.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>UsagerRelationship</td>
+        </tr>
+        <tr>
+          <td>/departement/{string:id}/relationships/accident</td>
+          <td>Get the relationship between the departement and the accident resources.</td>
+          <td>id</td>
+          <td>str</td>
+          <td>DepartementRelationship</td>
+        </tr>
+        <tr>
+          <td>/vehicule/{int:id}/relationships/accident</td>
+          <td>Get the relationship between vehicule and accident.</td>
+          <td>id</td>
+          <td>int</td>
+          <td>VehiculeRelationship</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2><a id="Querying_and_Filtering_the_data_503"></a>Querying and Filtering the data</h2>
+    <p>In this section we will show you a couple of examples of querying and filtering the data. The examples are meant to provide an insight on the capabilities of the api. If you want to find out more about query structure take a look <a
+        href="https://flask-rest-jsonapi.readthedocs.io/en/latest/filtering.html">here</a> and on the JSON API <a href="https://jsonapi.org/">spec page</a>.</p>
+    <h4>Query Exemples</h4>
+    <h5>All acidents where there is at least one person born in 1973</h5>
+    <pre><code>$ http GET localhost:5002/accident filter=='[
+    {&quot;name&quot;: &quot;usager&quot;,
+     &quot;op&quot;: &quot;any&quot;,
+     &quot;val&quot;: {
+        &quot;name&quot;:&quot;an_nais&quot;,
+        &quot;op&quot;:&quot;eq&quot;,
+        &quot;val&quot;:&quot;1973&quot;
+        }
+    }
+    ]' include=='usager'
+
+</code></pre>
+
+    <h5>The persons born in 1973 involved in an accident with a heavy-duty-vehicle</h5>
+    <pre><code>$ http GET localhost:5002/usager filter=='[{&quot;name&quot;: &quot;an_nais&quot;, &quot;op&quot;: &quot;eq&quot;, &quot;val&quot;: &quot;1973&quot;}, {&quot;name&quot;: &quot;accident&quot;, &quot;op&quot;: &quot;has&quot;, &quot;val&quot;: {&quot;name&quot;: &quot;vehicule&quot;, &quot;op&quot;: &quot;any&quot;, &quot;val&quot;: {&quot;name&quot;: &quot;catv&quot;, &quot;op&quot;:&quot;eq&quot;, &quot;val&quot;: &quot;14&quot;}}}]' include=='accident.vehicule,accident'
+</code></pre>
+    <h2>Resources</h2>
+    <h3>Accident</h3>
+    <p>Accident resource contains some key data related to the event.</p>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td>integer</td>
+          <td>A unique number attributed to the event.</td>
+        </tr>
+        <tr>
+          <td>agg</td>
+          <td>integer</td>
+          <td>Localisation type.</td>
+        </tr>
+        <tr>
+          <td>int</td>
+          <td>integer</td>
+          <td>Intersection type.</td>
+        </tr>
+        <tr>
+          <td>atm</td>
+          <td>integer</td>
+          <td>Weather conditions.</td>
+        </tr>
+        <tr>
+          <td>col</td>
+          <td>integer</td>
+          <td>Colision type.</td>
+        </tr>
+        <tr>
+          <td>adr</td>
+          <td>string</td>
+          <td>Address.</td>
+        </tr>
+        <tr>
+          <td>gps</td>
+          <td>string</td>
+          <td>Region descriptor.</td>
+        </tr>
+        <tr>
+          <td>lat</td>
+          <td>number</td>
+          <td>Latitude.</td>
+        </tr>
+        <tr>
+          <td>long</td>
+          <td>number</td>
+          <td>Longitude.</td>
+        </tr>
+        <tr>
+          <td>date</td>
+          <td>date-time</td>
+          <td>The time the accident occured.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Vehicule</h3>
+    <p>Vehicule resource contains details on involved vehicles.</p>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td>integer</td>
+          <td>A unique id.</td>
+        </tr>
+        <tr>
+          <td>accident_id</td>
+          <td>integer</td>
+          <td>A reference to the accident.</td>
+        </tr>
+        <tr>
+          <td>senc</td>
+          <td>integer</td>
+          <td>Moving direction.</td>
+        </tr>
+        <tr>
+          <td>catv</td>
+          <td>integer</td>
+          <td>Vehicle category.</td>
+        </tr>
+        <tr>
+          <td>obs</td>
+          <td>integer</td>
+          <td>Hit a fixed obstacle.</td>
+        </tr>
+        <tr>
+          <td>obsm</td>
+          <td>integer</td>
+          <td>Hit a moving obstacle.</td>
+        </tr>
+        <tr>
+          <td>choc</td>
+          <td>integer</td>
+          <td>Impact point.</td>
+        </tr>
+        <tr>
+          <td>manv</td>
+          <td>integer</td>
+          <td>Maneuver before the accident.</td>
+        </tr>
+        <tr>
+          <td>occutc</td>
+          <td>integer</td>
+          <td>Number of people in public transport.</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Usager</h3>
+    <p>Usager describes the individuals involved in the accident.</p>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td>integer</td>
+          <td>A unique id.</td>
+        </tr>
+        <tr>
+          <td>accident_id</td>
+          <td>integer</td>
+          <td>A reference to the accident</td>
+        </tr>
+        <tr>
+          <td>num_veh</td>
+          <td>string</td>
+          <td>A vehicle identifier</td>
+        </tr>
+        <tr>
+          <td>place</td>
+          <td>integer</td>
+          <td>The place occupied by the person in the vehicle.</td>
+        </tr>
+        <tr>
+          <td>catu</td>
+          <td>integer</td>
+          <td>Category.</td>
+        </tr>
+        <tr>
+          <td>grav</td>
+          <td>integer</td>
+          <td>Accident Gravity</td>
+        </tr>
+        <tr>
+          <td>sexe</td>
+          <td>integer</td>
+          <td>Biological sex.</td>
+        </tr>
+        <tr>
+          <td>an_nais</td>
+          <td>integer</td>
+          <td>birth year</td>
+        </tr>
+        <tr>
+          <td>trajet</td>
+          <td>integer</td>
+          <td>itinerary</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Lieu</h3>
+    <p>Lieu describes the road type and location of the accident.</p>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td>integer</td>
+          <td>A unique id.</td>
+        </tr>
+        <tr>
+          <td>accident_id</td>
+          <td>integer</td>
+          <td>A reference to the accident.</td>
+        </tr>
+        <tr>
+          <td>catr</td>
+          <td>integer</td>
+          <td>Road type.</td>
+        </tr>
+        <tr>
+          <td>voie</td>
+          <td>integer</td>
+          <td>Road number.</td>
+        </tr>
+        <tr>
+          <td>circ</td>
+          <td>integer</td>
+          <td>Traffic type.</td>
+        </tr>
+        <tr>
+          <td>nbv</td>
+          <td>integer</td>
+          <td>Number of lanes</td>
+        </tr>
+        <tr>
+          <td>vosp</td>
+          <td>integer</td>
+          <td>Signals the existance of a reserved lane.</td>
+        </tr>
+        <tr>
+          <td>prof</td>
+          <td>integer</td>
+          <td>Road gradient.</td>
+        </tr>
+        <tr>
+          <td>pr</td>
+          <td>integer</td>
+          <td>Attached milestone.</td>
+        </tr>
+        <tr>
+          <td>pr1</td>
+          <td>integer</td>
+          <td>Distance to the milestone (in meters).</td>
+        </tr>
+        <tr>
+          <td>plan</td>
+          <td>integer</td>
+          <td>Trajectory.</td>
+        </tr>
+        <tr>
+          <td>surf</td>
+          <td>integer</td>
+          <td>The ground state.</td>
+        </tr>
+        <tr>
+          <td>infra</td>
+          <td>integer</td>
+          <td>The presence of an infrastructure</td>
+        </tr>
+        <tr>
+          <td>situ</td>
+          <td>integer</td>
+          <td>Accident location.</td>
+        </tr>
+      </tbody>
+    </table>
+    <blockquote>
+      <p><strong>Note:</strong> Some resource attributes are encoded as integers. To find the <strong>meaning</strong> of the values read the the <a href="decode.json">decode.json</a> file.</p>
+    </blockquote>
+  </div>
+</div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlighting();
+</script>
+{% endblock %}
