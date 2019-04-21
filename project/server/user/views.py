@@ -71,9 +71,11 @@ def signin():
 
 
 @user_blueprint.route("/signout")
+@flask_login.login_required
 def signout():
     flask_login.logout_user()
-    return "Logged out"
+    flash('Disconnected successfully.')
+    return render_template('login.html', signup=False)
 
 
 @user_blueprint.route("/docs")
