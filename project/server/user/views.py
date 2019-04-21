@@ -13,7 +13,7 @@ user_blueprint = Blueprint("user", __name__)
 # Configure login_manager
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(user_id)
 
 
 @user_blueprint.route("/")
@@ -38,7 +38,6 @@ def auth():
 
         user = User(email=email)
 
-
         if password == confirmPassword:
             user.set_password(password=password)
             db.session.add(user)
@@ -51,6 +50,7 @@ def auth():
     else:
         flash('User already exists')
         return render_template('login.html', signup=True)
+
 
 
 @user_blueprint.route("/signin", methods=["POST"])
@@ -75,10 +75,10 @@ def signout():
     flask_login.logout_user()
     return "Logged out"
 
+
 @user_blueprint.route("/docs")
 def docs():
     return render_template("docpage.html")
-
 
 
 @user_blueprint.route("/aboutpage")
