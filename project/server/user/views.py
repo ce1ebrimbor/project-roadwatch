@@ -2,10 +2,11 @@
 
 import flask_login
 
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from project.server.models import User
 from project.server import db
 from project.server import login_manager
+from flask_login import current_user
 from validate_email import validate_email
 
 user_blueprint = Blueprint("user", __name__)
@@ -18,7 +19,10 @@ def load_user(user_id):
 
 @user_blueprint.route("/")
 def home():
-    return render_template("login.html", signup=True)
+    if current_user.is_authenticated:
+        return redirect(url_for("user.docs"))
+    else:
+        return render_template("login.html", signup=True)
 
 
 @user_blueprint.route("/signup", methods=["POST"])
@@ -60,14 +64,14 @@ def signin():
     user = User.query.filter_by(email=email).first()
 
     if user is None:
-        return "Wrong username or password"
+        flash("Wrong username or password")
     else:
         if user.check_password(password):
             flask_login.login_user(user)
-            return "Logged in"
         else:
-            return "Wrong username or password"
-    return "Hello"
+            flash("Wrong username or password")
+    return redirect(url_for("user.home"))
+
 
 
 @user_blueprint.route("/signout")
@@ -75,7 +79,7 @@ def signin():
 def signout():
     flask_login.logout_user()
     flash('Disconnected successfully.')
-    return render_template('login.html', signup=False)
+    return redirect(url_for("user.home"))
 
 
 @user_blueprint.route("/docs")
