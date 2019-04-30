@@ -21,6 +21,16 @@
         "9": "Autre Intersection"
       }
     },
+    "lum": {
+       "nom": "Lumière",
+       "values": {
+           "1" : "Plein jour",
+           "2" : "Crépuscule ou aube",
+           "3" : "Nuit sans éclairage public",
+           "4" : "Nuit avec éclairage public non allumé",
+           "5" : "Nuit avec éclairage public allumé"
+        }
+     },
     "atm": {
       "nom": "Conditions atmospériques",
       "values": {
@@ -33,6 +43,7 @@
         "7": "Temps éblouissant",
         "8": "Temps couvert",
         "9": "Autre"
+
       }
     },
     "col": {
@@ -276,17 +287,17 @@
         "1": "Masculin",
         "2": "Féminin"
       }
-    }
-  },
-  "trajet": {
-    "nom": "Motif du déplacement au moment de l’accident",
-    "values": {
-      "1": "Domicile – travail",
-      "2": "Domicile – école",
-      "3": "Courses – achats",
-      "4": "Utilisation professionnelle",
-      "5": "Promenade – loisirs",
-      "9": "Autre"
-    }
+    },
+      "trajet": {
+        "nom": "Motif du déplacement au moment de l’accident",
+        "values": {
+          "1": "Domicile – travail",
+          "2": "Domicile – école",
+          "3": "Courses – achats",
+          "4": "Utilisation professionnelle",
+          "5": "Promenade – loisirs",
+          "9": "Autre"
+        }
+      }
   }
 }

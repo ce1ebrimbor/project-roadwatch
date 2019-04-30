@@ -2,14 +2,14 @@
 
 
 import unittest
-
+import sys
 import coverage
 
 from flask.cli import FlaskGroup
 
 from project.server import create_app, db
+from project.server.models import *
 import subprocess
-import sys
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
@@ -46,7 +46,10 @@ def drop_db():
 @cli.command()
 def create_data():
     """Creates sample data."""
-    pass
+    a = Accident(id=1,lum=0, agg=1, int=1, atm=1, col=1,
+                 adr="hello", comm="59477", gps="M", dep="590", lat=59.0, long=0.0, date="2019-01-01")
+    db.session.add(a)
+    db.session.commit()
 
 
 @cli.command()

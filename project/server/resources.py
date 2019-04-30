@@ -6,7 +6,7 @@ from marshmallow_jsonapi.flask import Schema, Relationship
 from marshmallow_jsonapi import fields
 from sqlalchemy.orm.exc import NoResultFound
 
-from project.server.models import db
+from project.server import db
 from project.server.models import Accident, Lieu, Usager, Vehicule, Departement
 
 
