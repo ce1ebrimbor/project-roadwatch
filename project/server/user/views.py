@@ -1,59 +1,87 @@
 # project/server/user/views.py
 
+import flask_login
 
-from flask import render_template, Blueprint, url_for, redirect, flash, request
-from flask_login import login_user, logout_user, login_required
-
-from project.server import bcrypt, db
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from project.server.models import User
-from project.server.user.forms import LoginForm, RegisterForm
-
+from project.server import db
+from project.server import login_manager
+from flask_login import current_user
+from validate_email import validate_email
 
 user_blueprint = Blueprint("user", __name__)
 
 
-@user_blueprint.route("/register", methods=["GET", "POST"])
-def register():
-    form = RegisterForm(request.form)
-    if form.validate_on_submit():
-        user = User(email=form.email.data, password=form.password.data)
-        db.session.add(user)
-        db.session.commit()
-
-        login_user(user)
-
-        flash("Thank you for registering.", "success")
-        return redirect(url_for("user.members"))
-
-    return render_template("user/register.html", form=form)
+@user_blueprint.route("/")
+def home():
+    if current_user.is_authenticated:
+        return redirect(url_for("user.docs"))
+    else:
+        return render_template("login.html", signup=False)
 
 
-@user_blueprint.route("/login", methods=["GET", "POST"])
-def login():
-    form = LoginForm(request.form)
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(
-            user.password, request.form["password"]
-        ):
-            login_user(user)
-            flash("You are logged in. Welcome!", "success")
-            return redirect(url_for("user.members"))
+@user_blueprint.route("/signup", methods=["POST"])
+def auth():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    confirmPassword = request.form.get('confirmPassword')
+
+    user = User.query.filter_by(email=email).first()
+
+    if user is None:
+        is_valid = validate_email(email)
+
+        if not is_valid:
+            flash('Invalid email')
+            return render_template("login.html", signup=True)
+
+        user = User(email=email)
+
+        if password == confirmPassword:
+            user.set_password(password=password)
+            db.session.add(user)
+            db.session.commit()
+            flash('Your registration was successfull, you can sign in now.')
+            return render_template("login.html", signup=False)
         else:
-            flash("Invalid email and/or password.", "danger")
-            return render_template("user/login.html", form=form)
-    return render_template("user/login.html", title="Please Login", form=form)
+            flash('Passwords do not match.')
+            return render_template("login.html", signup=True)
+    else:
+        flash('User already exists')
+        return render_template('login.html', signup=True)
 
 
-@user_blueprint.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    flash("You were logged out. Bye!", "success")
-    return redirect(url_for("main.home"))
+
+@user_blueprint.route("/signin", methods=["POST"])
+def signin():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    user = User.query.filter_by(email=email).first()
+
+    if user is None:
+        flash("Wrong username or password")
+    else:
+        if user.check_password(password):
+            flask_login.login_user(user)
+        else:
+            flash("Wrong username or password")
+    return redirect(url_for("user.home"))
 
 
-@user_blueprint.route("/members")
-@login_required
-def members():
-    return render_template("user/members.html")
+
+@user_blueprint.route("/signout")
+@flask_login.login_required
+def signout():
+    flask_login.logout_user()
+    flash('Disconnected successfully.')
+    return redirect(url_for("user.home"))
+
+
+@user_blueprint.route("/docs")
+def docs():
+    return render_template("docpage.html")
+
+
+@user_blueprint.route("/aboutpage")
+def about():
+    return render_template("about.html")

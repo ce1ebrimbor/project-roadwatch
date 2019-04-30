@@ -5,18 +5,12 @@ import os
 
 from flask import Flask, render_template
 from flask_login import LoginManager
-from flask_bcrypt import Bcrypt
-from flask_debugtoolbar import DebugToolbarExtension
-from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 
 # instantiate the extensions
 login_manager = LoginManager()
-bcrypt = Bcrypt()
-toolbar = DebugToolbarExtension()
-bootstrap = Bootstrap()
 db = SQLAlchemy()
 migrate = Migrate()
 
@@ -38,9 +32,6 @@ def create_app(script_info=None):
 
     # set up extensions
     login_manager.init_app(app)
-    bcrypt.init_app(app)
-    toolbar.init_app(app)
-    bootstrap.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
 
@@ -55,7 +46,7 @@ def create_app(script_info=None):
     from project.server.models import User
 
     login_manager.login_view = "user.login"
-    login_manager.login_message_category = "danger"
+    # login_manager.login_message_category = "danger"
 
     @login_manager.user_loader
     def load_user(user_id):
