@@ -2,14 +2,15 @@
 
 
 import unittest
-import sys
+
 import coverage
 
 from flask.cli import FlaskGroup
 
 from project.server import create_app, db
-from project.server.models import *
+from project.server.models import User
 import subprocess
+import sys
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
@@ -20,7 +21,6 @@ COV = coverage.coverage(
     include="project/*",
     omit=[
         "project/tests/*",
-        "project/server/resources.py",
         "project/server/config.py",
         "project/server/*/__init__.py",
     ],
@@ -41,15 +41,17 @@ def drop_db():
     db.drop_all()
 
 
+@cli.command()
+def create_admin():
+    """Creates the admin user."""
+    db.session.add(User(email="ad@min.com", password="admin", admin=True))
+    db.session.commit()
 
 
 @cli.command()
 def create_data():
     """Creates sample data."""
-    a = Accident(id=1,lum=0, agg=1, int=1, atm=1, col=1,
-                 adr="hello", comm="59477", gps="M", dep="590", lat=59.0, long=0.0, date="2019-01-01")
-    db.session.add(a)
-    db.session.commit()
+    pass
 
 
 @cli.command()
