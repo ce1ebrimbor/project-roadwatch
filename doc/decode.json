@@ -1,0 +1,303 @@
+{
+  "caracteristiques": {
+    "agg": {
+      "nom": "Localisation",
+      "values": {
+        "1": "Hors Agglomération",
+        "2": "En Agglomeration"
+      }
+    },
+    "int": {
+      "nom": "Intersection",
+      "values": {
+        "1": "Hors Intersection",
+        "2": "Intersection en X",
+        "3": "Intersection en T",
+        "4": "Intersection en X",
+        "5": "Intersection à plus de 4 branches",
+        "6": "Giratoire",
+        "7": "Place",
+        "8": "Passage à niveau",
+        "9": "Autre Intersection"
+      }
+    },
+    "lum": {
+       "nom": "Lumière",
+       "values": {
+           "1" : "Plein jour",
+           "2" : "Crépuscule ou aube",
+           "3" : "Nuit sans éclairage public",
+           "4" : "Nuit avec éclairage public non allumé",
+           "5" : "Nuit avec éclairage public allumé"
+        }
+     },
+    "atm": {
+      "nom": "Conditions atmospériques",
+      "values": {
+        "1": "Normale",
+        "2": "Pluie légère",
+        "3": "Pluie forte",
+        "4": "Neige - grêle",
+        "5": "Brouillard - fumée",
+        "6": "Vent fort - tempête",
+        "7": "Temps éblouissant",
+        "8": "Temps couvert",
+        "9": "Autre"
+
+      }
+    },
+    "col": {
+      "nom": "Type de collision",
+      "values": {
+        "1": "Deux véhicules - frontale",
+        "2": "Deux véhicules - par l'arrière",
+        "3": "Deux véhicules - par le coté",
+        "4": "Trois véhicules et plus - eb chaîne",
+        "5": "Trois véhicules et plus - collision multiples",
+        "6": "Autre collision",
+        "7": "Sans collision"
+      }
+    },
+    "gps": {
+      "nom": "Codage GPS: 1 caractère indicateur de provenance",
+      "values": {
+        "M": "Métropole",
+        "A": "Antilles",
+        "G": "Guyane",
+        "R": "Réunion",
+        "Y": "Mayotte"
+      }
+    }
+  },
+  "lieux": {
+    "catr": {
+      "nom": "Catégorie de route",
+      "values": {
+        "1": "Autoroute",
+        "2": "Route Nationale",
+        "3": "Route Départementale",
+        "4": "Voie Communale",
+        "5": "Hors réseau public",
+        "6": "Parc de stationnement ouvert à la circulation publique",
+        "9": "autre"
+      }
+    },
+    "circ": {
+      "nom": "Régime de circulation",
+      "values": {
+        "1": "A sens unique",
+        "2": "Bidirectionnelle",
+        "3": "A chaussées séparées",
+        "4": "Avec voies d'affectation variable"
+      }
+    },
+    "vosp": {
+      "nom": "Signale l'existance d'une voie réservée, indépendamment du fait que l'accident ait lieu ou non sur cette voie",
+      "values": {
+        "1": "Piste cyclable",
+        "2": "Banque cyclable",
+        "3": "Voie reservée"
+      }
+    },
+    "prof": {
+      "nom": "Profil en long décrit la déclivité de la route a l'entroit de l'accident",
+      "values": {
+        "1": "Plat",
+        "2": "Pente",
+        "3": "Somment de côte",
+        "4": "Bas de côte"
+      }
+    },
+    "plan": {
+      "nom": "Tracé en plan",
+      "values": {
+        "1": "Partie rectiligne",
+        "2": "En courbe à gauche",
+        "3": "En courbe à droite",
+        "4": "En 'S'"
+      }
+    },
+    "surf": {
+      "nom": "Etat de la surface",
+      "values": {
+        "1": "Normale",
+        "2": "Mouillé",
+        "3": "Flaques",
+        "4": "Inondée",
+        "5": "Enneigée",
+        "6": "boue",
+        "7": "verglacée",
+        "8": "corps gras - huile",
+        "9": "autre"
+      }
+    },
+    "infra": {
+      "nom": "Aménagement - Infrastructure",
+      "values": {
+        "1": "Souterrain - tunnel",
+        "2": "Pont - autopont",
+        "3": "Bretelle d'échangeur ou de raccordement",
+        "4": "Voie ferée",
+        "5": "Carrefour aménagé",
+        "6": "Zone piéttonale",
+        "7": "Zone de péage"
+      }
+    },
+    "situ":{
+      "nom": "Situation de l'accident",
+      "values": {
+        "1": "Sur chaussée",
+        "2": "Sur bande d'arrêt d'urgence",
+        "3": "Sur accotement",
+        "4": "Sur trottoir",
+        "5": "Sur piste cyclable"
+      }
+    }
+  },
+  "véhicules": {
+    "senc": {
+      "nom": "Sens de circulation",
+      "values": {
+        "1": "PK ou PR ou numéro d’adresse postale croissant",
+        "2": "PK ou PR ou numéro d’adresse postale décroissant"
+      }
+    },
+    "catv": {
+      "nom": "Catégorie du véhicule",
+      "vals": {
+        "1": "Bicyclette",
+        "2": "Cyclomoteur < 50cm3",
+        "3": "Voiturette (Quadricycle à moteur carrossé) (anciennement 'voiturette ou tricycle à moteur')",
+        "4": "Référence plus utilisée depuis 2006 (scooter immatriculé)",
+        "5": "Référence plus utilisée depuis 2006 (motocyclette)",
+        "6": "Référence plus utilisée depuis 2006 (side-car)",
+        "7": "VL seul",
+        "8": "Catégorie plus utilisée (VL + caravane)",
+        "9": "Catégorie plus utilisée (VL + remorque)",
+        "10": "VU seul 1,5T <= PTAC <= 3,5T avec ou sans remorque (anciennement VU seul 1,5T <= PTAC <=3,5T)",
+        "11": "Référence plus utilisée depuis 2006 (VU (10) + caravane)",
+        "12": "Référence plus utilisée depuis 2006 (VU (10) + remorque)",
+        "13": "PL seul 3,5T <PTCA <= 7,5T",
+        "14": "PL seul > 7,5T",
+        "15": "PL > 3,5T + remorque",
+        "16": "Tracteur routier seul",
+        "17": "Tracteur routier + semi-remorque",
+        "18": "Référence plus utilisée depuis 2006 (transport en commun)",
+        "19": "Référence plus utilisée depuis 2006 (tramway)",
+        "20": "Engin spécial",
+        "21": "Tracteur agricole",
+        "30": "Scooter < 50 cm3",
+        "31": "Motocyclette > 50 cm3 et <= 125 cm3",
+        "32": "Scooter > 50 cm3 et <= 125 cm3",
+        "33": "Motocyclette > 125 cm3",
+        "34": "Scooter > 125 cm3",
+        "35": "Quad léger <= 50 cm3 (Quadricycle à moteur non carrossé)",
+        "36": "Quad lourd > 50 cm3 (Quadricycle à moteur non carrossé)",
+        "37": "Autobus",
+        "38": "Autocar",
+        "39": "Train",
+        "40": "Tramway",
+        "99": "Autre véhicule"
+      }
+  },
+  "obs": {
+    "nom": "Obstacle fixe heurté",
+    "values": {
+      "1": "Véhicule en stationnement",
+      "2": "Arbre",
+      "3": "Glissière métallique",
+      "4": "Glissière béton",
+      "5": "Autre glissière",
+      "6": "Bâtiment, mur, pile de pont",
+      "7": "Support de signalisation verticale ou poste d’appel d’urgence",
+      "8": "Poteau",
+      "9": "Mobilier urbain",
+      "8": "Poteau",
+      "10":  "Parapet",
+      "11":  "Ilot, refuge, borne haute",
+      "12":  "Bordure de trottoir",
+      "13":  "Fossé, talus, paroi rocheuse",
+      "14":  "Autre obstacle fixe sur chaussée",
+      "15":  "Autre obstacle fixe sur trottoir ou accotement",
+      "16":  "Sortie de chaussée sans obstacle"
+    }
+  },
+  "obsm": {
+    "nom": "Obstacle mobile heurté",
+    "values": {
+      "1": "Piéton",
+      "2": "Véhicule",
+      "4": "Véhicule sur rail",
+      "5": "Animal domestique",
+      "6": "Animal sauvage",
+      "9": "Autre"
+    }
+  },
+  "manv": {
+    "nom": "Manœuvre principale avant l’accident",
+    "values": {
+      "1": "Sans changement de direction",
+      "2": "Même sens, même file",
+      "3": "Entre 2 files",
+      "4": "En marche arrière",
+      "5": "A contresens",
+      "6": "En franchissant le terre-plein central",
+      "7": "Dans le couloir bus, dans le même sens",
+      "8": "Dans le couloir bus, dans le sens inverse",
+      "9": "En s’insérant",
+      "10": "En faisant demi-tour sur la chaussée",
+      "11": "Changeant de file - A gauche",
+      "12": "Changeant de file - A droite",
+      "13": "Déporté - A gauche",
+      "14": "Déporté - A droite",
+      "15": "Tournant - A gauche",
+      "16": "Tournant - A droite",
+      "17": "Dépassant - A gauche",
+      "18": "Dépassant- A droite",
+      "19": "Traversant la chaussée",
+      "20": "Manœuvre de stationnement",
+      "21": "Manœuvre d’évitement",
+      "22": "Ouverture de porte",
+      "23": "Arrêté (hors stationnement)",
+      "24": "En stationnement (avec occupants)"
+    }
+  },
+  "usagers": {
+    "catu": {
+      "nom": "Catégorie d'usager",
+      "values": {
+        "1": "Conducteur",
+        "2": "Passager",
+        "3": "Piéton",
+        "4": "Piéton en roller ou en trottinette"
+      }
+    },
+    "grav": {
+      "nom": "Gravité de l'accident : Les usagers accidentés sont classés en trois catégories de victimes plus les indemnes ",
+      "values": {
+        "1": "Indemne",
+        "2": "Tué",
+        "3": "Blessé hospitalisé",
+        "4": "Blessé léger"
+      }
+    },
+    "sexe": {
+      "nom": "Sexe de l'usager",
+      "values": {
+        "1": "Masculin",
+        "2": "Féminin"
+      }
+    },
+      "trajet": {
+        "nom": "Motif du déplacement au moment de l’accident",
+        "values": {
+          "1": "Domicile – travail",
+          "2": "Domicile – école",
+          "3": "Courses – achats",
+          "4": "Utilisation professionnelle",
+          "5": "Promenade – loisirs",
+          "9": "Autre"
+        }
+      }
+  }
+}
