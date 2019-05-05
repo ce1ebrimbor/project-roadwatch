@@ -56,11 +56,16 @@ def create_admin():
 @cli.command()
 def create_data():
     """Creates sample data."""
+    print('LOADING DATA FILES ...')
     populate_departements()
+    db.session.commit()
     populate_accidents()
-    populate_lieux()
+    db.session.commit()
     populate_vehicules()
+    db.session.commit()
     populate_usagers()
+    db.session.commit()
+    populate_lieux()
     db.session.commit()
 
 

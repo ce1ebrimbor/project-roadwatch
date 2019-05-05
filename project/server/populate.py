@@ -13,25 +13,50 @@ from project.server.models import Vehicule
 from project.server.models import Usager
 
 import numpy as np
+import os
+
+app_settings = os.getenv(
+    "APP_SETTINGS", "project.server.config.ProductionConfig"
+)
+
+if app_settings == "project.server.config.ProductionConfig":
+    YEARS = ['2005', '2006', '2007', '2008', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+else:
+    YEARS = ['2017']
+
 
 def populate_accidents():
-    df = caracteristics.process(path='project/server/db/files/caracteristiques-2017.csv')
-    db.session.bulk_insert_mappings(Accident, df.to_dict(orient="records"))
+    for y in YEARS:
+        pt = 'project/server/db/files/caracteristiques_{}.csv'.format(y)
+        df = caracteristics.process(path=pt)
+        db.session.bulk_insert_mappings(Accident, df.to_dict(orient="records"))
+        print('[LOADED] {}'.format(pt))
 
 
 def populate_departements():
-    df = departements.process(path='project/server/db/files/geojson/departements-avec-outre-mer.geojson')
+    pt = 'project/server/db/files/geojson/departements-avec-outre-mer.geojson'
+    df = departements.process(path=pt)
     db.session.bulk_insert_mappings(Departement, df.to_dict(orient="records"))
-
+    print('[LOADED] {}'.format(pt))
 
 def populate_lieux():
-    df = lieux.process(path='project/server/db/files/lieux-2017.csv')
-    db.session.bulk_insert_mappings(Lieu, df.to_dict(orient="records"))
+    for y in YEARS:
+        pt = 'project/server/db/files/lieux_{}.csv'.format(y)
+        df = lieux.process(path=pt)
+        db.session.bulk_insert_mappings(Lieu, df.to_dict(orient="records"))
+        print('[LOADED] {}'.format(pt))
 
 def populate_vehicules():
-    df = vehicules.process(path='project/server/db/files/vehicules-2017.csv')
-    db.session.bulk_insert_mappings(Vehicule, df.to_dict(orient="records"))
+    for y in YEARS:
+        pt = 'project/server/db/files/vehicules_{}.csv'.format(y)
+        df = vehicules.process(path=pt)
+        db.session.bulk_insert_mappings(Vehicule, df.to_dict(orient="records"))
+        print('[LOADED] {}'.format(pt))
+
 
 def populate_usagers():
-    df = usagers.process(path='project/server/db/files/usagers-2017.csv')
-    db.session.bulk_insert_mappings(Usager, df.to_dict(orient="records"))
+    for y in YEARS:
+        pt = 'project/server/db/files/usagers_{}.csv'.format(y)
+        df = usagers.process(path=pt)
+        db.session.bulk_insert_mappings(Usager, df.to_dict(orient="records"))
+        print('[LOADED] {}'.format(pt))
