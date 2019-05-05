@@ -9,6 +9,11 @@ from flask.cli import FlaskGroup
 
 from project.server import create_app, db
 from project.server.models import User
+from project.server.populate import populate_departements
+from project.server.populate import populate_accidents
+from project.server.populate import populate_lieux
+from project.server.populate import populate_vehicules
+from project.server.populate import populate_usagers
 import subprocess
 import sys
 
@@ -51,7 +56,12 @@ def create_admin():
 @cli.command()
 def create_data():
     """Creates sample data."""
-    pass
+    populate_departements()
+    populate_accidents()
+    populate_lieux()
+    populate_vehicules()
+    populate_usagers()
+    db.session.commit()
 
 
 @cli.command()

@@ -11,7 +11,7 @@ from project.server import db
 
 class User(UserMixin, db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
 
@@ -28,16 +28,16 @@ class User(UserMixin, db.Model):
 # Api Models
 class Accident(db.Model):
 
-    id = db.Column('id', db.Integer(), primary_key=True)
+    id = db.Column('id', db.BigInteger(), primary_key=True)
     lum = db.Column('lum', db.Integer())
     agg = db.Column('agg', db.Integer())
     int = db.Column('int', db.Integer())
     atm = db.Column('atm', db.Integer())
     col = db.Column('col', db.Integer())
     adr = db.Column('adr', db.Text())
-    comm = db.Column('comm', db.String(5))
-    gps = db.Column('gps', db.String(1))
-    dep = db.Column('dep', db.String(3), db.ForeignKey('departement.id'))
+    comm = db.Column('comm', db.String(10))
+    gps = db.Column('gps', db.String(2))
+    dep = db.Column('dep', db.String(15), db.ForeignKey('departement.id'))
     lat = db.Column('lat', db.Float())
     long = db.Column('long', db.Float())
     date = db.Column('date', db.DateTime())
@@ -75,7 +75,7 @@ class Accident(db.Model):
 class Lieu(db.Model):
 
     id = db.Column('id', db.Integer(), primary_key=True )
-    accident_id = db.Column('accident_id', db.Integer(),
+    accident_id = db.Column('accident_id', db.BigInteger(),
                             db.ForeignKey('accident.id'))
     catr = db.Column('catr', db.Integer())
     voie = db.Column('voie', db.Integer())
@@ -114,7 +114,7 @@ class Lieu(db.Model):
 class Usager(db.Model):
 
     id = db.Column('id', db.Integer(), primary_key=True)
-    accident_id = db.Column('accident_id', db.Integer(),
+    accident_id = db.Column('accident_id', db.BigInteger(),
                             db.ForeignKey('accident.id'))
     place = db.Column('place', db.Integer())
     catu = db.Column('catu', db.Integer())
@@ -151,7 +151,7 @@ class Usager(db.Model):
 class Vehicule(db.Model):
 
     id = db.Column('id', db.Integer(), primary_key=True)
-    accident_id = db.Column('accident_id', db.Integer(),
+    accident_id = db.Column('accident_id', db.BigInteger(),
                             db.ForeignKey('accident.id'))
     senc = db.Column('senc', db.Integer())
     catv = db.Column('catv', db.Integer())
