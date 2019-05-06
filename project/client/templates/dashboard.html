@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mt-5 d-flex justify-content-center">
+  <div class="row">
+    <form action="{{ url_for('user.dashboardtk')}}">
+      <button type="submit" class="btn btn-outline-success btn-lg" >Generate Token</button>
+    </form>
+  </div>
+</div>
+{% if generated_token != None %}
+<div class="mt-5 d-flex justify-content-center">
+  <div class="row">
+    <p>New api key was created <span class="font-weight-bold">and it will be displayed only now: </span></p>
+  </div>
+</div>
+<div class="d-flex justify-content-center">
+  <div class="row">
+    <p><kbd>{{ generated_token }}</kbd></p>
+  </div>
+ {% endif %}
+</div>
+
+{% endblock %}

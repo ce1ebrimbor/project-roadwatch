@@ -12,7 +12,7 @@
   <!-- My CSS -->
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='main.css')}}">
   {% block css %}{% endblock %}
-  <title>Project Roadwatch - Sign In </title>
+  <title>Project Roadwatch API</title>
 </head>
 
 <body class="bg-light" data-spy="scroll" data-target="#toc">
@@ -45,7 +45,7 @@
           {% if current_user.is_authenticated %}
           <ul class="navbar-nav text-right">
             <li class="nav-item">
-              <a class="nav-link" href="#">Dashboard</a>
+              <a class="nav-link" href="{{ url_for('user.dashboard')}}">Dashboard</a>
             </li>
             <li class="nav-item">
               <a class="nav-link btn btn-dark btn-sm text-white" href="{{ url_for('user.signout')}}">SIGN OUT</a>

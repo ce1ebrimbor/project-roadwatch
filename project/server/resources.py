@@ -7,8 +7,7 @@ from marshmallow_jsonapi import fields
 from sqlalchemy.orm.exc import NoResultFound
 from project.server import db
 from project.server.models import Accident, Lieu, Usager, Vehicule, Departement
-
-
+from project.server.user.views import token_required
 # Logical Data abstraction
 class AccidentSchema(Schema):
     class Meta:
@@ -188,6 +187,7 @@ class UsagerList(ResourceList):
 
     schema = UsagerSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Usager,
                   'methods': {'query': query,
@@ -198,6 +198,7 @@ class UsagerList(ResourceList):
 class UsagerDetail(ResourceDetail):
     schema = UsagerSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Usager}
 
@@ -231,10 +232,12 @@ class AccidentList(ResourceList):
 
     schema = AccidentSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                 'model': Accident,
                 'methods': {'query': query,
                             'before_create_object': before_create_object}}
+
 
 class AccidentDetail(ResourceDetail):
 
@@ -321,6 +324,7 @@ class AccidentDetail(ResourceDetail):
 
     schema = AccidentSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Accident,
                   'methods': {'before_get_object': before_get_object}}
@@ -330,6 +334,7 @@ class AccidentDetail(ResourceDetail):
 class LieuList(ResourceList):
     schema = LieuSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session, 'model': Lieu}
 
 
@@ -354,6 +359,7 @@ class LieuDetail(ResourceDetail):
 
     schema = LieuSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Lieu,
                   'methods': {'before_get_object': before_get_object}}
@@ -388,6 +394,7 @@ class VehiculeList(ResourceList):
 
     schema = VehiculeSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                 'model': Vehicule,
                 'methods': {'query': query,
@@ -397,17 +404,20 @@ class VehiculeList(ResourceList):
 class VehiculeDetail(ResourceDetail):
     schema = VehiculeSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session, 'model': Vehicule}
 
 
 class DepartementDetail(ResourceDetail):
     schema = DepartementSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session, 'model': Departement}
 
 class DepartementList(ResourceList):
     schema = DepartementSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session, 'model': Departement}
 
 
@@ -415,6 +425,7 @@ class DepartementList(ResourceList):
 class AccidentRelationship(ResourceRelationship):
     schema = AccidentSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Accident}
 
@@ -422,6 +433,7 @@ class AccidentRelationship(ResourceRelationship):
 class LieuRelationship(ResourceRelationship):
     schema = LieuSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Lieu}
 
@@ -429,6 +441,7 @@ class LieuRelationship(ResourceRelationship):
 class UsagerRelationship(ResourceRelationship):
     schema = UsagerSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Usager}
 
@@ -436,11 +449,13 @@ class UsagerRelationship(ResourceRelationship):
 class VehiculeRelationship(ResourceRelationship):
     schema = VehiculeSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Vehicule}
 
 class DepartementRelationship(ResourceRelationship):
     schema = DepartementSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Departement }
