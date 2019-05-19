@@ -1,3 +1,8 @@
+// PROJECT ROADWATCH API  2019
+//
+// MEANING OF INTEGER ATTRIBUTES 
+//
+
 {
   "caracteristiques": {
     "agg": {
@@ -297,6 +302,71 @@
           "4": "Utilisation professionnelle",
           "5": "Promenade – loisirs",
           "9": "Autre"
+        }
+      },
+      "secu": {
+        "nom": "Équipement de sécurité",
+        "meta": "Encodé sur 2 valeurs differentes",
+        "values":{
+          "value1":{
+            "meta": "Existence d'un Équipement de securité",
+            "values":{
+              "1": "Ceinture",
+              "2": "Casque",
+              "3": "Dispositif enfants",
+              "4": "Equipement réfléchissant",
+              "9": "Autre"
+            }
+          },
+          "value2": {
+            "meta": "L’utilisation de l’Équipement de sécurité",
+            "values": {
+              "1": "Oui",
+              "2": "Non",
+              "3": "Non déterminable"
+            }
+          }
+        }
+      },
+      "locp":{
+        "nom": "Localisation du piéton",
+        "values": {
+          // Sur chaussée :
+          "1":"A + 50 m du passage piéton",
+          "2":"A – 50 m du passage piéton",
+          // Sur passage piéton :
+          "3":"Sans signalisation lumineuse",
+          "4":"Avec signalisation lumineuse",
+          // Divers :
+          "5":"Sur trottoir",
+          "6":"Sur accotement",
+          "7":"Sur refuge ou BAU",
+          "8":"Sur contre allée",
+        }
+
+      },
+      "actp": {
+        "nom": "Action du piéton",
+        "values": {
+          // Se déplaçant
+          "null/0": "Non renseigné ou sans objet",
+          "1": "Sens véhicule heurtant",
+          "2": "Sens inverse du véhicule",
+          // Divers
+          "3": "Traversant",
+          "4": "Masqué",
+          "5": "Jouant – courant",
+          "6": "Avec animal",
+          "9": "Autre"
+        }
+
+      },
+      "etatp": {
+        "nom": "La situation du piéton accidenté",
+        "values": {
+          "1":"Seul",
+          "2":"Accompagné",
+          "3":"En groupe"
         }
       }
   }
