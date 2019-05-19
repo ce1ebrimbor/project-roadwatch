@@ -8,7 +8,7 @@ class TestGetById(BaseTestCase):
 
     def __test_id(self, type, id, id_type="int"):
         with self.client:
-            response = self.client.get("/{0}/{1}".format(type, id))
+            response = self.client.get("/{0}/{1}".format(type, id), query_string={'token': self.token})
             self.assertIn(bytes("\"type\": \"{0}\"".format(type), 'utf-8'), response.data)
 
             if id_type != "string":
