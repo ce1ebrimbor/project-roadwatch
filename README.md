@@ -16,13 +16,9 @@ The api was implemented according to the [JSON:API 1.0](https://jsonapi.org/form
 For the api and resource documentation look [here](doc/api.md).
 
 
->**Note**:
-> The app and data structure is not definitive, and it is susceptible to be heavily modified before
-> the 1.0 version.
-
 ## Current State
 
-The actual version of the api is **1.0-alpha**. Currently the api is not fully documented nor secured.
+The actual version of the api is **1.0**.
 
 ## Authors
 

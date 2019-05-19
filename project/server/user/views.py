@@ -34,7 +34,7 @@ def auth():
         is_valid = validate_email(email)
 
         if not is_valid:
-            flash('Invalid email')
+            flash('Invalid email', 'danger')
             return render_template("login.html", signup=True)
 
         user = User(email=email)
@@ -43,13 +43,13 @@ def auth():
             user.set_password(password=password)
             db.session.add(user)
             db.session.commit()
-            flash('Your registration was successfull, you can sign in now.')
+            flash('Your registration was successfull, you can sign in now.', 'success')
             return render_template("login.html", signup=False)
         else:
-            flash('Passwords do not match.')
+            flash('Passwords do not match.', 'warning')
             return render_template("login.html", signup=True)
     else:
-        flash('User already exists')
+        flash('User already exists', 'warning')
         return render_template('login.html', signup=True)
 
 
@@ -61,12 +61,12 @@ def signin():
     user = User.query.filter_by(email=email).first()
 
     if user is None:
-        flash("Wrong username or password")
+        flash("Wrong username or password", "danger")
     else:
         if user.check_password(password):
             flask_login.login_user(user)
         else:
-            flash("Wrong username or password")
+            flash("Wrong username or password", "danger")
     return redirect(url_for("user.home"))
 
 
@@ -75,7 +75,7 @@ def signin():
 @flask_login.login_required
 def signout():
     flask_login.logout_user()
-    flash('Disconnected successfully.')
+    flash('Disconnected successfully.', 'success')
     return redirect(url_for("user.home"))
 
 
@@ -105,4 +105,3 @@ def dashboardtk():
                         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=365)},
                         current_app.config['SECRET_KEY'])
     return render_template("dashboard.html", generated_token=token.decode("utf-8"))
-
