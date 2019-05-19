@@ -9,7 +9,7 @@ class TestBaseCases(BaseTestCase):
 
     def test_accident_list(self):
         with self.client:
-            response = self.client.get("/accident", query_string={'token': self.token})
+            response = self.client.get("/api/v1/accident", query_string={'token': self.token})
             self.assertIn(b"\"type\": \"accident\"", response.data)
             self.assertIn(b"usager", response.data)
             self.assertIn(b"lieu", response.data)
@@ -18,7 +18,7 @@ class TestBaseCases(BaseTestCase):
 
     def test_usager_list(self):
         with self.client:
-            response = self.client.get("/usager", query_string={'token': self.token})
+            response = self.client.get("/api/v1/usager", query_string={'token': self.token})
             self.assertIn(b"\"type\": \"usager\"", response.data)
             self.assertIn(b"relationships", response.data)
             self.assertIn(b"accident", response.data)
@@ -26,7 +26,7 @@ class TestBaseCases(BaseTestCase):
 
     def test_lieu_list(self):
         with self.client:
-            response = self.client.get("/lieu", query_string={'token': self.token})
+            response = self.client.get("/api/v1/lieu", query_string={'token': self.token})
             self.assertIn(b"\"type\": \"lieu\"", response.data)
             self.assertIn(b"relationships", response.data)
             self.assertIn(b"accident", response.data)
@@ -34,7 +34,7 @@ class TestBaseCases(BaseTestCase):
 
     def test_vehicule_list(self):
         with self.client:
-            response = self.client.get("/vehicule", query_string={'token': self.token})
+            response = self.client.get("/api/v1/vehicule", query_string={'token': self.token})
             self.assertIn(b"\"type\": \"vehicule\"", response.data)
             self.assertIn(b"relationships", response.data)
             self.assertIn(b"accident", response.data)
@@ -42,7 +42,7 @@ class TestBaseCases(BaseTestCase):
 
     def test_department_list(self):
             with self.client:
-                response = self.client.get("/departement", query_string={'token': self.token})
+                response = self.client.get("/api/v1/departement", query_string={'token': self.token})
                 self.assertIn(b"\"type\": \"departement\"", response.data)
                 self.assertIn(b"relationships", response.data)
                 self.assertIn(b"accident", response.data)

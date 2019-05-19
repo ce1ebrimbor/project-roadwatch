@@ -12,8 +12,8 @@ API_ROUTES = [
         AccidentList,  # Resource manager
         'accident_list',  # View name 
         [
-            '/accident',  # Path list
-            '/departement/<string:id>/accident'
+            '/api/v1/accident',  # Path list
+            '/api/v1/departement/<string:id>/accident'
         ]
     ),
 
@@ -21,10 +21,10 @@ API_ROUTES = [
         AccidentDetail,
         'accident_detail',
         [
-            '/accident/<int:id>',
-            '/usager/<int:uid>/accident',
-            '/lieu/<int:lid>/accident',
-            '/vehicule/<int:vid>/accident',
+            '/api/v1/accident/<int:id>',
+            '/api/v1/usager/<int:uid>/accident',
+            '/api/v1/lieu/<int:lid>/accident',
+            '/api/v1/vehicule/<int:vid>/accident',
         ]
     ),
 
@@ -32,7 +32,7 @@ API_ROUTES = [
         AccidentRelationship,
         'accident_usagers',
         [
-            '/accident/<int:id>/relationships/usager'
+            '/api/v1/accident/<int:id>/relationships/usager'
         ]
     ),
 
@@ -40,7 +40,7 @@ API_ROUTES = [
         AccidentRelationship,
         'accident_lieu',
         [
-            '/accident/<int:id>/relationships/lieu'
+            '/api/v1/accident/<int:id>/relationships/lieu'
         ]
     ),
 
@@ -48,7 +48,7 @@ API_ROUTES = [
         AccidentRelationship,
         'accident_vehicule',
         [
-                '/accident/<int:id>/relationships/vehicule'
+                '/api/v1/accident/<int:id>/relationships/vehicule'
         ]
     ),
 
@@ -56,7 +56,7 @@ API_ROUTES = [
         LieuList,
         'lieu_list',
         [
-            '/lieu'
+            '/api/v1/lieu'
         ]
     ),
 
@@ -64,8 +64,8 @@ API_ROUTES = [
         LieuDetail,
         'lieu_detail',
         [
-            '/lieu/<int:id>',
-            '/accident/<int:aid>/lieu'
+            '/api/v1/lieu/<int:id>',
+            '/api/v1/accident/<int:aid>/lieu'
         ]
     ),
 
@@ -73,7 +73,7 @@ API_ROUTES = [
         LieuRelationship,
         'lieu_accident',
         [
-            '/lieu/<int:id>/relationships/accident'
+            '/api/v1/lieu/<int:id>/relationships/accident'
         ]
     ),
 
@@ -81,8 +81,8 @@ API_ROUTES = [
         UsagerList,
         'usager_list',
         [
-            '/usager',
-            '/accident/<int:id>/usager'
+            '/api/v1/usager',
+            '/api/v1/accident/<int:id>/usager'
         ]
     ),
 
@@ -90,7 +90,7 @@ API_ROUTES = [
         UsagerDetail,
         'usager_detail',
         [
-            '/usager/<int:id>'
+            '/api/v1/usager/<int:id>'
         ]
     ),
 
@@ -98,7 +98,7 @@ API_ROUTES = [
         UsagerRelationship,
         'usager_accident',
         [
-            '/usager/<int:id>/relationships/accident'
+            '/api/v1/usager/<int:id>/relationships/accident'
         ]
     ),
 
@@ -106,8 +106,8 @@ API_ROUTES = [
         VehiculeList,
         'vehicule_list',
         [
-            '/vehicule',
-            '/accident/<int:id>/vehicule'
+            '/api/v1/vehicule',
+            '/api/v1/accident/<int:id>/vehicule'
         ]
     ),
 
@@ -115,7 +115,7 @@ API_ROUTES = [
         VehiculeDetail,
         'vehicule_detail',
         [
-            '/vehicule/<int:id>'
+            '/api/v1/vehicule/<int:id>'
         ]
     ),
 
@@ -123,28 +123,28 @@ API_ROUTES = [
         VehiculeRelationship,
         'vehicule_accident',
         [
-            '/vehicule/<int:id>/relationships/accident'
+            '/api/v1/vehicule/<int:id>/relationships/accident'
         ]
     ),
     (
         DepartementList,
         'departement_list',
         [
-            '/departement'
+            '/api/v1/departement'
         ]
     ),
     (
         DepartementDetail,
         'departement_detail',
         [
-            '/departement/<string:id>'
+            '/api/v1/departement/<string:id>'
         ]
     ),
     (
         DepartementRelationship,
         'departement_accidents',
         [
-            '/departement/<string:id>/relationships/accident'
+            '/api/v1/departement/<string:id>/relationships/accident'
         ]
     )
 ]

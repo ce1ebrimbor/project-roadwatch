@@ -8,9 +8,9 @@ class TestRelationships(BaseTestCase):
 
     def __test_relationship(self, type, id, related_type):
         with self.client:
-            response = self.client.get("/{0}/{1}/relationships/{2}".format(type, id, related_type), query_string={'token': self.token})
+            response = self.client.get("/api/v1/{0}/{1}/relationships/{2}".format(type, id, related_type), query_string={'token': self.token})
             self.assertIn(bytes("\"type\": \"{0}\"".format(related_type), 'utf-8'), response.data)
-            self.assertIn(bytes("\"self\": \"/{0}/{1}/relationships/{2}\"".format(type, id, related_type), 'utf-8'), response.data)
+            self.assertIn(bytes("\"self\": \"/api/v1/{0}/{1}/relationships/{2}\"".format(type, id, related_type), 'utf-8'), response.data)
             self.assertEqual(response.status_code, 200)
 
 
