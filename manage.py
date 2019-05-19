@@ -6,7 +6,7 @@ import unittest
 import coverage
 
 from flask.cli import FlaskGroup
-
+from project.server.gunicornconfig import StandaloneApplication, options
 from project.server import create_app, db
 from project.server.models import User
 from project.server.populate import populate_departements
@@ -88,6 +88,11 @@ def cov():
         sys.exit(0)
     else:
         sys.exit(1)
+
+@cli.command()
+def run_gunicorn():
+    """Run with a production server"""
+    StandaloneApplication(app, options).run()
 
 
 @cli.command()
