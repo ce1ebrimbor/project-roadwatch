@@ -19,6 +19,13 @@ class User(UserMixin, db.Model):
     def get_id(self):
         return self.id
     
+    def toggle_admin(self):
+        if not self.admin:
+            self.admin = True
+        else:
+            self.admin = False
+
+        
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
