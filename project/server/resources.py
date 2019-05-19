@@ -7,7 +7,8 @@ from marshmallow_jsonapi import fields
 from sqlalchemy.orm.exc import NoResultFound
 from project.server import db
 from project.server.models import Accident, Lieu, Usager, Vehicule, Departement
-from project.server.user.views import token_required
+from project.server.user.decorators import token_required
+
 # Logical Data abstraction
 class AccidentSchema(Schema):
     class Meta:

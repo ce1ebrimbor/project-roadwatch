@@ -58,22 +58,6 @@ def create_app(script_info=None):
     def load_user(user_id):
         return User.query.filter(User.id == int(user_id)).first()
 
-    # error handlers
-    @app.errorhandler(401)
-    def unauthorized_page(error):
-        return render_template("errors/401.html"), 401
-
-    @app.errorhandler(403)
-    def forbidden_page(error):
-        return render_template("errors/403.html"), 403
-
-    @app.errorhandler(404)
-    def page_not_found(error):
-        return render_template("errors/404.html"), 404
-
-    @app.errorhandler(500)
-    def server_error_page(error):
-        return render_template("errors/500.html"), 500
 
     # shell context for flask cli
     @app.shell_context_processor

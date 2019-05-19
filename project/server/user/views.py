@@ -1,10 +1,8 @@
 # project/server/user/views.py
 
 import flask_login
-
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import current_app, jsonify
-from functools import wraps
 from project.server.models import User
 from project.server import db
 from project.server import login_manager
@@ -108,29 +106,3 @@ def dashboardtk():
                         current_app.config['SECRET_KEY'])
     return render_template("dashboard.html", generated_token=token.decode("utf-8"))
 
-
-@user_blueprint.route("/tktest")
-def tktest():
-    string = request.args.get('token')
-    data = jwt.decode(string, current_app.config['SECRET_KEY'])
-    user = User.query.get(data['id'])
-    if user is not None:
-        return 'Valid Token'
-    else:
-        return 'Not valid Token'
-
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.args.get('token')
-
-        if not token:
-            return jsonify({'message': 'Token is missing'})
-        try:
-            data = jwt.decode(token, current_app.config['SECRET_KEY'])
-            user = User.query.get(data['id'])
-        except:
-            return jsonify({'message': 'Token is invalid'})
-
-        return f(*args, **kwargs)
-    return decorated
