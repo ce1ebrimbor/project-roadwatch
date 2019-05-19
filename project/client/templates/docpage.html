@@ -48,6 +48,12 @@
 
     <h2 id="api-calls">Basic API Calls</h2>
 
+    <div class="alert alert-dark" role="alert">
+      <span class="font-weight-bold">Note:</span> In order to get access to the api you have to register and get an access token. You can generate a token on your Dashboard page.  The token has to be used as a keyword parameter for every request. <br>
+      <span class="font-weight-bold">Example:</span> <br>
+      <code>GET /accident?token=[your-token]</code>
+    </div>
+
     <ul>
       <li>
         <h3 id="get-accident"><a id="GET_accident_26"></a><code>GET /accident</code></h3>
@@ -950,9 +956,9 @@
         </tr>
       </tbody>
     </table>
-    <blockquote>
+    <div class="alert alert-dark">
       <p><strong>Note:</strong> Some resource attributes are encoded as integers. To find the <strong>meaning</strong> of the values read the the <a href="decode.json">decode.json</a> file.</p>
-    </blockquote>
+    </div>
   </div>
 </div>
 

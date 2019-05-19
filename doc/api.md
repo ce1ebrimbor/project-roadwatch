@@ -24,7 +24,7 @@ The current version of the api lives at `http://api/v1/path`.
 
 ## Basic API calls
 
-> **Note:** In order to get access to the api you have to register and get an access token. You can generate a token in your Dashboard page.  The token has to be used as a keyword parameter for every request. Example: `GET /accident?token=<your-token>`
+> **Note:** In order to get access to the api you have to register and get an access token. You can generate a token on your Dashboard page.  The token has to be used as a keyword parameter for every request. Example: `GET /accident?token=<your-token>`
 
 * #### `GET /accident`
 
