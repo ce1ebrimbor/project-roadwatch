@@ -1,5 +1,5 @@
 build:
   docker:
     web: Dockerfile
-  run:
-    web: python3 manage.py run-gunicorn
+run:
+  web: python3 manage.py run-gunicorn
