@@ -1,5 +1,8 @@
 FROM python:3.6.5-slim
 
+# expose ports
+EXPOSE 5000
+
 # install netcat
 RUN apt-get update \
   && apt-get -y install netcat \
