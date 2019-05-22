@@ -6,6 +6,6 @@ build:
   docker:
     web: Dockerfile
   config:
-    APP_SETTINGS: project.server.config.DevelopmentConfig
+    APP_SETTINGS: project.server.config.ProductionConfig
 run:
   web: python3 manage.py run-gunicorn
