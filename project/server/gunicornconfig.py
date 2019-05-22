@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import multiprocessing
 import gunicorn.app.base
+import os 
 
 from gunicorn.six import iteritems
 
@@ -28,6 +29,6 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 
 options = {
-	'bind': '%s:%s' % ('0.0.0.0', '5000'),
+	'bind': '%s:%s' % ('0.0.0.0', os.getenv('PORT')),
 	'workers': number_of_workers(),
 }
