@@ -22,8 +22,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG_TB_ENABLED = True
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_TEST_URL",
-        "sqlite:///{0}".format(os.path.join(basedir, "rwatch_test.db"))
+        "DATABASE_URL", "sqlite:///{0}".format(os.path.join(basedir, "dev.db"))
     )
 
 
@@ -31,10 +30,7 @@ class TestingConfig(BaseConfig):
     """Testing configuration."""
 
     PRESERVE_CONTEXT_ON_EXCEPTION = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_TEST_URL",
-        "sqlite:///{0}".format(os.path.join(basedir, "rwatch_test.db"))
-    )
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_TEST_URL", "sqlite:///")
     TESTING = True
 
 
@@ -42,5 +38,8 @@ class ProductionConfig(BaseConfig):
     """Production configuration."""
 
     BCRYPT_LOG_ROUNDS = 13
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        "DATABASE_URL",
+        "sqlite:///{0}".format(os.path.join(basedir, "prod.db")),
+    )
     WTF_CSRF_ENABLED = True

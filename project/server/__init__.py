@@ -3,29 +3,21 @@
 
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import LoginManager
-from flask_bcrypt import Bcrypt
-from flask_debugtoolbar import DebugToolbarExtension
-from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_marshmallow import Marshmallow
 from flask_rest_jsonapi import Api
-from project.server.routes import API_ROUTES
+from flask_cors import CORS
 
 # instantiate the extensions
 login_manager = LoginManager()
-bcrypt = Bcrypt()
-toolbar = DebugToolbarExtension()
-bootstrap = Bootstrap()
 db = SQLAlchemy()
 migrate = Migrate()
-marshmallow = Marshmallow()
 api = Api()
 
-
 def create_app(script_info=None):
+
     # instantiate the app
     app = Flask(
         __name__,
@@ -35,29 +27,37 @@ def create_app(script_info=None):
 
     # set config
     app_settings = os.getenv(
-        "APP_SETTINGS", "project.server.config.DevelopmentConfig"
+        "APP_SETTINGS", "project.server.config.ProductionConfig"
     )
     app.config.from_object(app_settings)
 
     # set up extensions
     login_manager.init_app(app)
-    bcrypt.init_app(app)
-    toolbar.init_app(app)
-    bootstrap.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
-    marshmallow.init_app(app)
-
     api = Api(app)
+    CORS(app)
 
     # register blueprints
-    from project.server.api.views import api_blueprint
+    from project.server.user.views import user_blueprint
 
-    app.register_blueprint(api_blueprint)
+    app.register_blueprint(user_blueprint)
 
+    # flask login
+    from project.server.models import User
+
+    login_manager.login_view = "user.login"
+    # login_manager.login_message_category = "danger"
+    from project.server.routes import API_ROUTES
+    #API routes
     for route_tuple in API_ROUTES:
         api.route(route_tuple[0], route_tuple[1], *route_tuple[2])
-    # error handlers
+
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.filter(User.id == int(user_id)).first()
+
 
     # shell context for flask cli
     @app.shell_context_processor

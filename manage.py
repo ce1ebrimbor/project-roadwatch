@@ -6,8 +6,14 @@ import unittest
 import coverage
 
 from flask.cli import FlaskGroup
-
+from project.server.gunicornconfig import StandaloneApplication, options
 from project.server import create_app, db
+from project.server.models import User
+from project.server.populate import populate_departements
+from project.server.populate import populate_accidents
+from project.server.populate import populate_lieux
+from project.server.populate import populate_vehicules
+from project.server.populate import populate_usagers
 import subprocess
 import sys
 
@@ -20,7 +26,6 @@ COV = coverage.coverage(
     include="project/*",
     omit=[
         "project/tests/*",
-        "project/server/resources.py",
         "project/server/config.py",
         "project/server/*/__init__.py",
     ],
@@ -41,12 +46,20 @@ def drop_db():
     db.drop_all()
 
 
-
-
 @cli.command()
 def create_data():
     """Creates sample data."""
-    pass
+    print('LOADING DATA FILES ...')
+    populate_departements()
+    db.session.commit()
+    populate_accidents()
+    db.session.commit()
+    populate_vehicules()
+    db.session.commit()
+    populate_usagers()
+    db.session.commit()
+    populate_lieux()
+    db.session.commit()
 
 
 @cli.command()
@@ -75,6 +88,11 @@ def cov():
         sys.exit(0)
     else:
         sys.exit(1)
+
+@cli.command()
+def run_gunicorn():
+    """Run with a production server"""
+    StandaloneApplication(app, options).run()
 
 
 @cli.command()

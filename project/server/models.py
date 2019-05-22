@@ -1,36 +1,66 @@
 # project/server/models.py
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
 
 
-# Database Models
+import datetime
+
+from flask import current_app
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from project.server import db
+
+class User(UserMixin, db.Model):
+
+    id = db.Column(db.Integer(), primary_key=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
+    admin = db.Column(db.Boolean(), default=False)
+
+    def get_id(self):
+        return self.id
+    
+    def toggle_admin(self):
+        if not self.admin:
+            self.admin = True
+        else:
+            self.admin = False
+
+        
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def __repr__(self):
+        return '<User {}>'.format(self.email)
+
+
+# Api Models
 class Accident(db.Model):
 
-    __tablename__ = 'caracteristiques'
-
-    id = db.Column('id', db.Integer(), primary_key=True)
+    id = db.Column('id', db.BigInteger(), primary_key=True)
     lum = db.Column('lum', db.Integer())
     agg = db.Column('agg', db.Integer())
     int = db.Column('int', db.Integer())
     atm = db.Column('atm', db.Integer())
     col = db.Column('col', db.Integer())
     adr = db.Column('adr', db.Text())
-    comm = db.Column('comm', db.String(5))
-    gps = db.Column('gps', db.String(1))
-    dep = db.Column('dep', db.String(3))
+    comm = db.Column('comm', db.String(10))
+    gps = db.Column('gps', db.String(2))
+    dep = db.Column('dep', db.String(15), db.ForeignKey('departement.id'))
     lat = db.Column('lat', db.Float())
     long = db.Column('long', db.Float())
     date = db.Column('date', db.DateTime())
     usager = db.relationship('Usager',
-                             backref='caracteristiques',
+                             backref='accident_usager',
                              lazy=True)
     lieu = db.relationship('Lieu',
                            uselist=False,
-                           backref='caracteristiques',
+                           backref='accident_lieu',
                            lazy=True)
     vehicule = db.relationship('Vehicule',
-                               backref='caracteristiques',
+                               backref='accident_vehicule',
                                lazy=True)
 
     def __init__(self, id, lum, agg, int, atm, col,
@@ -55,11 +85,9 @@ class Accident(db.Model):
 
 class Lieu(db.Model):
 
-    __tablename__ = 'lieux'
-
-    id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
-    accident_id = db.Column('accident_id', db.Integer(),
-                            db.ForeignKey('caracteristiques.id'))
+    id = db.Column('id', db.Integer(), primary_key=True )
+    accident_id = db.Column('accident_id', db.BigInteger(),
+                            db.ForeignKey('accident.id'))
     catr = db.Column('catr', db.Integer())
     voie = db.Column('voie', db.Integer())
     circ = db.Column('circ', db.Integer())
@@ -96,11 +124,9 @@ class Lieu(db.Model):
 
 class Usager(db.Model):
 
-    __tablename__ = 'usagers'
-
-    id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
-    accident_id = db.Column('accident_id', db.Integer(),
-                            db.ForeignKey('caracteristiques.id'))
+    id = db.Column('id', db.Integer(), primary_key=True)
+    accident_id = db.Column('accident_id', db.BigInteger(),
+                            db.ForeignKey('accident.id'))
     place = db.Column('place', db.Integer())
     catu = db.Column('catu', db.Integer())
     grav = db.Column('grav', db.Integer())
@@ -112,7 +138,7 @@ class Usager(db.Model):
     etatp = db.Column('etatp', db.Integer())
     an_nais = db.Column('an_nais', db.Integer())
     num_veh = db.Column('num_veh', db.Text())
-    accident = db.relationship('Accident', foreign_keys=accident_id)
+    accident = db.relationship('Accident', foreign_keys=accident_id, lazy=True)
 
     def __init__(self, accident_id, place, catu, grav, sexe, trajet, secu, locp,
                  actp, etatp, an_nais, num_veh):
@@ -135,11 +161,9 @@ class Usager(db.Model):
 
 class Vehicule(db.Model):
 
-    __tablename__ = 'vehicules'
-
-    id = db.Column('id', db.Integer(), primary_key=True, autoincrement=True)
-    accident_id = db.Column('accident_id', db.Integer(),
-                            db.ForeignKey('caracteristiques.id'))
+    id = db.Column('id', db.Integer(), primary_key=True)
+    accident_id = db.Column('accident_id', db.BigInteger(),
+                            db.ForeignKey('accident.id'))
     senc = db.Column('senc', db.Integer())
     catv = db.Column('catv', db.Integer())
     occutc = db.Column('occutc', db.Integer())
@@ -148,7 +172,7 @@ class Vehicule(db.Model):
     choc = db.Column('choc', db.Integer())
     manv = db.Column('manv', db.Integer())
     num_veh = db.Column('num_veh', db.Text())
-    accident = db.relationship("Accident", backref=db.backref('vehicules'))
+    accident = db.relationship("Accident", backref='vehicules')
 
     def __init__(self, accident_id, senc, catv, occutc, obs, obsm, choc,
                  manv, num_veh):
@@ -164,3 +188,21 @@ class Vehicule(db.Model):
 
     def __repr__(self):
         return '<Vehicule {0}>'.format(self.id)
+
+
+
+class Departement(db.Model):
+
+    id = db.Column('id', db.Text(), primary_key=True)
+    geometry = db.Column('geometry', db.Text())
+    nom = db.Column('nom', db.Text())
+    accident = db.relationship('Accident', backref='departement')
+
+    def __init__(self, id, geometry, nom):
+        self.id = id
+        self.geometry = geometry
+        self.nom = nom
+        #accident = db.relationship('Accident', backref=db.backref('departements'))
+
+    def __repr__(self):
+        return '<Departement {0}>'.format(self.id)

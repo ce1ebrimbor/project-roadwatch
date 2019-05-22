@@ -5,10 +5,9 @@ from flask_rest_jsonapi.exceptions import ObjectNotFound
 from marshmallow_jsonapi.flask import Schema, Relationship
 from marshmallow_jsonapi import fields
 from sqlalchemy.orm.exc import NoResultFound
-
-from project.server.models import db
-from project.server.models import Accident, Lieu, Usager, Vehicule
-
+from project.server import db
+from project.server.models import Accident, Lieu, Usager, Vehicule, Departement
+from project.server.user.decorators import token_required
 
 # Logical Data abstraction
 class AccidentSchema(Schema):
@@ -136,6 +135,28 @@ class VehiculeSchema(Schema):
                             self_view_kwargs={'id': '<id>'},
                             related_view='accident_detail',
                             related_view_kwargs={'vid': '<id>'},
+                            many=True,
+                            schema='AccidentSchema',
+                            type_='accident')
+
+
+
+class DepartementSchema(Schema):
+    class Meta:
+        type_ = 'departement'
+        self_view = 'departement_detail'
+        self_view_kwargs = {'id': '<id>'}
+        self_view_many = 'departement_list'
+
+    id = fields.String(as_String=True,dump_only=True)
+    geometry = fields.String()
+    nom = fields.String()
+    accident = Relationship(attribute='accident',
+                            self_view='departement_accidents',
+                            self_view_kwargs={'id': '<id>'},
+                            related_view='accident_list',
+                            related_view_kwargs={'id': '<id>'},
+                            many=True,
                             schema='AccidentSchema',
                             type_='accident')
 
@@ -167,23 +188,56 @@ class UsagerList(ResourceList):
 
     schema = UsagerSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Usager,
                   'methods': {'query': query,
                               'before_create_object': before_create_object}}
 
 
+
 class UsagerDetail(ResourceDetail):
     schema = UsagerSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Usager}
 
 
 class AccidentList(ResourceList):
+
+    def query(self, view_kwargs):
+        query_ = self.session.query(Accident)
+        if view_kwargs.get('id') is not None:
+            try:
+                self.session.query(Departement)\
+                            .filter_by(id=view_kwargs['id'])\
+                            .one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'id'},
+                                     "Departement: {} not found".format(
+                                                            view_kwargs['id']))
+            else:
+                query_ = query_.join(Departement, Departement.id == Accident.dep) \
+                               .filter(
+                                    Accident.dep == view_kwargs['id']
+                                    )
+        return query_
+
+    def before_create_object(self, data, view_kwargs):
+        if view_kwargs.get('id') is not None:
+            dep = self.session.query(Departement)\
+                                   .filter_by(id=view_kwargs['id'])\
+                                   .one()
+            data['departement_id'] = dep.id
+
     schema = AccidentSchema
     methods = ['GET']
-    data_layer = {'session': db.session, 'model': Accident}
+    decorators = (token_required,)
+    data_layer = {'session': db.session,
+                'model': Accident,
+                'methods': {'query': query,
+                            'before_create_object': before_create_object}}
 
 
 class AccidentDetail(ResourceDetail):
@@ -253,8 +307,25 @@ class AccidentDetail(ResourceDetail):
                 else:
                     view_kwargs['id'] = None
 
+        if view_kwargs.get('depid') is not None:
+            try:
+                departement = self.session\
+                              .query(Departement)\
+                              .filter_by(id=view_kwargs['depid'])\
+                              .one()
+            except NoResultFound:
+                raise ObjectNotFound({'parameter': 'depid'},
+                                     "Departement: {} not found"
+                                     .format(view_kwargs['depid']))
+            else:
+                if departement.accident is not None:
+                    view_kwargs['depid'] = departement.accident.id
+                else:
+                    view_kwargs['depid'] = None
+
     schema = AccidentSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Accident,
                   'methods': {'before_get_object': before_get_object}}
@@ -264,6 +335,7 @@ class AccidentDetail(ResourceDetail):
 class LieuList(ResourceList):
     schema = LieuSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session, 'model': Lieu}
 
 
@@ -288,6 +360,7 @@ class LieuDetail(ResourceDetail):
 
     schema = LieuSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Lieu,
                   'methods': {'before_get_object': before_get_object}}
@@ -322,6 +395,7 @@ class VehiculeList(ResourceList):
 
     schema = VehiculeSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                 'model': Vehicule,
                 'methods': {'query': query,
@@ -331,13 +405,28 @@ class VehiculeList(ResourceList):
 class VehiculeDetail(ResourceDetail):
     schema = VehiculeSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session, 'model': Vehicule}
+
+
+class DepartementDetail(ResourceDetail):
+    schema = DepartementSchema
+    methods = ['GET']
+    decorators = (token_required,)
+    data_layer = {'session': db.session, 'model': Departement}
+
+class DepartementList(ResourceList):
+    schema = DepartementSchema
+    methods = ['GET']
+    decorators = (token_required,)
+    data_layer = {'session': db.session, 'model': Departement}
 
 
 # Resource relationships
 class AccidentRelationship(ResourceRelationship):
     schema = AccidentSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Accident}
 
@@ -345,6 +434,7 @@ class AccidentRelationship(ResourceRelationship):
 class LieuRelationship(ResourceRelationship):
     schema = LieuSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Lieu}
 
@@ -352,6 +442,7 @@ class LieuRelationship(ResourceRelationship):
 class UsagerRelationship(ResourceRelationship):
     schema = UsagerSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Usager}
 
@@ -359,5 +450,13 @@ class UsagerRelationship(ResourceRelationship):
 class VehiculeRelationship(ResourceRelationship):
     schema = VehiculeSchema
     methods = ['GET']
+    decorators = (token_required,)
     data_layer = {'session': db.session,
                   'model': Vehicule}
+
+class DepartementRelationship(ResourceRelationship):
+    schema = DepartementSchema
+    methods = ['GET']
+    decorators = (token_required,)
+    data_layer = {'session': db.session,
+                  'model': Departement }

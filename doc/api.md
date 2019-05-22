@@ -2,7 +2,7 @@
 
 This api serves as a repository for the road accidents data published by the French Interior Ministry.
 The main goal was to build a flexible and easy to access api wich will do the **heavy** work such as
-sorting and filtering of the data.
+sorting and filtering the data.
 
 The api was implemented according to the [JSON:API v1.0](https://jsonapi.org/format/) specification.
 
@@ -17,12 +17,15 @@ The current version of the api lives at `http://api/v1/path`.
 | Version | Date | Changes |
 |---------|------|---------|
 |1.0-alpha   | 10-03-2019     | Initial release.|
+|1.0   | 10-05-2019     | Deployment.|
 
 
 
 > **Note:** In order to interact with our api we recommend you to use one of [these](https://jsonapi.org/implementations/#client-libraries) client libraries.
 
 ## Basic API calls
+
+> **Note:** In order to get access to the api you have to register and get an access token. You can generate a token on your Dashboard page.  The token has to be used as a keyword parameter for every request. Example: `GET /accident?token=<your-token>`
 
 * #### `GET /accident`
 
@@ -479,6 +482,7 @@ This endpoint returns a location by id.
 | /accident | Get list of accidents. | - | - | Accident         |
 | /usager   | Get list of victims.   | - | - | Usager           |
 | /lieu     | Get list of accident locations. | - | - | Lieu    |
+| /departement | Get the list of France's departement | - | - | Departement |
 | /vehicule | Get list of vehicles involved in accidents | - | - | Vehicule |
 | /accident/{id:int} | GET the  accident by id. |id | int | Accident|
 | /usager/{id:int}/accident | Get the accident in wich the person was involved.  |id| int| Accident|
@@ -490,11 +494,13 @@ This endpoint returns a location by id.
 | /usager/{id:int}          |  Get the victim by id. |id | int | Usager|
 | /accident/{id:int}/vehicule | Get the vehicles involved in the accident.| id | int | Vehicule|
 | /vehicule/{id:int} | Get the vehicle by id.| id | int | Vehicule|
+| /departement/{string:id} | Get the departement by id (see codes insee). | id | str | Departement |
 | /accident/{int:id}/relationships/usager | Get the relationship between accident and usager.|id | int | AccidentRelationship |
 | /accident/{int:id}/relationships/lieu | Get the relationship between accident and lieu.| id | int | AccidentRelationship |
 | /accident/{int:id}/relationships/vehicule | Get the relationship between accident and vehicule.| id | int | AccidentRelationship |
 | /lieu/{int:id}/relationships/accident | Get the relationship between lieu and accident.| id | int | LieuRelationship |
 | /usager/{int:id}/relationships/accident | Get the relationship between usager and accident.| id | int | UsagerRelationship |
+| /departement/{string:id}/relationships/accident | Get the relationship between the departement and the accident resources. | id | str | DepartementRelationship |
 | /vehicule/{int:id}/relationships/accident | Get the relationship between vehicule and accident.| id | int | VehiculeRelationship |
 
 

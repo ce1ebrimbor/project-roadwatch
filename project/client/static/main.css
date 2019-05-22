@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.logo {
+  font-weight: 900;
+  display: block;
+}
+
+.full-screen {
+  min-height: 75vh;
+}
+
+@media (max-width: 1023px) {
+    #sin-or-sout {
+      width: 100%;
+    }
+}
+
+
+@media (min-width: 1024px) {
+    #sin-or-sout {
+      position: fixed;
+      top: 5%;
+      right: 5%;
+      display: block;
+    }
+}

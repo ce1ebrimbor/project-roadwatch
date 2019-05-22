@@ -16,8 +16,8 @@ services:
       - FLASK_DEBUG=1
       - PYTHONUNBUFFERED=0
       - APP_SETTINGS=project.server.config.DevelopmentConfig
-      - DATABASE_URL=postgres://postgres:postgres@web-db:5432/users_dev
-      - DATABASE_TEST_URL=postgres://postgres:postgres@web-db:5432/rwatch_test
+      - DATABASE_URL=postgres://postgres:postgres@web-db:5432/rwatch_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@web-db:5432/rwatch_dev
       - SECRET_KEY=change_me_in_prod
     depends_on:
       - web-db

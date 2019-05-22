@@ -20,4 +20,8 @@ jobs:
     - stage: test
       script: docker-compose run web python manage.py cov
 script:
-  docker-compose run web python manage.py cov
+  # drop existing data 
+  - docker-compose run web python manage.py drop-db
+  - docker-compose run web python manage.py create-db
+  - docker-compose run web python manage.py create-data
+  - docker-compose run web python manage.py cov
