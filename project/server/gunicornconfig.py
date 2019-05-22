@@ -29,6 +29,6 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 
 options = {
-	'bind': '%s:%s' % ('0.0.0.0', os.getenv('PORT')),
+	'bind': '%s:%s' % ('0.0.0.0', '5000'),
 	'workers': number_of_workers(),
 }
